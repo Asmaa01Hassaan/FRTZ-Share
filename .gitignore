@@ -1,0 +1,25 @@
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+
+# Odoo Database & Logs
+*.db
+*.log
+*.csv
+*.xlsx
+
+# Virtual environment
+venv/
+.env/
+
+# Odoo configuration file
+*.conf
+
+# IDE files (for example VS Code, PyCharm)
+.idea/
+.vscode/
+
+# Odoo Addons
+*.tar.gz
+*.zip
