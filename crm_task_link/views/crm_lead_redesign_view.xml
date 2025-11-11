@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_view_expenses_by_lead" model="ir.actions.act_window">
+        <field name="name">Lead Expenses</field>
+        <field name="res_model">hr.expense</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('lead_id', '=', active_id)]</field>
+        <field name="context">{}</field>
+    </record>
+    <record id="view_crm_lead_form_custom" model="ir.ui.view">
+        <field name="name">crm.lead.form.custom</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Make the form RTL -->
+            <xpath expr="//sheet" position="attributes">
+                <attribute name="style">direction: rtl;</attribute>
+            </xpath>
+
+
+            <!-- Add "📌 فرصة:" before name -->
+            <xpath expr="//div[hasclass('oe_title')]" position="replace">
+                <div class="oe_title" style="margin-bottom: 16px;">
+                    <div style="display: ruby; align-items: center; font-size: 26px; font-weight: bold;direction: rtl; justify-content: flex-end;">
+                        <span>📌فرصة :</span>
+                        <field name="name"
+                               class="ms-2 text-break"
+                               options="{'line_breaks': False}"
+                               widget="text"
+                               style="margin-right: 8px;"/>
+                    </div>
+                </div>
+            </xpath>
+
+
+            <xpath expr="//div[hasclass('oe_title')]" position="after">
+                
+                <!-- Hidden fields for computed statistics -->
+                <div style="display: none;">
+                    <field name="opportunity_age_days"/>
+                    <field name="days_until_deadline"/>
+                    <field name="is_deadline_overdue"/>
+                    <field name="has_files"/>
+                    <field name="files_status_message"/>
+                    <field name="files_status_color"/>
+                    <field name="opportunity_status_color"/>
+                    <field name="has_opportunity_warning"/>
+                    <field name="warning_count"/>
+                    <field name="warning_messages"/>
+                </div>
+                
+                <!-- إحصائيات الفرصة -->
+                <div class="opportunity_statistics_container" style="background: #f8f9fa; border-radius: 8px; padding: 12px; margin-bottom: 20px; border: 1px solid #dee2e6;">
+                    <div class="opportunity_statistics_grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+                        
+                        <!-- عمر الفرصة -->
+                        <div style="background: #fff; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid #667eea;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 4px;">📅 عمر الفرصة</div>
+                            <div style="font-size: 22px; color: #2c3e50; font-weight: 600;">
+                                <field name="opportunity_age_days" readonly="1"/>
+                            </div>
+                            <div style="font-size: 10px; color: #6c757d;">يوم</div>
+                        </div>
+                        
+                        <!-- الأيام المتبقية -->
+                        <div style="background: #fff; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid #11998e;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 4px;">⏱️ الأيام المتبقية</div>
+                            <div style="font-size: 22px; font-weight: 600;">
+                                <field name="days_until_deadline" readonly="1"
+                                       decoration-danger="is_deadline_overdue == True"
+                                       decoration-warning="days_until_deadline &lt; 7 and days_until_deadline &gt; 0"
+                                       decoration-success="days_until_deadline &gt;= 7"/>
+                            </div>
+                            <div style="font-size: 10px; color: #6c757d;">يوم</div>
+                        </div>
+                        
+                        <!-- حالة الملفات -->
+                        <div style="background: #fff; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid #38ef7d;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 4px;">📄 الملفات</div>
+                            <div style="font-size: 14px; font-weight: 600; margin: 5px 0;">
+                                <field name="files_status_message" readonly="1"
+                                       decoration-success="has_files == True"
+                                       decoration-warning="has_files == False"/>
+                            </div>
+                        </div>
+                        
+                        <!-- حالة الفرصة -->
+                        <div style="background: #fff; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid #667eea;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 4px;">📊 الحالة</div>
+                            <div style="font-size: 14px; font-weight: 600; margin: 5px 0;">
+                                <field name="stage_id" readonly="1"
+                                       decoration-success="opportunity_status_color == 'success'"
+                                       decoration-danger="opportunity_status_color == 'danger'"
+                                       decoration-info="opportunity_status_color == 'info'"/>
+                            </div>
+                        </div>
+                        
+                        <!-- التحذيرات -->
+                        <div style="background: #fff; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid #ff6b6b;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 4px;">⚠️ التحذيرات</div>
+                            <div style="font-size: 22px; font-weight: 600;">
+                                <field name="warning_count" readonly="1"
+                                       decoration-danger="warning_count &gt; 0"
+                                       decoration-success="warning_count == 0"/>
+                            </div>
+                            <div style="font-size: 10px; color: #6c757d;">تنبيه</div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <!-- معلومات الفرصة -->
+                <div style="margin-bottom: 30px;">
+                    <div style="font-size: 18px; font-weight: 700; color: #2c3e50; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #667eea;">
+                        📋 معلومات الفرصة
+                    </div>
+                    
+                    <div class="opportunity_info_grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        
+                        <!-- المسؤول -->
+                        <div class="field_user" style="background: #f8f9fa; border-radius: 10px; padding: 18px; border-left: 4px solid #667eea; transition: all 0.3s;">
+                            <div style="font-size: 13px; color: #6c757d; margin-bottom: 8px; font-weight: 600;">👤 المسؤول</div>
+                            <field name="user_id" style="font-size: 15px; font-weight: 500; color: #2c3e50;"/>
+                        </div>
+                        
+                        <!-- العميل -->
+                        <div class="field_partner" style="background: #f8f9fa; border-radius: 10px; padding: 18px; border-left: 4px solid #764ba2; transition: all 0.3s;">
+                            <div style="font-size: 13px; color: #6c757d; margin-bottom: 8px; font-weight: 600;">🏢 العميل</div>
+                            <field name="partner_id" style="font-size: 15px; font-weight: 500; color: #2c3e50;"/>
+                    </div>
+                        
+                        <!-- المشروع المرتبط -->
+                        <div class="field_project" style="background: #f8f9fa; border-radius: 10px; padding: 18px; border-left: 4px solid #11998e; transition: all 0.3s;">
+                            <div style="font-size: 13px; color: #6c757d; margin-bottom: 8px; font-weight: 600;">🏗️ المشروع المرتبط</div>
+                            <field name="project_id" style="font-size: 15px; font-weight: 500; color: #2c3e50;"/>
+                        </div>
+                        
+                        <!-- تاريخ الانتهاء -->
+                        <div class="field_deadline" style="background: #f8f9fa; border-radius: 10px; padding: 18px; border-left: 4px solid #f45c43; transition: all 0.3s;">
+                            <div style="font-size: 13px; color: #6c757d; margin-bottom: 8px; font-weight: 600;">📅 تاريخ الانتهاء</div>
+                            <field name="date_deadline" style="font-size: 15px; font-weight: 500; color: #2c3e50;"/>
+                    </div>
+
+                        <!-- نسبة الإغلاق -->
+                        <div class="field_probability" style="background: #f8f9fa; border-radius: 10px; padding: 18px; border-left: 4px solid #38ef7d; transition: all 0.3s;">
+                            <div style="font-size: 13px; color: #6c757d; margin-bottom: 8px; font-weight: 600;">📊 نسبة الإغلاق</div>
+                            <div style="font-size: 15px; font-weight: 500; color: #2c3e50;">
+                                <field name="probability" widget="float" readonly="1"/>%
+                            </div>
+                        </div>
+                        
+                        <!-- الإيرادات المتوقعة -->
+                        <div class="field_revenue" style="background: #f8f9fa; border-radius: 10px; padding: 18px; border-left: 4px solid #eb3349; transition: all 0.3s;">
+                            <div style="font-size: 13px; color: #6c757d; margin-bottom: 8px; font-weight: 600;">💰 الإيرادات المتوقعة</div>
+                            <field name="expected_revenue" widget="monetary"
+                                   options="{'currency_field': 'company_currency'}"
+                                   style="font-size: 15px; font-weight: 500; color: #2c3e50;"/>
+                        </div>
+                        
+                    </div>
+
+                    
+                </div>
+                
+                <!-- قائمة التحذيرات والتنبيهات -->
+                <div class="alert" role="alert" style="margin-top: 20px;" 
+                     invisible="warning_count == 0">
+                    <h5 style="margin-bottom: 15px; font-weight: 700;">
+                        ⚠️ تنبيهات وتحذيرات (<field name="warning_count" readonly="1" nolabel="1"/>)
+                    </h5>
+                    <div style="white-space: pre-line; font-size: 14px; line-height: 1.8;">
+                        <field name="warning_messages" readonly="1" nolabel="1"/>
+                    </div>
+                </div>
+
+            </xpath>
+
+            <xpath expr="//group[.//field[@name='partner_id']]" position="replace">
+                <!-- عنصر فارغ ليحل محل الـ group بالكامل -->
+            </xpath>
+            <xpath expr="//page[@name='internal_notes']" position="attributes">
+                <attribute name="string">ملاحظات داخلية</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='lead']" position="replace">
+                <page string="تفاصيل العميل">
+                    <group>
+                        <field name="partner_id" string="Customer"/>
+                        <field name="tag_ids" widget="many2many_tags"
+                               options="{'color_field': 'color', 'no_create_edit': True}"/>
+                        <field name="email_from" string="Email" widget="email"/>
+                        <field name="website" widget="url" string="Website"/>
+                        <field name="phone" widget="phone" string="Phone"/>
+                        <field name="mobile" widget="phone" string="Mobile"/>
+
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="التكلفة المتوقعة">
+                    <div class="oe_title" style="margin-top: 20px; font-weight: bold;">📋 عروض الأسعار المرتبطة</div>
+
+                    <group>
+                        <field name="quotation_ids">
+                            <list>
+                                <field name="name"/>
+                                <field name="partner_id"/>
+                                <field name="amount_untaxed"/>
+                                <field name="amount_tax"/>
+                                <field name="amount_total"/>
+                                <field name="state"/>
+                            </list>
+                        </field>
+                        <field name="total_quotation_untaxed" widget="monetary"
+                               options="{'currency_field': 'company_currency'}" string="إجمالي بدون ضريبة"/>
+                        <field name="total_quotation_tax" widget="monetary"
+                               options="{'currency_field': 'company_currency'}" string="قيمة الضريبة"/>
+                        <field name="total_quotation_total" widget="monetary"
+                               options="{'currency_field': 'company_currency'}" string="الإجمالي الكلي"/>
+                        <field name="total_expense_amount" readonly="1" widget="monetary"
+                               options="{'currency_field': 'company_currency'}" string="إجمالي المصاريف "/>
+
+                        <field name="total_revenue_amount" widget="monetary"
+                               options="{'currency_field': 'company_currency'}" string="إجمالي الربح"/>
+
+
+
+                        <field name="revenue_margin_percent"
+                               widget="badge"
+                               options="{'color_field': 'revenue_margin_color', 'text_align': 'center'}"/>
+
+                        <!--                        <div class="col-md-6">-->
+                        <!--                            <div style="background: #e3f2fd; padding: 1rem; border-radius: 0.75rem; text-align: center;">-->
+                        <!--                                <field name="expected_revenue" widget="monetary"-->
+                        <!--                                       options="{'currency_field': 'company_currency','color_field': 'revenue_margin_color'}"/>-->
+                        <!--                                <div style="font-size: 13px; color: #666;">الإيرادات المتوقعة</div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="col-md-6">-->
+                        <!--                            <div style="background: #e3f2fd; padding: 1rem; border-radius: 0.75rem; text-align: center;">-->
+                        <!--                                <field name="expected_revenue" widget="monetary"-->
+                        <!--                                       options="{'currency_field': 'company_currency'}"/>-->
+                        <!--                                <div style="font-size: 13px; color: #666;">الإيرادات المتوقعة</div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+
+
+                    </group>
+                    <!--                    <group>-->
+                    <!--                        <field name="operational_expense_ids" string="المصروفات">-->
+                    <!--                            <list editable="bottom" options="{'footer': 'total'}">-->
+                    <!--                                <field name="category_id" string="الفئة"/>-->
+                    <!--                                <field name="description" string="الوصف"/>-->
+                    <!--                                <field name="date" string="التاريخ"/>-->
+                    <!--                                <field name="amount" string="المبلغ"/>-->
+
+                    <!--                            </list>-->
+                    <!--                        </field>-->
+
+                    <!--                    </group>-->
+                    <!--                    <div style="text-align: end; font-weight: bold;">-->
+                    <!--                        الإجمالي:-->
+                    <!--                        <field name="operational_expense_total"/>-->
+                    <!--                    </div>-->
+
+
+                </page>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+
+
+                <button type="action"
+                        name="%(action_view_expenses_by_lead)d"
+                        class="oe_stat_button"
+                        icon="fa-money"
+                        modifiers="{'invisible': [['vendor_bill_count', '=', 0]]}">
+                    <div class="o_stat_info">
+                        <div class="o_stat_text">المصروفات</div>
+                        <span class="o_stat_text">
+                            <field name="total_expense_amount" widget="monetary"
+                                   options="{'currency_field': 'company_currency'}"/>
+                        </span>
+
+                    </div>
+                </button>
+
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="المصاريف التشغيلية" style="direction: ltr;">
+                    <group>
+                        <field name="expense_ids" context="{'show_sum': True}">
+                            <!--                            editable="bottom"-->
+                            <list>
+                                <field name="name" string="الوصف"/>
+                                <field name="product_id" string="الفئة" domain="[('can_be_expensed', '=', True)]"/>
+                                <field name="total_amount" string="المبلغ" sum="Total"/>
+                                <field name="currency_id"/>
+                                <field name="date" string="تاريخ الصرف"/>
+                                <field name="analytic_distribution" string="المشروع"/>
+                                <field name="state" string="الحالة"/>
+                            </list>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="total_expense_amount" readonly="1" widget="monetary"
+                               options="{'currency_field': 'company_currency'}"/>
+                    </group>
+
+
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,182 @@
+/* 🎨 Project Form Enhanced Styling */
+
+/* Hover Effects for Info Cards */
+.o_form_sheet [style*="background: #fff"]:hover,
+.o_form_sheet [style*="background: #f8f9fa"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+/* Responsive Design - Mobile Optimization */
+@media (max-width: 768px) {
+    
+    /* ===== الإحصائيات في الأعلى - 2 في كل صف ===== */
+    .o_form_sheet .project_statistics_grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+    }
+    
+    .o_form_sheet .project_statistics_container {
+        padding: 8px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    /* ===== معلومات المشروع - Custom Layout للجوال ===== */
+    .o_form_sheet .project_info_grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
+    /* صف 1: العميل ومدير المشروع - جنب بعض */
+    .o_form_sheet .field_partner {
+        grid-column: 1 / 2 !important;
+        grid-row: 1 !important;
+    }
+    
+    .o_form_sheet .field_manager {
+        grid-column: 1 / 2 !important;
+        grid-row: 1 !important;
+    }
+    
+    /* التاريخ - صف لحاله */
+    .o_form_sheet .field_dates {
+        grid-column: 1 / 2 !important;
+    }
+    
+    /* صف 3: رمز المشروع والوسوم - جنب بعض */
+    .o_form_sheet .field_code {
+        grid-column: 1 / 2 !important;
+        grid-row: 3 !important;
+    }
+    
+    .o_form_sheet .field_tags {
+        grid-column: 1 / 2 !important;
+        grid-row: 3 !important;
+    }
+    
+    /* الفرصة المرتبطة - صف لحالها */
+    .o_form_sheet .field_crm {
+        grid-column: 1 / 2 !important;
+    }
+    
+    /* نستخدم flexbox بدلاً من grid للصفوف المشتركة */
+    .o_form_sheet .project_info_grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-auto-rows: auto !important;
+        gap: 12px !important;
+    }
+    
+    .o_form_sheet .field_partner {
+        grid-column: 1 / 2 !important;
+        grid-row: 1 !important;
+    }
+    
+    .o_form_sheet .field_manager {
+        grid-column: 2 / 3 !important;
+        grid-row: 1 !important;
+    }
+    
+    .o_form_sheet .field_dates {
+        grid-column: 1 / 3 !important;
+        grid-row: 2 !important;
+    }
+    
+    .o_form_sheet .field_code {
+        grid-column: 1 / 2 !important;
+        grid-row: 3 !important;
+    }
+    
+    .o_form_sheet .field_tags {
+        grid-column: 2 / 3 !important;
+        grid-row: 3 !important;
+    }
+    
+    .o_form_sheet .field_crm {
+        grid-column: 1 / 3 !important;
+        grid-row: 4 !important;
+    }
+    
+    /* الإحصائيات المالية - 2 columns on mobile */
+    .o_form_sheet div[style*="grid-template-columns: repeat(4, 1fr)"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+    }
+    
+    /* Reduce padding on mobile */
+    .o_form_sheet div[style*="padding: 18px"] {
+        padding: 12px !important;
+    }
+    
+    .o_form_sheet div[style*="padding: 12px"] {
+        padding: 8px !important;
+    }
+    
+    /* Smaller fonts on mobile */
+    .o_form_sheet div[style*="font-size: 22px"] {
+        font-size: 18px !important;
+    }
+    
+    .o_form_sheet div[style*="font-size: 18px"] {
+        font-size: 14px !important;
+    }
+    
+    .o_form_sheet div[style*="font-size: 16px"] {
+        font-size: 14px !important;
+    }
+    
+    .o_form_sheet div[style*="font-size: 15px"] {
+        font-size: 13px !important;
+    }
+    
+    .o_form_sheet div[style*="font-size: 13px"] {
+        font-size: 11px !important;
+    }
+}
+
+/* Tablet Optimization */
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* معلومات المشروع - 2 columns on tablet */
+    .o_form_sheet div[style*="grid-template-columns: repeat(3, 1fr)"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    /* الإحصائيات المالية - 2 columns on tablet */
+    .o_form_sheet div[style*="grid-template-columns: repeat(4, 1fr)"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* Desktop - 3 columns for معلومات المشروع */
+@media (min-width: 1025px) {
+    .o_form_sheet div[style*="grid-template-columns: repeat(3, 1fr)"] {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+/* Smooth Transitions */
+.o_form_sheet div[style*="transition: all 0.3s"] {
+    transition: all 0.3s ease-in-out !important;
+}
+
+/* Badge Styling for Tags */
+.badge {
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+
+/* Print Styling */
+@media print {
+    .o_form_sheet div[style*="box-shadow"] {
+        box-shadow: none !important;
+    }
+    
+    .o_form_sheet div[style*="background: linear-gradient"] {
+        background: #f8f9fa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+

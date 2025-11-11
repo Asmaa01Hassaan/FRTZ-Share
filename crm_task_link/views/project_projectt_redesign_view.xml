@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_project_form_rtl" model="ir.ui.view">
+        <field name="name">project.project.form.rtl</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <!-- Make the form RTL -->
+            <xpath expr="//sheet" position="attributes">
+                <attribute name="style">direction: rtl;</attribute>
+            </xpath>
+            <!--            <xpath expr="//sheet" position="before">-->
+            <!--                <div class="oe_button_box" name="button_box">-->
+            <!--                    <button name="action_debug_fields" type="object"-->
+            <!--                            string="Debug Fields" class="btn-warning"/>-->
+            <!--                </div>-->
+            <!--            </xpath>-->
+
+            <xpath expr="//div[hasclass('oe_title')]" position="replace">
+                <div class="oe_title">
+                    <h1 class="d-flex flex-row">
+                        <field name="is_favorite" nolabel="1" widget="project_is_favorite" class="me-2"
+                               options="{'autosave': False}"/>
+                        <lable for="name">مشروع</lable>
+                        <field name="name" options="{'line_breaks': False}" widget="text" class="o_text_overflow"
+                               placeholder="e.g. Office Party"/>
+                    </h1>
+                </div>
+
+            </xpath>
+
+            <xpath expr="//group[.//field[@name='partner_id']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <!--            <xpath expr="//field[@name='partner_id']" position="after">-->
+            <!--                <field name="analytic_account_id"-->
+            <!--                       context="{'default_project_id': id}"-->
+            <!--                       options="{'no_create': True}"/>-->
+            <!--            </xpath>-->
+<!--            <xpath expr="//field[@name='partner_id']" position="after">-->
+<!--                <field name="auto_account_id"-->
+<!--                       context="{'default_project_id': id}"-->
+<!--                       options="{'no_create': True}"/>-->
+<!--            </xpath>-->
+<!--             <xpath expr="//sheet" position="before">-->
+<!--                <div class="oe_button_box" name="button_box">-->
+<!--                    <button name="action_create_analytic_account" type="object"-->
+<!--                            string="Create Analytic Account" class="btn-primary"-->
+<!--                            />-->
+<!--                </div>-->
+<!--            </xpath>-->
+            <xpath expr="//div[hasclass('oe_title')]" position="after">
+                <div style="display: none;">
+                    <field name="allow_timesheets"/>
+                    <field name="project_age_days"/>
+                    <field name="has_contract"/>
+                    <field name="has_warning"/>
+                    <field name="contract_status_color"/>
+                    <field name="days_remaining"/>
+                    <field name="is_overdue"/>
+                </div>
+                
+                <!-- إحصائيات المشروع - مصغرة -->
+                <div class="project_statistics_container" style="background: #f8f9fa; border-radius: 8px; padding: 12px; margin-bottom: 20px; border: 1px solid #dee2e6;">
+                    <div class="project_statistics_grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+                        
+                        <!-- عمر المشروع -->
+                        <div style="background: #fff; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid #667eea;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 4px;">📅 عمر المشروع</div>
+                            <div style="font-size: 22px; color: #2c3e50; font-weight: 600;">
+                                <field name="project_age_days" readonly="1"/>
+                            </div>
+                            <div style="font-size: 10px; color: #6c757d;">يوم</div>
+                        </div>
+                        
+                        <!-- الأيام المتبقية -->
+                        <div style="background: #fff; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid #11998e;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 4px;">⏱️ الأيام المتبقية</div>
+                            <div style="font-size: 22px; font-weight: 600;">
+                                <field name="days_remaining" readonly="1" 
+                                       decoration-danger="is_overdue == True"
+                                       decoration-warning="days_remaining &lt; 7 and days_remaining &gt; 0"
+                                       decoration-success="days_remaining &gt;= 7"/>
+                            </div>
+                            <div style="font-size: 10px; color: #6c757d;">يوم</div>
+                        </div>
+                        
+                        <!-- حالة العقد -->
+                        <div style="background: #fff; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid #38ef7d;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 4px;">📄 حالة العقد</div>
+                            <div style="font-size: 14px; font-weight: 600; margin: 5px 0;">
+                                <field name="project_status_message" readonly="1" 
+                                       decoration-success="has_contract == True"
+                                       decoration-danger="has_contract == False"/>
+                            </div>
+                        </div>
+                        
+                        <!-- التحذيرات -->
+                        <div style="background: #fff; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid #ff6b6b;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 4px;">⚠️ التحذيرات</div>
+                            <div style="font-size: 14px; font-weight: 600; margin: 5px 0;">
+                                <field name="has_warning" readonly="1" 
+                                       decoration-danger="has_warning == True"
+                                       decoration-success="has_warning == False"
+                                       widget="boolean"/>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <!-- معلومات المشروع -->
+                <div style="margin-bottom: 30px;">
+                    <div style="font-size: 18px; font-weight: 700; color: #2c3e50; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #667eea;">
+                        📋 معلومات المشروع
+                    </div>
+                    
+                    <!-- Grid Layout: 3 columns on desktop, responsive -->
+                    <div class="project_info_grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        
+                        <!-- العميل -->
+                        <div class="field_partner" style="background: #f8f9fa; border-radius: 10px; padding: 18px; border-left: 4px solid #667eea; transition: all 0.3s;">
+                            <div style="font-size: 13px; color: #6c757d; margin-bottom: 8px; font-weight: 600;">👤 العميل</div>
+                            <field name="partner_id" 
+                                   style="font-size: 15px; font-weight: 500; color: #2c3e50;"/>
+                        </div>
+                        
+                        <!-- مدير المشروع -->
+                        <div class="field_manager" style="background: #f8f9fa; border-radius: 10px; padding: 18px; border-left: 4px solid #764ba2; transition: all 0.3s;">
+                            <div style="font-size: 13px; color: #6c757d; margin-bottom: 8px; font-weight: 600;">👨‍💼 مدير المشروع</div>
+                            <field name="user_id"
+                                   style="font-size: 15px; font-weight: 500; color: #2c3e50;"/>
+                        </div>
+                        
+                        <!-- تاريخ البداية والنهاية -->
+                        <div class="field_dates" style="background: #f8f9fa; border-radius: 10px; padding: 18px; border-left: 4px solid #11998e; transition: all 0.3s;">
+                            <div style="font-size: 13px; color: #6c757d; margin-bottom: 8px; font-weight: 600;">📅 تاريخ بداية ونهاية المشروع</div>
+                            <field name="date_start" string="Planned Date" widget="daterange"
+                                   options="{&quot;end_date_field&quot;: &quot;date&quot;, &quot;always_range&quot;: &quot;1&quot;}"
+                                   style="font-size: 15px; font-weight: 500; color: #2c3e50;"
+                                   required="date_start or date"/>
+                        </div>
+                        
+                        <!-- رمز المشروع -->
+                        <div class="field_code" style="background: #f8f9fa; border-radius: 10px; padding: 18px; border-left: 4px solid #f45c43; transition: all 0.3s;">
+                            <div style="font-size: 13px; color: #6c757d; margin-bottom: 8px; font-weight: 600;">🔖 رمز المشروع</div>
+                            <field name="label_tasks"
+                                   style="font-size: 15px; font-weight: 500; color: #2c3e50;"
+                                   placeholder="#PRJ-2031"/>
+                        </div>
+                        
+                        <!-- Tags -->
+                        <div class="field_tags" style="background: #f8f9fa; border-radius: 10px; padding: 18px; border-left: 4px solid #38ef7d; transition: all 0.3s;">
+                            <div style="font-size: 13px; color: #6c757d; margin-bottom: 8px; font-weight: 600;">🏷️ الوسوم</div>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </div>
+                        
+                        <!-- CRM Lead -->
+                        <div class="field_crm" style="background: #f8f9fa; border-radius: 10px; padding: 18px; border-left: 4px solid #eb3349; transition: all 0.3s;">
+                            <div style="font-size: 13px; color: #6c757d; margin-bottom: 8px; font-weight: 600;">💼 الفرصة المرتبطة</div>
+                            <field name="crm_lead_ids" widget="many2many_tags" options="{'color_field': 'color'}" readonly="1"/>
+                        </div>
+                        
+                    </div>
+                    
+                    <field name="active" invisible="1"/>
+                </div>
+                
+                <!-- 💰 الإحصائيات المالية - مصغرة -->
+                <div style="margin-bottom: 20px;">
+                    <div style="font-size: 14px; font-weight: 600; color: #2c3e50; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid #dee2e6;">
+                        💰 الإحصائيات المالية
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                        
+                        <!-- Total Budget -->
+                        <div style="background: #fff; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid #667eea; border: 1px solid #e9ecef;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 6px;">💵 الميزانية الكلية</div>
+                            <field name="quick_total_budget" widget="monetary" readonly="1"
+                                   style="font-size: 16px; font-weight: 600; color: #2c3e50;"/>
+                        </div>
+                        
+                        <!-- Total Spent -->
+                        <div style="background: #fff; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid #f45c43; border: 1px solid #e9ecef;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 6px;">💸 المصروف الكلي</div>
+                            <field name="quick_total_spent" widget="monetary" readonly="1"
+                                   style="font-size: 16px; font-weight: 600; color: #2c3e50;"/>
+                        </div>
+                        
+                        <!-- Remaining Amount -->
+                        <div style="background: #fff; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid #11998e; border: 1px solid #e9ecef;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 6px;">💰 المتبقي</div>
+                            <field name="quick_remaining" widget="monetary" readonly="1"
+                                   style="font-size: 16px; font-weight: 600; color: #2c3e50;"/>
+                        </div>
+                        
+                        <!-- Utilization % -->
+                        <div style="background: #fff; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid #fa709a; border: 1px solid #e9ecef;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 6px;">📊 نسبة الاستخدام</div>
+                            <field name="quick_utilization" widget="monetary" readonly="1"
+                                   style="font-size: 16px; font-weight: 600; color: #2c3e50;"/>
+                        </div>
+                        
+                    </div>
+                </div>
+
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="المهام">
+                    <field name="task_ids">
+                        <!--                                <list editable="bottom" options="{'footer': 'total'}"></list>-->
+                    </field>
+                </page>
+
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="📅 الجدول الزمني (Timeline)">
+                    <field name="timeline_html" readonly="1" widget="html"/>
+                </page>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="الملفات">
+                    <group>
+                        <field name="exporter_document_line_ids">
+                            <list editable="bottom">
+                                <field name="name"/>
+                                <field name="description"/>
+                                <field name="attachment_ids" widget="many2many_binary" string="الملفات"/>
+                                <field name="required" string="مطلوب"/>
+                                <field name="passed" string="قرار المدير"/>
+                                <field name="user_id" readonly="1"/>
+
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <!--                <page string="المصاريف التشغيلية">-->
+                <!--                    <group>-->
+                <!--                        <field name="operational_expense_ids">-->
+                <!--                            <list editable="bottom" options="{'footer': 'total'}">-->
+                <!--                                <field name="category_id" string="الفئة"/>-->
+                <!--                                <field name="description" string="الوصف"/>-->
+                <!--                                <field name="date" string="التاريخ"/>-->
+                <!--                                <field name="amount" string="المبلغ"/>-->
+                <!--                            </list>-->
+                <!--                        </field>-->
+
+                <!--                    </group>-->
+                <!--                    <div style="text-align: end; font-weight: bold;">-->
+                <!--                        الإجمالي:-->
+                <!--                        <field name="operational_expense_total"/>-->
+                <!--                    </div>-->
+
+
+                <!--                </page>-->
+                <page string="المصاريف التشغيلية" style="direction: ltr;">
+                    <group>
+                        <field name="expense_ids" context="{'show_sum': True}">
+                            <!--                            editable="bottom"-->
+                            <list>
+                                <field name="name" string="الوصف"/>
+                                <field name="product_id" string="الفئة" domain="[('can_be_expensed', '=', True)]"/>
+                                <field name="total_amount" string="المبلغ" sum="Total"/>
+                                <field name="currency_id"/>
+                                <field name="date" string="تاريخ الصرف"/>
+                                <field name="analytic_distribution" string="المشروع"/>
+                                <field name="state" string="الحالة"/>
+                            </list>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="project_expense_total" readonly="1" widget="monetary"
+                               options="{'currency_field': 'company_currency'}"/>
+                    </group>
+                </page>
+            </xpath>
+            <!--            <xpath expr="//notebook" position="inside">-->
+            <!--                <page string="Project Expenses">-->
+            <!--                    <field name="expense_ids">-->
+            <!--                        <tree editable="bottom">-->
+            <!--                            <field name="name" string="Description"/>-->
+            <!--                            <field name="product_id" string="Category"/>-->
+            <!--                            <field name="total_amount" string="Total"/>-->
+            <!--                            <field name="date" string="Expense Date"/>-->
+            <!--                            <field name="analytic_distribution"/>-->
+            <!--                            <field name="state"/>-->
+            <!--                        </tree>-->
+            <!--                    </field>-->
+            <!--                </page>-->
+            <!--            </xpath>-->
+
+
+        </field>
+    </record>
+    <record id="action_view_expenses_by_project" model="ir.actions.act_window">
+        <field name="name">Project Expenses</field>
+        <field name="res_model">hr.expense</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('project_id', '=', active_id)]</field>
+        <field name="context">{'default_project_id': active_id}</field>
+    </record>
+    <record id="action_view_customer_invoices_by_project" model="ir.actions.act_window">
+        <field name="name">Customer Invoices</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('move_type','=','out_invoice'), ('project_id', '=', active_id)]</field>
+        <field name="context">{'default_project_id': active_id, 'default_move_type': 'out_invoice'}</field>
+    </record>
+
+    <record id="view_project_form_inherit_vendor_bills" model="ir.ui.view">
+        <field name="name">project.project.form.vendor.bills</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[contains(@class, 'oe_button_box')]" position="inside">
+                <button name="action_view_vendor_bills"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-file-text-o"
+
+                        style="padding: 6px 12px; margin: 2px;">
+                    <div class="o_stat_info">
+                        <field name="vendor_bill_count" widget="statinfo"/>
+                        <!--                         <span class="o_stat_text">فواتير الموردين</span>-->
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+
+
+                <button name="%(action_view_customer_invoices_by_project)d"
+                        type="action"
+                        class="oe_stat_button"
+                        icon="fa-file-text"
+                        style="padding: 6px 12px; margin: 2px;">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">فواتير العملاء</span>
+                        <span class="o_stat_text">
+                            <field name="customer_invoice_count"/>
+                        </span>
+                    </div>
+                </button>
+                <button name="%(action_view_expenses_by_project)d"
+                        type="action"
+                        class="oe_stat_button"
+                        icon="fa-money"
+                        style="padding: 6px 12px; margin: 2px;">
+
+                    <div class="o_stat_info">
+                        <div class="o_stat_text">المصروفات</div>
+
+                        <span class="o_stat_text">
+                            <field name="project_expense_total" widget="monetary"
+                                   options="{'currency_field': 'company_currency'}"/>
+                        </span>
+                    </div>
+
+                </button>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_view_purchase_orders"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-money"
+                        style="padding: 6px 12px; margin: 2px;">
+
+                    <div class="o_stat_info">
+                        <!--                        <div class="o_stat_text">طلبات الشراء</div>-->
+
+                        <span class="o_stat_text">
+                            <field name="purchase_order_count" widget="statinfo"/>
+                        </span>
+                    </div>
+
+                </button>
+                <!--                <button name="action_view_purchase_orders"-->
+                <!--                        type="object"-->
+                <!--                        class="oe_stat_button"-->
+                <!--                        icon="fa-shopping-cart"-->
+                <!--                        style="padding:6px 12px; margin:2px;">-->
+                <!--                    <div class="o_stat_info">-->
+                <!--                        <span class="o_stat_text">طلبات الشراء</span>-->
+                <!--                        <field name="purchase_order_count" widget="statinfo"/>-->
+                <!--                    </div>-->
+                <!--                </button>-->
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="project.open_view_project_all_group_stage" model="ir.actions.act_window">
+        <field name="view_mode">list,kanban,form,gantt,calendar,activity</field>
+    </record>
+
+
+
+</odoo>
+    
