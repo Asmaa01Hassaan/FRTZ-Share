@@ -1,0 +1,22 @@
+<odoo>
+  <record id="view_move_search_inherit_bill_approval" model="ir.ui.view">
+    <field name="name">account.move.search.bill.approval</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_account_move_filter"/>
+    <field name="arch" type="xml">
+      <xpath expr="//search" position="inside">
+        <separator/>
+        <filter name="bill_draft" string="Draft (Approval)"
+                domain="[('move_type','in',('in_invoice','in_refund')), ('approval_state','=','draft')]"/>
+        <filter name="bill_pm" string="PM Review"
+                domain="[('move_type','in',('in_invoice','in_refund')), ('approval_state','=','pm_review')]"/>
+        <filter name="bill_bd" string="BD Review"
+                domain="[('move_type','in',('in_invoice','in_refund')), ('approval_state','=','bd_review')]"/>
+        <filter name="bill_fin" string="Finance – Pending Payment"
+                domain="[('move_type','in',('in_invoice','in_refund')), ('approval_state','=','finance_pending')]"/>
+        <filter name="bill_paid" string="Paid (Approval)"
+                domain="[('move_type','in',('in_invoice','in_refund')), ('approval_state','=','paid')]"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>

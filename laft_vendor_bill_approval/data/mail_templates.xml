@@ -1,0 +1,48 @@
+<odoo>
+  <record id="mail_template_bill_to_pm" model="mail.template">
+    <field name="name">Bill → PM Review</field>
+    <field name="model_id" ref="account.model_account_move"/>
+    <field name="subject">Vendor Bill {{ object.name }} awaiting PM review</field>
+    <field name="email_from">${(user.email_formatted or '')}</field>
+    <field name="email_to">${','.join(env.ref('laft_vendor_bill_approval.group_bill_pm_reviewer').users.mapped('partner_id.email')) if env.ref('laft_vendor_bill_approval.group_bill_pm_reviewer').users else ''}</field>
+    <field name="body_html"><![CDATA[
+      <p>Dear PM,</p>
+      <p>Bill <b>${object.name}</b> is awaiting your review.</p>
+      <p>Status: PM Review</p>
+    ]]></field>
+  </record>
+
+  <record id="mail_template_bill_to_bd" model="mail.template">
+    <field name="name">Bill → BD Review</field>
+    <field name="model_id" ref="account.model_account_move"/>
+    <field name="subject">Vendor Bill {{ object.name }} awaiting BD review</field>
+    <field name="email_from">${(user.email_formatted or '')}</field>
+    <field name="email_to">${','.join(env.ref('laft_vendor_bill_approval.group_bill_bd_reviewer').users.mapped('partner_id.email')) if env.ref('laft_vendor_bill_approval.group_bill_bd_reviewer').users else ''}</field>
+    <field name="body_html"><![CDATA[
+      <p>Dear BD, Bill <b>${object.name}</b> is awaiting your review.</p>
+    ]]></field>
+  </record>
+
+  <record id="mail_template_bill_to_finance" model="mail.template">
+    <field name="name">Bill → Finance Pending</field>
+    <field name="model_id" ref="account.model_account_move"/>
+    <field name="subject">Vendor Bill {{ object.name }} pending Finance payment</field>
+    <field name="email_from">${(user.email_formatted or '')}</field>
+    <field name="email_to">${','.join(env.ref('laft_vendor_bill_approval.group_bill_finance').users.mapped('partner_id.email')) if env.ref('laft_vendor_bill_approval.group_bill_finance').users else ''}</field>
+    <field name="body_html"><![CDATA[
+      <p>Dear Finance, Bill <b>${object.name}</b> is pending payment.</p>
+    ]]></field>
+  </record>
+
+  <record id="mail_template_bill_rejected" model="mail.template">
+    <field name="name">Bill Rejected</field>
+    <field name="model_id" ref="account.model_account_move"/>
+    <field name="subject">Vendor Bill {{ object.name }} rejected</field>
+    <field name="email_from">${(user.email_formatted or '')}</field>
+    <field name="email_to">${object.create_uid.partner_id.email or ''}</field>
+    <field name="body_html"><![CDATA[
+      <p>Bill <b>${object.name}</b> was rejected.</p>
+      <p><b>Reason:</b> ${object.rejection_reason or '—'}</p>
+    ]]></field>
+  </record>
+</odoo>

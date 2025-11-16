@@ -1,0 +1,118 @@
+<odoo>
+    <data>
+
+        <record id="view_move_form_bill_approval" model="ir.ui.view">
+            <field name="name">account.move.form.bill.approval</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="priority">99</field>
+            <field name="arch" type="xml">
+
+                <!-- 1) Add a statusbar field to the header -->
+                <xpath expr="//form/header" position="inside">
+                    <field name="approval_state" widget="statusbar"
+                           options="{'clickable': false}"/>
+                </xpath>
+                <xpath expr="//form[@js_class='account_move_form']/header/button[@name='action_post' and contains(@invisible, &quot;move_type == 'entry'&quot;)]"
+                       position="replace">
+                    <button name="action_post" string="Confirm" class="oe_highlight" type="object"
+                            groups="laft_vendor_bill_approval.group_bill_finance" data-hotkey="q"
+                            context="{'validate_analytic': True, 'disable_abnormal_invoice_detection': False}"
+                            invisible="approval_state != 'finance_pending' or hide_post_button or move_type == 'entry' or display_inactive_currency_warning"/>
+
+                </xpath>
+
+
+                <xpath expr="//form[@js_class='account_move_form']/header/button[@name='button_cancel']"
+                       position="attributes">
+                    <attribute name="groups">laft_vendor_bill_approval.group_bill_finance</attribute>
+                    <attribute name="modifiers">
+                        {"invisible": [["approval_state","!=","finance_pending"]]}
+                    </attribute>
+                </xpath>
+<!--                <xpath expr="//form/header/button[@name='action_post']" position="before">-->
+                <xpath expr="//div[hasclass('oe_title')]" position="before">
+                    <h4 style="color:red;">"ملاحظة :
+                        في حالة احتياجك لتعديل الفاتورة او الاسعار استخدم الملاحظات للتواصل مع مدير المشروع وطلب
+                        التعديلات الى ان تتم الموافقه واراسلها لفريق البزنس
+                        او رفض الفاتوره و الغائها"
+                    </h4>
+                </xpath>
+
+
+
+                <!-- 2) Add our workflow buttons AFTER the Confirm button -->
+                <xpath expr="//form/header/button[@name='action_post']" position="after">
+
+                    <!-- Send to PM Review (only for vendor bills, in draft) -->
+                    <button name="action_send_to_pm_review" type="object" string="Send to PM Review"
+                            class="btn-secondary" invisible="approval_state != 'draft'"
+                            modifiers="{'invisible': ['|', ['move_type','not in',('in_invoice','in_refund')], ['state','!=','draft']]}"/>
+
+                    <!-- PM -->
+                    <button name="action_pm_approve" type="object" string="PM Approve"
+                            class="oe_highlight" groups="laft_vendor_bill_approval.group_bill_pm"
+                            modifiers="{'invisible': [['approval_state','!=','pm_review']]}"
+                            invisible="approval_state != 'pm_review'"/>
+                    <button name="action_pm_reject" type="object" string="PM Reject"
+                            invisible="approval_state != 'pm_review'"
+                            class="btn-secondary" groups="laft_vendor_bill_approval.group_bill_pm"
+                            context="{'reject_reason': 'Rejected by PM'}"
+                            modifiers="{'invisible': [['approval_state','!=','pm_review']]}"/>
+
+                    <!-- BD -->
+                    <button name="action_bd_approve" type="object" string="BD Approve"
+                            invisible="approval_state != 'bd_review'"
+                            class="oe_highlight" groups="laft_vendor_bill_approval.group_bill_bd"
+                            modifiers="{'invisible': [['approval_state','!=','bd_review']]}"/>
+                    <button name="action_bd_reject" type="object" string="BD Reject"
+                            invisible="approval_state != 'bd_review'"
+                            class="btn-secondary" groups="laft_vendor_bill_approval.group_bill_bd"
+                            context="{'reject_reason': 'Rejected by BD'}"
+                            modifiers="{'invisible': [['approval_state','!=','bd_review']]}"/>
+
+                    <!-- Finance -->
+                    <button name="action_finance_approve" type="object" string="Finance Approve"
+                            invisible="approval_state != 'finance_pending'"
+                            class="oe_highlight" groups="laft_vendor_bill_approval.group_bill_finance"
+                            modifiers="{'invisible': [['approval_state','!=','finance_pending']]}"/>
+                    <button name="action_finance_reject" type="object" string="Finance Reject"
+                            invisible="approval_state != 'finance_pending'"
+                            class="btn-secondary" groups="laft_vendor_bill_approval.group_bill_finance"
+                            context="{'reject_reason': 'Rejected by Finance'}"
+                            modifiers="{'invisible': [['approval_state','!=','finance_pending']]}"/>
+
+                </xpath>
+
+                <!-- 3) A simple Approval tab -->
+                <xpath expr="//sheet/notebook" position="inside">
+                    <page string="Approval">
+                        <group>
+                            <field name="approval_state" readonly="1"/>
+                            <field name="rejection_reason"
+                                   placeholder="Enter rejection reason when rejecting"
+                                   modifiers="{'readonly': [['approval_state','!=','rejected']]}"/>
+
+<!--                            groups="laft_vendor_bill_approval.group_bill_pm"-->
+<!--                            modifiers="{'invisible': [['approval_state','!=','pm_review']]}"-->
+<!--                            invisible="approval_state != 'pm_review'"-->
+
+                        </group>
+
+                    </page>
+                    <page string="Project Analysis" groups="laft_vendor_bill_approval.group_bill_pm" invisible="approval_state != 'pm_review'">
+                        <group >
+                            <field name="project_id"/>
+                            <field name="quick_total_budget"/>
+                            <field name="quick_total_spent"/>
+                            <field name="quick_remaining"/>
+                        </group>
+
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

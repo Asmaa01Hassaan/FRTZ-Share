@@ -1,0 +1,56 @@
+<!-- laft_purchase_ceo_approval/views/purchase_order_views.xml -->
+<odoo>
+    <data>
+
+        <record id="purchase_order_form_ceo" model="ir.ui.view">
+            <field name="name">purchase.order.form.ceo.approval</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="priority">99</field>
+            <field name="arch" type="xml">
+                <!-- Show ONLY our submit button in draft1 -->
+                <xpath expr="//form/header" position="inside">
+                    <button name="action_submit_to_ceo"
+                            type="object"
+                            string="Submit to CEO"
+                            class="btn-secondary" invisible="state != 'draft1'"
+                            modifiers="{'invisible': [['state','!=','draft1']]} "/>
+                </xpath>
+
+                <!-- Hide stock header actions while in draft1 or ceo -->
+                <xpath expr="//form/header/button" position="attributes">
+                    <attribute name="modifiers">
+                        {"invisible": [["state","in",["draft1","ceo"]]]}
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//form/header" position="inside">
+                    <button name="action_ceo_approve"
+                            type="object"
+                            string="CEO Approve"
+                            class="oe_highlight"
+                            groups="laft_purchase_ceo_approval.group_ceo_approver"
+                            modifiers="{'invisible': [['state','!=','ceo']]}" invisible="state != 'ceo'"/>
+
+                    <button name="action_ceo_reject"
+                            type="object"
+                            string="CEO Reject"
+                            class="btn-secondary"
+                            groups="laft_purchase_ceo_approval.group_ceo_approver"
+                            modifiers="{'invisible': [['state','!=','ceo']]}" invisible="state != 'ceo'"/>
+                </xpath>
+<!--                <xpath expr="//group//field[@name='project_id']" position="after">-->
+<!--                    <field name="quick_total_budget"/>-->
+<!--                    <field name="quick_total_spent"/>-->
+<!--                    <field name="quick_remaining"/>-->
+<!--&lt;!&ndash;                    <field name="quick_utilization"/>&ndash;&gt;-->
+
+<!--                </xpath>-->
+
+
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

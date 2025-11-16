@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+
+    <!-- Our own category for these groups -->
+    <record id="module_category_bills_approval" model="ir.module.category">
+      <field name="name">Bills Approval</field>
+      <field name="description">Access rights for the Bills multi-step approval</field>
+      <field name="sequence">60</field>
+    </record>
+
+    <!-- Groups -->
+    <record id="group_bill_pm" model="res.groups">
+      <field name="name">Bills: Projects Manager</field>
+      <field name="category_id" ref="laft_vendor_bill_approval.module_category_bills_approval"/>
+    </record>
+
+    <record id="group_bill_bd" model="res.groups">
+      <field name="name">Bills: Business Development</field>
+      <field name="category_id" ref="laft_vendor_bill_approval.module_category_bills_approval"/>
+    </record>
+
+    <record id="group_bill_finance" model="res.groups">
+      <field name="name">Bills: Finance Review</field>
+      <field name="category_id" ref="laft_vendor_bill_approval.module_category_bills_approval"/>
+    </record>
+
+  </data>
+</odoo>
