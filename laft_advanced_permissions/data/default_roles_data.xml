@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Role 1: Project User -->
+        <record id="role_project_user" model="laft.permission.role">
+            <field name="name">Project User</field>
+            <field name="sequence">10</field>
+            <field name="icon">fa-user</field>
+            <field name="color">1</field>
+            <field name="description">Can view and work on assigned projects only. Cannot create projects or access financial features.</field>
+            <field name="project_access">user</field>
+            <field name="project_see_all" eval="False"/>
+            <field name="can_create_projects" eval="False"/>
+            <field name="can_manage_tasks" eval="True"/>
+            <field name="can_view_bills" eval="False"/>
+            <field name="can_create_bills" eval="False"/>
+            <field name="can_approve_bills" eval="False"/>
+            <field name="bd_access">none</field>
+            <field name="finance_access">none</field>
+            <field name="dashboard_my" eval="True"/>
+            <field name="dashboard_projects" eval="False"/>
+        </record>
+        
+        <!-- Role 2: Project Manager -->
+        <record id="role_project_manager" model="laft.permission.role">
+            <field name="name">Project Manager</field>
+            <field name="sequence">20</field>
+            <field name="icon">fa-user-tie</field>
+            <field name="color">3</field>
+            <field name="description">Full management of own projects. Can create projects, manage all tasks, but no financial access.</field>
+            <field name="project_access">manager</field>
+            <field name="project_see_all" eval="False"/>
+            <field name="can_create_projects" eval="True"/>
+            <field name="can_manage_tasks" eval="True"/>
+            <field name="can_view_bills" eval="False"/>
+            <field name="can_create_bills" eval="False"/>
+            <field name="can_approve_bills" eval="False"/>
+            <field name="bd_access">none</field>
+            <field name="finance_access">none</field>
+            <field name="dashboard_my" eval="True"/>
+            <field name="dashboard_projects" eval="True"/>
+        </record>
+        
+        <!-- Role 3: Project Manager + Finance -->
+        <record id="role_project_manager_finance" model="laft.permission.role">
+            <field name="name">Project Manager + Finance</field>
+            <field name="sequence">30</field>
+            <field name="icon">fa-calculator</field>
+            <field name="color">5</field>
+            <field name="description">Project management with financial capabilities. Can create and view vendor bills and purchase orders for their projects.</field>
+            <field name="project_access">finance</field>
+            <field name="project_see_all" eval="False"/>
+            <field name="can_create_projects" eval="True"/>
+            <field name="can_manage_tasks" eval="True"/>
+            <field name="can_view_bills" eval="True"/>
+            <field name="can_create_bills" eval="True"/>
+            <field name="can_approve_bills" eval="False"/>
+            <field name="bd_access">none</field>
+            <field name="finance_access">project_only</field>
+            <field name="dashboard_my" eval="True"/>
+            <field name="dashboard_projects" eval="True"/>
+        </record>
+        
+        <!-- Role 4: General Project Manager -->
+        <record id="role_general_project_manager" model="laft.permission.role">
+            <field name="name">General Project Manager</field>
+            <field name="sequence">40</field>
+            <field name="icon">fa-crown</field>
+            <field name="color">9</field>
+            <field name="description">Can see and manage ALL projects in the system. Full project and finance access. Can approve bills.</field>
+            <field name="project_access">general</field>
+            <field name="project_see_all" eval="True"/>
+            <field name="can_create_projects" eval="True"/>
+            <field name="can_manage_tasks" eval="True"/>
+            <field name="can_view_bills" eval="True"/>
+            <field name="can_create_bills" eval="True"/>
+            <field name="can_approve_bills" eval="True"/>
+            <field name="bd_access">none</field>
+            <field name="finance_access">project_only</field>
+            <field name="dashboard_my" eval="True"/>
+            <field name="dashboard_projects" eval="True"/>
+            <field name="dashboard_executive" eval="True"/>
+        </record>
+        
+        <!-- Role 5: BD User -->
+        <record id="role_bd_user" model="laft.permission.role">
+            <field name="name">BD User</field>
+            <field name="sequence">50</field>
+            <field name="icon">fa-briefcase</field>
+            <field name="color">2</field>
+            <field name="description">Business Development user. Can manage own opportunities and quotations.</field>
+            <field name="project_access">none</field>
+            <field name="bd_access">user</field>
+            <field name="finance_access">none</field>
+            <field name="dashboard_my" eval="True"/>
+            <field name="dashboard_bd" eval="False"/>
+        </record>
+        
+        <!-- Role 6: BD Manager -->
+        <record id="role_bd_manager" model="laft.permission.role">
+            <field name="name">BD Manager</field>
+            <field name="sequence">60</field>
+            <field name="icon">fa-user-tie</field>
+            <field name="color">4</field>
+            <field name="description">BD Team Manager. Can view and manage team opportunities.</field>
+            <field name="project_access">none</field>
+            <field name="bd_access">manager</field>
+            <field name="finance_access">none</field>
+            <field name="dashboard_my" eval="True"/>
+            <field name="dashboard_bd" eval="True"/>
+        </record>
+        
+        <!-- Role 7: BD Executive -->
+        <record id="role_bd_executive" model="laft.permission.role">
+            <field name="name">BD Executive</field>
+            <field name="sequence">70</field>
+            <field name="icon">fa-crown</field>
+            <field name="color">6</field>
+            <field name="description">BD Executive. Can view all opportunities and access executive dashboard.</field>
+            <field name="project_access">none</field>
+            <field name="bd_access">executive</field>
+            <field name="finance_access">none</field>
+            <field name="dashboard_my" eval="True"/>
+            <field name="dashboard_bd" eval="True"/>
+            <field name="dashboard_executive" eval="True"/>
+        </record>
+        
+        <!-- Role 8: Combined - Project + BD Manager -->
+        <record id="role_combined_project_bd" model="laft.permission.role">
+            <field name="name">Project &amp; BD Manager</field>
+            <field name="sequence">80</field>
+            <field name="icon">fa-tasks</field>
+            <field name="color">7</field>
+            <field name="description">Combined role for managers handling both projects and business development.</field>
+            <field name="project_access">finance</field>
+            <field name="project_see_all" eval="False"/>
+            <field name="can_create_projects" eval="True"/>
+            <field name="can_manage_tasks" eval="True"/>
+            <field name="can_view_bills" eval="True"/>
+            <field name="can_create_bills" eval="True"/>
+            <field name="can_approve_bills" eval="False"/>
+            <field name="bd_access">manager</field>
+            <field name="finance_access">project_only</field>
+            <field name="dashboard_my" eval="True"/>
+            <field name="dashboard_projects" eval="True"/>
+            <field name="dashboard_bd" eval="True"/>
+        </record>
+        
+    </data>
+</odoo>
+

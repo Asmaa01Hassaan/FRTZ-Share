@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- ======================== -->
+        <!-- CRM Categories -->
+        <!-- ======================== -->
+        <record id="category_opportunity" model="document.category">
+            <field name="name">ملفات الفرصة</field>
+            <field name="code">crm_opportunity</field>
+            <field name="sequence">10</field>
+            <field name="icon">fa-briefcase</field>
+            <field name="color">3</field>
+            <field name="category_type">crm</field>
+            <field name="is_system">False</field>
+        </record>
+
+        <record id="category_technical" model="document.category">
+            <field name="name">ملفات فنية</field>
+            <field name="code">crm_technical</field>
+            <field name="sequence">20</field>
+            <field name="icon">fa-cogs</field>
+            <field name="color">1</field>
+            <field name="category_type">crm</field>
+            <field name="is_system">False</field>
+        </record>
+
+        <record id="category_financial" model="document.category">
+            <field name="name">ملفات مالية</field>
+            <field name="code">crm_financial</field>
+            <field name="sequence">30</field>
+            <field name="icon">fa-calculator</field>
+            <field name="color">10</field>
+            <field name="category_type">crm</field>
+            <field name="is_system">False</field>
+        </record>
+
+        <record id="category_contract" model="document.category">
+            <field name="name">ملفات عقود</field>
+            <field name="code">crm_contract</field>
+            <field name="sequence">40</field>
+            <field name="icon">fa-file-text</field>
+            <field name="color">7</field>
+            <field name="category_type">crm</field>
+            <field name="is_system">False</field>
+        </record>
+
+        <record id="category_purchase" model="document.category">
+            <field name="name">ملفات أوامر شراء</field>
+            <field name="code">crm_purchase</field>
+            <field name="sequence">50</field>
+            <field name="icon">fa-shopping-cart</field>
+            <field name="color">8</field>
+            <field name="category_type">crm</field>
+            <field name="is_system">False</field>
+        </record>
+
+        <!-- ======================== -->
+        <!-- Project Categories -->
+        <!-- ======================== -->
+        <record id="category_project_completion" model="document.category">
+            <field name="name">شهادات الإنجاز</field>
+            <field name="code">project_completion</field>
+            <field name="sequence">10</field>
+            <field name="icon">fa-certificate</field>
+            <field name="color">5</field>
+            <field name="category_type">project</field>
+            <field name="is_system">False</field>
+        </record>
+
+        <record id="category_project_approvals" model="document.category">
+            <field name="name">توثيق موافقات</field>
+            <field name="code">project_approvals</field>
+            <field name="sequence">20</field>
+            <field name="icon">fa-check-square</field>
+            <field name="color">9</field>
+            <field name="category_type">project</field>
+            <field name="is_system">False</field>
+        </record>
+
+        <record id="category_project_technical" model="document.category">
+            <field name="name">مستندات فنية</field>
+            <field name="code">project_technical_docs</field>
+            <field name="sequence">30</field>
+            <field name="icon">fa-wrench</field>
+            <field name="color">1</field>
+            <field name="category_type">project</field>
+            <field name="is_system">False</field>
+        </record>
+
+        <record id="category_project_reports" model="document.category">
+            <field name="name">تقارير المشروع</field>
+            <field name="code">project_reports</field>
+            <field name="sequence">40</field>
+            <field name="icon">fa-file-pdf-o</field>
+            <field name="color">2</field>
+            <field name="category_type">project</field>
+            <field name="is_system">False</field>
+        </record>
+
+        <record id="category_project_contracts" model="document.category">
+            <field name="name">عقود المشروع</field>
+            <field name="code">project_contracts</field>
+            <field name="sequence">50</field>
+            <field name="icon">fa-file-contract</field>
+            <field name="color">7</field>
+            <field name="category_type">project</field>
+            <field name="is_system">False</field>
+        </record>
+
+        <record id="category_project_invoices" model="document.category">
+            <field name="name">فواتير ومستخلصات</field>
+            <field name="code">project_invoices</field>
+            <field name="sequence">60</field>
+            <field name="icon">fa-money</field>
+            <field name="color">10</field>
+            <field name="category_type">project</field>
+            <field name="is_system">False</field>
+        </record>
+
+        <!-- ======================== -->
+        <!-- General Category (System - Cannot be deleted) -->
+        <!-- ======================== -->
+        <record id="category_general" model="document.category">
+            <field name="name">ملفات عامة</field>
+            <field name="code">general_files</field>
+            <field name="sequence">100</field>
+            <field name="icon">fa-folder-open</field>
+            <field name="color">0</field>
+            <field name="category_type">general</field>
+            <field name="is_system">True</field>
+            <field name="description">تصنيف افتراضي للملفات غير المصنفة. لا يمكن حذف هذا التصنيف.</field>
+        </record>
+
+    </data>
+</odoo>

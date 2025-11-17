@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Access Rights for laft.permission.role -->
+        
+        <!-- All users can read role templates -->
+        <record id="access_laft_permission_role_user" model="ir.model.access">
+            <field name="name">laft.permission.role.user</field>
+            <field name="model_id" ref="model_laft_permission_role"/>
+            <field name="group_id" ref="base.group_user"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- Permission managers can manage role templates -->
+        <record id="access_laft_permission_role_manager" model="ir.model.access">
+            <field name="name">laft.permission.role.manager</field>
+            <field name="model_id" ref="model_laft_permission_role"/>
+            <field name="group_id" ref="group_permission_manager"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+    </data>
+</odoo>
+

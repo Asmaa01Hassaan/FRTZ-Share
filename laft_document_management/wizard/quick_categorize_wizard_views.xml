@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Wizard Form View -->
+    <record id="view_quick_categorize_wizard_form" model="ir.ui.view">
+        <field name="name">quick.categorize.wizard.form</field>
+        <field name="model">quick.categorize.wizard</field>
+        <field name="arch" type="xml">
+            <form string="تصنيف الملفات">
+                <sheet>
+                    <group>
+                        <field name="lead_id" readonly="1" invisible="not lead_id"/>
+                        <field name="project_id" readonly="1" invisible="not project_id"/>
+                        <field name="record_type" invisible="1"/>
+                        <field name="attachment_count" invisible="1"/>
+                    </group>
+                    <group string="الملفات - اضغط على أي سطر لتغيير التصنيف">
+                        <field name="line_ids" nolabel="1" mode="tree,form">
+                            <list decoration-success="new_category_id != current_category_id" decoration-muted="new_category_id == current_category_id">
+                                <field name="wizard_id" column_invisible="1"/>
+                                <field name="record_type" column_invisible="1"/>
+                                <field name="attachment_name" string="اسم الملف"/>
+                                <field name="current_category_id" string="التصنيف الحالي" optional="show"/>
+                                <field name="new_category_id" string="التصنيف الجديد ✓"/>
+                            </list>
+                            <form>
+                                <group>
+                                    <field name="wizard_id" invisible="1"/>
+                                    <field name="record_type" invisible="1"/>
+                                    <field name="attachment_id" invisible="1"/>
+                                    <field name="attachment_name" readonly="1"/>
+                                    <field name="current_category_id" readonly="1"/>
+                                    <field name="new_category_id" 
+                                           domain="[('category_type', 'in', ['general', record_type])]"
+                                           options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </form>
+                        </field>
+                    </group>
+                    <div class="alert alert-info mt-3" role="alert">
+                        <i class="fa fa-info-circle"/> 
+                        <strong>نصيحة:</strong> 
+                        اختر التصنيف المناسب لكل ملف، ثم اضغط "تطبيق"
+                    </div>
+                </sheet>
+                <footer>
+                    <button name="action_apply_categories" 
+                            string="تطبيق" 
+                            type="object" 
+                            class="btn-primary"/>
+                    <button string="إلغاء" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Wizard Action -->
+    <record id="action_quick_categorize_wizard" model="ir.actions.act_window">
+        <field name="name">تصنيف الملفات</field>
+        <field name="res_model">quick.categorize.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_view_types">form</field>
+    </record>
+
+</odoo>
+

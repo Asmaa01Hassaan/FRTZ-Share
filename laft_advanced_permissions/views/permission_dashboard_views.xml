@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Permission Dashboard View - Simplified -->
+    <!-- Dashboard will be enhanced in future version -->
+    
+    <!-- Action: View Administrators -->
+    <record id="action_view_administrators" model="ir.actions.act_window">
+        <field name="name">👑 System Administrators</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('laft_is_admin', '=', True)]</field>
+        <field name="context">{'search_default_active': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No administrators found
+            </p>
+            <p>
+                System administrators have full access to all features and settings.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Action: View Project Managers -->
+    <record id="action_view_project_managers" model="ir.actions.act_window">
+        <field name="name">🏗️ Project Managers</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('laft_project_access', 'in', ['manager', 'finance', 'general'])]</field>
+        <field name="context">{'search_default_active': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No project managers found
+            </p>
+            <p>
+                Project managers can manage their assigned projects.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Action: View BD Users -->
+    <record id="action_view_bd_users" model="ir.actions.act_window">
+        <field name="name">💼 Business Development Team</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('laft_bd_access', '!=', 'none')]</field>
+        <field name="context">{'search_default_active': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No BD users found
+            </p>
+            <p>
+                Business Development users can manage CRM opportunities.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Enhanced Users List View with Permission Info -->
+    <record id="view_users_list_permissions" model="ir.ui.view">
+        <field name="name">res.users.list.permissions</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='login']" position="after">
+                <field name="laft_project_access" optional="show"/>
+                <field name="laft_bd_access" optional="hide"/>
+                <field name="laft_is_admin" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Search View for Permission Filtering -->
+    <record id="view_users_search_permissions" model="ir.ui.view">
+        <field name="name">res.users.search.permissions</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter string="Administrators" name="filter_admins" 
+                        domain="[('laft_is_admin', '=', True)]"/>
+                <filter string="Project Managers" name="filter_project_managers" 
+                        domain="[('laft_project_access', 'in', ['manager', 'finance', 'general'])]"/>
+                <filter string="BD Team" name="filter_bd_team" 
+                        domain="[('laft_bd_access', '!=', 'none')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Project Access Level" name="group_project_access" 
+                            context="{'group_by': 'laft_project_access'}"/>
+                    <filter string="BD Access Level" name="group_bd_access" 
+                            context="{'group_by': 'laft_bd_access'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+    
+</odoo>
+

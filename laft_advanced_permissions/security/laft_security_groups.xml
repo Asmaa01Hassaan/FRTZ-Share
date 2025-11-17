@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Custom Category for Laft Permissions -->
+        <record id="module_category_laft_permissions" model="ir.module.category">
+            <field name="name">Laft Permissions</field>
+            <field name="description">Advanced permission system for Laft Company</field>
+            <field name="sequence">2</field>
+        </record>
+
+        <!-- ========================================== -->
+        <!-- PROJECT PERMISSIONS                         -->
+        <!-- ========================================== -->
+        
+        <!-- Project User - Own Projects Only -->
+        <record id="group_project_user_own" model="res.groups">
+            <field name="name">Project: User - Own Projects</field>
+            <field name="category_id" ref="module_category_laft_permissions"/>
+            <field name="comment">User can view and work on their own projects only</field>
+        </record>
+
+        <!-- Project Manager - Own Projects Only -->
+        <record id="group_project_manager_own" model="res.groups">
+            <field name="name">Project: Manager - Own Projects</field>
+            <field name="category_id" ref="module_category_laft_permissions"/>
+            <field name="comment">Manager with full access to their own projects only</field>
+        </record>
+
+        <!-- Project Manager + Finance -->
+        <record id="group_project_manager_finance" model="res.groups">
+            <field name="name">Project: Manager + Finance</field>
+            <field name="category_id" ref="module_category_laft_permissions"/>
+            <field name="comment">Project manager who can also create/view bills and POs for their projects</field>
+        </record>
+
+        <!-- Project General Manager - See All Projects -->
+        <record id="group_project_general_manager" model="res.groups">
+            <field name="name">Project: General Manager - See All</field>
+            <field name="category_id" ref="module_category_laft_permissions"/>
+            <field name="comment">Can view and manage ALL projects in the system</field>
+        </record>
+
+        <!-- ========================================== -->
+        <!-- BUSINESS DEVELOPMENT PERMISSIONS            -->
+        <!-- ========================================== -->
+        
+        <!-- BD User - Own Opportunities -->
+        <record id="group_bd_user_own" model="res.groups">
+            <field name="name">BD: User - Own Opportunities</field>
+            <field name="category_id" ref="module_category_laft_permissions"/>
+            <field name="comment">Can view and manage own opportunities only</field>
+        </record>
+
+        <!-- BD Manager - Team -->
+        <record id="group_bd_manager_team" model="res.groups">
+            <field name="name">BD: Manager - Team</field>
+            <field name="category_id" ref="module_category_laft_permissions"/>
+            <field name="comment">Can view and manage team opportunities</field>
+        </record>
+
+        <!-- BD Executive - All -->
+        <record id="group_bd_executive" model="res.groups">
+            <field name="name">BD: Executive - All Opportunities</field>
+            <field name="category_id" ref="module_category_laft_permissions"/>
+            <field name="comment">Can view all opportunities in the system</field>
+        </record>
+
+        <!-- ========================================== -->
+        <!-- PERMISSION MANAGEMENT                       -->
+        <!-- ========================================== -->
+        
+        <!-- Permission Manager - Can manage user permissions -->
+        <record id="group_permission_manager" model="res.groups">
+            <field name="name">Laft: Permission Manager</field>
+            <field name="category_id" ref="module_category_laft_permissions"/>
+            <field name="comment">Can manage user permissions through simplified interface</field>
+        </record>
+
+    </data>
+</odoo>
+

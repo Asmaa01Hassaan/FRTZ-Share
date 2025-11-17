@@ -1,0 +1,137 @@
+/* Laft Advanced Permissions - Custom Styles */
+
+/* Permission Cards */
+.o_permission_card {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+.o_permission_card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Permission Tab Styling */
+.o_form_view .o_notebook .tab-pane[name="laft_permissions"] {
+    padding: 20px;
+}
+
+.o_form_view .o_notebook .tab-pane[name="laft_permissions"] .o_group {
+    margin-bottom: 20px;
+}
+
+/* Radio buttons for access levels */
+.o_form_view .o_field_radio {
+    padding: 10px 0;
+}
+
+.o_form_view .o_field_radio .o_radio_item {
+    padding: 8px 0;
+}
+
+/* Boolean toggle styling */
+.o_form_view .o_field_boolean_toggle {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Alert boxes in permission tab */
+.o_form_view .alert {
+    margin: 10px 0;
+    border-radius: 6px;
+}
+
+.o_form_view .alert-info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
+
+.o_form_view .alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    color: #856404;
+}
+
+/* Section headers */
+.o_form_view .o_group > tbody > tr > td > .o_horizontal_separator {
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+    margin: 20px 0 10px;
+}
+
+/* Technical groups field */
+.o_form_view .o_field_text[name="laft_applied_groups"] {
+    background-color: #f8f9fa;
+    font-family: monospace;
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+    white-space: pre-wrap;
+}
+
+/* Role template kanban */
+.o_kanban_view.o_kanban_mobile .oe_kanban_color_1 {
+    border-left: 3px solid #17a2b8;
+}
+
+.o_kanban_view.o_kanban_mobile .oe_kanban_color_2 {
+    border-left: 3px solid #28a745;
+}
+
+.o_kanban_view.o_kanban_mobile .oe_kanban_color_3 {
+    border-left: 3px solid #007bff;
+}
+
+.o_kanban_view.o_kanban_mobile .oe_kanban_color_4 {
+    border-left: 3px solid #ffc107;
+}
+
+.o_kanban_view.o_kanban_mobile .oe_kanban_color_5 {
+    border-left: 3px solid #6610f2;
+}
+
+.o_kanban_view.o_kanban_mobile .oe_kanban_color_6 {
+    border-left: 3px solid #e83e8c;
+}
+
+.o_kanban_view.o_kanban_mobile .oe_kanban_color_7 {
+    border-left: 3px solid #fd7e14;
+}
+
+.o_kanban_view.o_kanban_mobile .oe_kanban_color_9 {
+    border-left: 3px solid #dc3545;
+}
+
+/* Permission badge styles */
+.badge.text-bg-primary {
+    background-color: #007bff !important;
+}
+
+.badge.text-bg-info {
+    background-color: #17a2b8 !important;
+}
+
+.badge.text-bg-success {
+    background-color: #28a745 !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .o_permission_card {
+        padding: 10px;
+        margin: 5px 0;
+    }
+    
+    .o_form_view .o_notebook .tab-pane[name="laft_permissions"] {
+        padding: 10px;
+    }
+}
+

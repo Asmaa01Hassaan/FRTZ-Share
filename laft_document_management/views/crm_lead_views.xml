@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Add Documents Tab to CRM Lead Form -->
+    <record id="view_crm_lead_form_documents" model="ir.ui.view">
+        <field name="name">crm.lead.form.documents</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Add button box -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_all_documents" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-folder-open">
+                    <field name="total_document_count" widget="statinfo" string="ملفات"/>
+                </button>
+            </xpath>
+            
+            <!-- Add Documents Tab after last tab -->
+            <xpath expr="//notebook" position="inside">
+                <page string="الملفات" name="documents">
+                    <div class="row mt16">
+                        
+                        <!-- ملفات الفرصة -->
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-2">
+                                    <i class="fa fa-briefcase fa-2x text-primary mb-1"/>
+                                    <h6 class="card-title small mb-1">ملفات الفرصة</h6>
+                                    <h4 class="text-primary mb-2">
+                                        <field name="opportunity_files_count"/>
+                                    </h4>
+                                    <div class="btn-group d-flex gap-1">
+                                        <button name="action_upload_file" 
+                                                type="object" 
+                                                context="{'default_category': 'opportunity'}"
+                                                class="btn btn-sm btn-primary flex-fill">
+                                            <i class="fa fa-upload"/> إرفاق
+                                        </button>
+                                        <button name="action_view_opportunity_files" 
+                                                type="object" 
+                                                class="btn btn-sm btn-outline-primary flex-fill">
+                                            <i class="fa fa-eye"/> عرض
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- ملفات فنية -->
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-2">
+                                    <i class="fa fa-cogs fa-2x text-success mb-1"/>
+                                    <h6 class="card-title small mb-1">ملفات فنية</h6>
+                                    <h4 class="text-success mb-2">
+                                        <field name="technical_files_count"/>
+                                    </h4>
+                                    <div class="btn-group d-flex gap-1">
+                                        <button name="action_upload_file" 
+                                                type="object" 
+                                                context="{'default_category': 'technical'}"
+                                                class="btn btn-sm btn-success flex-fill">
+                                            <i class="fa fa-upload"/> إرفاق
+                                        </button>
+                                        <button name="action_view_technical_files" 
+                                                type="object" 
+                                                class="btn btn-sm btn-outline-success flex-fill">
+                                            <i class="fa fa-eye"/> عرض
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- ملفات مالية -->
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-2">
+                                    <i class="fa fa-calculator fa-2x text-warning mb-1"/>
+                                    <h6 class="card-title small mb-1">ملفات مالية</h6>
+                                    <h4 class="text-warning mb-2">
+                                        <field name="financial_files_count"/>
+                                    </h4>
+                                    <div class="btn-group d-flex gap-1">
+                                        <button name="action_upload_file" 
+                                                type="object" 
+                                                context="{'default_category': 'financial'}"
+                                                class="btn btn-sm btn-warning flex-fill">
+                                            <i class="fa fa-upload"/> إرفاق
+                                        </button>
+                                        <button name="action_view_financial_files" 
+                                                type="object" 
+                                                class="btn btn-sm btn-outline-warning flex-fill">
+                                            <i class="fa fa-eye"/> عرض
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- ملفات عقود -->
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-2">
+                                    <i class="fa fa-file-text fa-2x text-info mb-1"/>
+                                    <h6 class="card-title small mb-1">ملفات عقود</h6>
+                                    <h4 class="text-info mb-2">
+                                        <field name="contract_files_count"/>
+                                    </h4>
+                                    <div class="btn-group d-flex gap-1">
+                                        <button name="action_upload_file" 
+                                                type="object" 
+                                                context="{'default_category': 'contract'}"
+                                                class="btn btn-sm btn-info flex-fill">
+                                            <i class="fa fa-upload"/> إرفاق
+                                        </button>
+                                        <button name="action_view_contract_files" 
+                                                type="object" 
+                                                class="btn btn-sm btn-outline-info flex-fill">
+                                            <i class="fa fa-eye"/> عرض
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- ملفات أوامر شراء -->
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-2">
+                                    <i class="fa fa-shopping-cart fa-2x text-danger mb-1"/>
+                                    <h6 class="card-title small mb-1">ملفات أوامر شراء</h6>
+                                    <h4 class="text-danger mb-2">
+                                        <field name="purchase_files_count"/>
+                                    </h4>
+                                    <div class="btn-group d-flex gap-1">
+                                        <button name="action_upload_file" 
+                                                type="object" 
+                                                context="{'default_category': 'purchase'}"
+                                                class="btn btn-sm btn-danger flex-fill">
+                                            <i class="fa fa-upload"/> إرفاق
+                                        </button>
+                                        <button name="action_view_purchase_files" 
+                                                type="object" 
+                                                class="btn btn-sm btn-outline-danger flex-fill">
+                                            <i class="fa fa-eye"/> عرض
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- ملفات عامة -->
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="card h-100 border-warning">
+                                <div class="card-body text-center p-2">
+                                    <i class="fa fa-folder fa-2x text-secondary mb-1"/>
+                                    <h6 class="card-title small mb-1">ملفات عامة</h6>
+                                    <h4 class="text-secondary mb-2">
+                                        <field name="general_files_count"/>
+                                    </h4>
+                                    <div class="d-grid gap-1">
+                                        <button name="action_quick_categorize_files" 
+                                                type="object" 
+                                                class="btn btn-sm btn-warning"
+                                                invisible="general_files_count == 0">
+                                            <i class="fa fa-tags"/> تصنيف الملفات
+                                        </button>
+                                        <div class="btn-group d-flex gap-1">
+                                            <button name="action_upload_file" 
+                                                    type="object" 
+                                                    context="{'default_category': 'general'}"
+                                                    class="btn btn-sm btn-secondary flex-fill">
+                                                <i class="fa fa-upload"/> إرفاق
+                                            </button>
+                                            <button name="action_view_general_files" 
+                                                    type="object" 
+                                                    class="btn btn-sm btn-outline-secondary flex-fill">
+                                                <i class="fa fa-eye"/> عرض
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

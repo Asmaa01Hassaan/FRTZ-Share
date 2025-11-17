@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- ========================================== -->
+        <!-- FINANCE ACCESS RULES                        -->
+        <!-- ========================================== -->
+        
+        <!-- Note: Finance rules are mostly handled in project_security_rules.xml -->
+        <!-- This file is for future finance-specific rules -->
+        
+        <!-- Placeholder for future rules -->
+        
+    </data>
+</odoo>
+

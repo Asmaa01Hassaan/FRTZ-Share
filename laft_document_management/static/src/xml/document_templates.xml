@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- Document Card Template -->
+    <t t-name="laft_document_management.DocumentCard" owl="1">
+        <div class="card document-card h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i t-att-class="'fa ' + props.icon + ' fa-2x'" 
+                       t-att-style="'color: ' + props.color"/>
+                    <h5 class="ms-3 mb-0" t-esc="props.title"/>
+                </div>
+                <p class="text-muted">
+                    <span class="badge bg-secondary" t-esc="props.count"/>
+                    <span> ملف</span>
+                </p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <button class="btn btn-primary btn-sm w-100" t-on-click="props.onUpload">
+                    <i class="fa fa-upload"/> إرفاق ملف
+                </button>
+            </div>
+        </div>
+    </t>
+
+    <!-- File Item Template -->
+    <t t-name="laft_document_management.FileItem" owl="1">
+        <div class="file-item d-flex align-items-center p-3 border-bottom">
+            <div class="file-icon me-3">
+                <i t-att-class="'fa ' + props.icon + ' fa-2x'"/>
+            </div>
+            <div class="file-info flex-grow-1">
+                <div class="file-name fw-bold" t-esc="props.name"/>
+                <div class="file-meta text-muted">
+                    <span t-esc="props.category"/> • 
+                    <span t-esc="props.size"/> •
+                    <span t-esc="props.date"/>
+                </div>
+            </div>
+            <div class="file-actions">
+                <button class="btn btn-sm btn-outline-primary me-2" 
+                        t-on-click="() => props.onPreview()">
+                    <i class="fa fa-eye"/>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" 
+                        t-on-click="() => props.onDownload()">
+                    <i class="fa fa-download"/>
+                </button>
+            </div>
+        </div>
+    </t>
+
+    <!-- Empty State Template -->
+    <t t-name="laft_document_management.EmptyState" owl="1">
+        <div class="empty-state text-center py-5">
+            <i class="fa fa-folder-open fa-5x text-muted mb-3"/>
+            <h4 class="text-muted">لا توجد ملفات</h4>
+            <p class="text-muted">ابدأ بإضافة ملفات جديدة</p>
+        </div>
+    </t>
+
+</templates>
+

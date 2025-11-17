@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Extend Attachment Form View -->
+    <record id="view_attachment_form_inherit" model="ir.ui.view">
+        <field name="name">ir.attachment.form.inherit</field>
+        <field name="model">ir.attachment</field>
+        <field name="inherit_id" ref="base.view_attachment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="document_category_id" 
+                       options="{'no_create': True, 'no_open': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Enhanced Kanban View for Attachments -->
+    <record id="view_attachment_kanban_enhanced" model="ir.ui.view">
+        <field name="name">ir.attachment.kanban.enhanced</field>
+        <field name="model">ir.attachment</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="mimetype"/>
+                <field name="type"/>
+                <field name="document_category_id"/>
+                <field name="category_name"/>
+                <field name="category_icon"/>
+                <field name="category_color"/>
+                <field name="file_size"/>
+                <field name="create_date"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div class="text-muted">
+                                    <i t-att-class="'fa ' + (record.category_icon.raw_value or 'fa-file-o')"/>
+                                    <field name="category_name"/>
+                                </div>
+                                <div class="text-muted small">
+                                    <field name="file_size" widget="file_size"/>
+                                    • <field name="create_date" widget="date"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Enhanced List View -->
+    <record id="view_attachment_tree_enhanced" model="ir.ui.view">
+        <field name="name">ir.attachment.tree.enhanced</field>
+        <field name="model">ir.attachment</field>
+        <field name="arch" type="xml">
+            <list string="الملفات">
+                <field name="name"/>
+                <field name="document_category_id"/>
+                <field name="mimetype"/>
+                <field name="file_size" widget="file_size"/>
+                <field name="create_date"/>
+                <field name="create_uid"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View with Category Filters -->
+    <record id="view_attachment_search_category" model="ir.ui.view">
+        <field name="name">ir.attachment.search.category</field>
+        <field name="model">ir.attachment</field>
+        <field name="inherit_id" ref="base.view_attachment_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="document_category_id"/>
+                <filter string="ملفات CRM" name="crm_documents" 
+                        domain="[('is_crm_document', '=', True)]"/>
+                <filter string="ملفات المشاريع" name="project_documents" 
+                        domain="[('is_project_document', '=', True)]"/>
+                <separator/>
+                <filter string="ملفات الفرصة" name="opportunity_files" 
+                        domain="[('document_category_id.code', '=', 'opportunity_files')]"/>
+                <filter string="ملفات فنية" name="technical_files" 
+                        domain="[('document_category_id.code', '=', 'technical_files')]"/>
+                <filter string="ملفات مالية" name="financial_files" 
+                        domain="[('document_category_id.code', '=', 'financial_files')]"/>
+                <filter string="ملفات عقود" name="contract_files" 
+                        domain="[('document_category_id.code', '=', 'contract_files')]"/>
+                <filter string="ملفات أوامر شراء" name="purchase_files" 
+                        domain="[('document_category_id.code', '=', 'purchase_files')]"/>
+                <filter string="ملفات عامة" name="general_files" 
+                        domain="[('document_category_id.code', '=', 'general_files')]"/>
+                <separator/>
+                <group expand="0" string="تجميع حسب">
+                    <filter string="التصنيف" name="group_by_category" 
+                            context="{'group_by': 'document_category_id'}"/>
+                    <filter string="النموذج" name="group_by_res_model" 
+                            context="{'group_by': 'res_model'}"/>
+                    <filter string="تاريخ الإنشاء" name="group_by_create_date" 
+                            context="{'group_by': 'create_date'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+

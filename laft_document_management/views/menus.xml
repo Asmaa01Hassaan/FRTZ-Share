@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Main Menu -->
+    <menuitem id="menu_document_center_root"
+              name="مركز الملفات"
+              sequence="5"
+              web_icon="laft_document_management,static/description/icon.png"/>
+    
+    <!-- CRM Submenu -->
+    <menuitem id="menu_document_center_crm"
+              name="تطوير الأعمال (CRM)"
+              parent="menu_document_center_root"
+              sequence="10"/>
+    
+    <menuitem id="menu_crm_opportunities_documents"
+              name="الفرص"
+              parent="menu_document_center_crm"
+              action="action_crm_leads_with_documents"
+              sequence="10"/>
+    
+    <!-- Projects Submenu -->
+    <menuitem id="menu_document_center_projects"
+              name="المشاريع"
+              parent="menu_document_center_root"
+              sequence="20"/>
+    
+    <menuitem id="menu_projects_documents"
+              name="المشاريع"
+              parent="menu_document_center_projects"
+              action="action_projects_with_documents"
+              sequence="10"/>
+    
+    <!-- All Documents -->
+    <menuitem id="menu_all_documents"
+              name="جميع الملفات"
+              parent="menu_document_center_root"
+              action="action_all_documents"
+              sequence="30"/>
+    
+    <!-- Tools Submenu -->
+    <menuitem id="menu_document_tools"
+              name="أدوات"
+              parent="menu_document_center_root"
+              sequence="90"/>
+    
+    <menuitem id="menu_categorize_attachments"
+              name="ربط الملفات الموجودة"
+              parent="menu_document_tools"
+              action="action_categorize_attachments_wizard"
+              sequence="10"/>
+    
+    <!-- Categories Configuration -->
+    <menuitem id="menu_document_categories"
+              name="التصنيفات"
+              parent="menu_document_center_root"
+              action="action_document_category"
+              sequence="100"
+              groups="base.group_system"/>
+
+</odoo>
+

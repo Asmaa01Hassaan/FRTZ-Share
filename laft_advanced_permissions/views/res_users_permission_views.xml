@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Enhanced User Form with Permissions Tab -->
+    <record id="view_users_form_permissions" model="ir.ui.view">
+        <field name="name">res.users.form.permissions</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Add Permissions tab after Preferences -->
+            <xpath expr="//notebook" position="inside">
+                <page string="📋 Permissions" name="laft_permissions" groups="laft_advanced_permissions.group_permission_manager">
+                    
+                    <group string="🎯 Quick Role Assignment" class="mt-3">
+                        <field name="id" invisible="1"/>
+                        <label for="id" string="Apply a pre-configured role template for quick setup:"/>
+                        <!-- TODO: Add role selection wizard here -->
+                    </group>
+                    
+                    <separator string="OR Customize Manually:"/>
+                    
+                    <!-- Projects Section -->
+                    <group string="🏗️ PROJECTS ACCESS" class="mt-3">
+                        <group>
+                            <field name="laft_project_access" widget="radio" options="{'horizontal': false}"/>
+                            <field name="laft_project_see_all" widget="boolean_toggle"/>
+                        </group>
+                        <group string="Capabilities">
+                            <field name="laft_can_create_projects" widget="boolean_toggle"/>
+                            <field name="laft_can_manage_tasks" widget="boolean_toggle"/>
+                            <field name="laft_can_view_bills" widget="boolean_toggle"/>
+                            <field name="laft_can_create_bills" widget="boolean_toggle"/>
+                            <field name="laft_can_view_pos" widget="boolean_toggle"/>
+                            <field name="laft_can_create_pos" widget="boolean_toggle"/>
+                            <field name="laft_can_approve_bills" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Business Development Section -->
+                    <group string="💼 BUSINESS DEVELOPMENT ACCESS" class="mt-3">
+                        <group>
+                            <field name="laft_bd_access" widget="radio" options="{'horizontal': false}"/>
+                        </group>
+                        <group>
+                            <label for="laft_bd_access" string="Team opportunities are determined by CRM Team membership"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Finance Section -->
+                    <group string="💰 ACCOUNTING &amp; FINANCE ACCESS" class="mt-3">
+                        <group>
+                            <field name="laft_finance_access" widget="radio" options="{'horizontal': false}"/>
+                        </group>
+                        <group>
+                            <div class="alert alert-info" role="alert">
+                                <i class="fa fa-info-circle"/> 
+                                <strong>Note:</strong> Project-Related access is automatically enabled with Project Manager + Finance level.
+                            </div>
+                        </group>
+                    </group>
+                    
+                    <!-- Administration Section -->
+                    <group string="👔 ADMINISTRATION" class="mt-3">
+                        <group>
+                            <field name="laft_is_admin" widget="boolean_toggle"/>
+                            <field name="laft_can_manage_permissions" widget="boolean_toggle"/>
+                        </group>
+                        <group>
+                            <div class="alert alert-warning" role="alert" invisible="not laft_is_admin">
+                                <i class="fa fa-exclamation-triangle"/> 
+                                <strong>Warning:</strong> System Administrators have full access to everything!
+                            </div>
+                        </group>
+                    </group>
+                    
+                    <!-- Dashboards Section -->
+                    <group string="📊 DASHBOARDS ACCESS" class="mt-3">
+                        <group>
+                            <field name="laft_dashboard_my" widget="boolean_toggle"/>
+                            <field name="laft_dashboard_projects" widget="boolean_toggle"/>
+                        </group>
+                        <group>
+                            <field name="laft_dashboard_bd" widget="boolean_toggle"/>
+                            <field name="laft_dashboard_executive" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Technical View -->
+                    <group string="ℹ️ Technical Information" class="mt-3">
+                        <field name="laft_applied_groups" widget="text" readonly="1" nolabel="1"/>
+                    </group>
+                    
+                </page>
+            </xpath>
+            
+        </field>
+    </record>
+    
+</odoo>
+

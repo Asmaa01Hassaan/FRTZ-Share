@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Wizard Form View -->
+    <record id="view_categorize_attachments_wizard_form" model="ir.ui.view">
+        <field name="name">categorize.attachments.wizard.form</field>
+        <field name="model">categorize.attachments.wizard</field>
+        <field name="arch" type="xml">
+            <form string="ربط الملفات الموجودة">
+                <group>
+                    <group>
+                        <field name="model_type"/>
+                        <field name="default_category_id"/>
+                    </group>
+                    <group>
+                        <field name="attachment_count" readonly="1"/>
+                    </group>
+                </group>
+                <group>
+                    <div class="alert alert-info" role="alert">
+                        <i class="fa fa-info-circle"/> 
+                        <strong>ملاحظة:</strong> 
+                        سيتم ربط جميع الملفات الموجودة حالياً والتي ليس لها تصنيف بالتصنيف المحدد أعلاه.
+                    </div>
+                </group>
+                <footer>
+                    <button name="action_categorize" 
+                            string="ربط الملفات" 
+                            type="object" 
+                            class="btn-primary"/>
+                    <button string="إلغاء" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Wizard Action -->
+    <record id="action_categorize_attachments_wizard" model="ir.actions.act_window">
+        <field name="name">ربط الملفات الموجودة</field>
+        <field name="res_model">categorize.attachments.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="base.model_ir_attachment"/>
+    </record>
+
+</odoo>
+

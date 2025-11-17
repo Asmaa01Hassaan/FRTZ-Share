@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Main Menu: Permission Management -->
+    <menuitem id="menu_laft_permission_root"
+              name="Permission Management"
+              parent="base.menu_users"
+              sequence="5"
+              groups="laft_advanced_permissions.group_permission_manager"/>
+    
+    <!-- Sub-menu: Users & Permissions -->
+    <menuitem id="menu_laft_users_permissions"
+              name="Users &amp; Permissions"
+              parent="menu_laft_permission_root"
+              action="base.action_res_users"
+              sequence="1"/>
+    
+    <!-- Sub-menu: Role Templates -->
+    <menuitem id="menu_laft_permission_roles"
+              name="Role Templates"
+              parent="menu_laft_permission_root"
+              action="action_laft_permission_role"
+              sequence="2"/>
+    
+    <!-- Sub-menu: Permission Dashboard -->
+    <menuitem id="menu_laft_permission_dashboard"
+              name="Permission Dashboard"
+              parent="menu_laft_permission_root"
+              sequence="3"/>
+    
+    <!-- Quick Links -->
+    <menuitem id="menu_laft_quick_links"
+              name="Quick Links"
+              parent="menu_laft_permission_root"
+              sequence="10"/>
+    
+    <menuitem id="menu_laft_administrators"
+              name="👑 Administrators"
+              parent="menu_laft_quick_links"
+              action="action_view_administrators"
+              sequence="1"/>
+    
+    <menuitem id="menu_laft_project_managers"
+              name="🏗️ Project Managers"
+              parent="menu_laft_quick_links"
+              action="action_view_project_managers"
+              sequence="2"/>
+    
+    <menuitem id="menu_laft_bd_users"
+              name="💼 BD Team"
+              parent="menu_laft_quick_links"
+              action="action_view_bd_users"
+              sequence="3"/>
+    
+</odoo>
+

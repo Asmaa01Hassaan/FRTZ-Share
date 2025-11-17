@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Add Documents Tab to Project Form -->
+    <record id="view_project_form_documents" model="ir.ui.view">
+        <field name="name">project.project.form.documents</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <!-- Add button box -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_all_documents" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-folder-open">
+                    <field name="total_document_count" widget="statinfo" string="ملفات"/>
+                </button>
+            </xpath>
+            
+            <!-- Add Documents Tab after last tab -->
+            <xpath expr="//notebook" position="inside">
+                <page string="الملفات" name="documents">
+                    <div class="row mt16 g-2">
+                        
+                        <!-- شهادات الإنجاز -->
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-2">
+                                    <i class="fa fa-certificate fa-2x text-success mb-1"/>
+                                    <h6 class="card-title small mb-1">شهادات الإنجاز</h6>
+                                    <h4 class="text-success mb-2">
+                                        <field name="achievement_files_count"/>
+                                    </h4>
+                                    <div class="d-grid gap-1">
+                                        <button name="action_upload_file" 
+                                                type="object" 
+                                                context="{'default_category': 'achievement'}"
+                                                class="btn btn-sm btn-success">
+                                            <i class="fa fa-upload"/> إرفاق
+                                        </button>
+                                        <button name="action_view_achievement_files" 
+                                                type="object" 
+                                                class="btn btn-sm btn-outline-success">
+                                            <i class="fa fa-eye"/> عرض
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- توثيق موافقات -->
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-2">
+                                    <i class="fa fa-check-square fa-2x text-primary mb-1"/>
+                                    <h6 class="card-title small mb-1">توثيق موافقات</h6>
+                                    <h4 class="text-primary mb-2">
+                                        <field name="approval_docs_count"/>
+                                    </h4>
+                                    <div class="d-grid gap-1">
+                                        <button name="action_upload_file" 
+                                                type="object" 
+                                                context="{'default_category': 'approval'}"
+                                                class="btn btn-sm btn-primary">
+                                            <i class="fa fa-upload"/> إرفاق
+                                        </button>
+                                        <button name="action_view_approval_docs" 
+                                                type="object" 
+                                                class="btn btn-sm btn-outline-primary">
+                                            <i class="fa fa-eye"/> عرض
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- مستندات فنية -->
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-2">
+                                    <i class="fa fa-wrench fa-2x text-info mb-1"/>
+                                    <h6 class="card-title small mb-1">مستندات فنية</h6>
+                                    <h4 class="text-info mb-2">
+                                        <field name="technical_docs_count"/>
+                                    </h4>
+                                    <div class="d-grid gap-1">
+                                        <button name="action_upload_file" 
+                                                type="object" 
+                                                context="{'default_category': 'technical'}"
+                                                class="btn btn-sm btn-info">
+                                            <i class="fa fa-upload"/> إرفاق
+                                        </button>
+                                        <button name="action_view_technical_docs" 
+                                                type="object" 
+                                                class="btn btn-sm btn-outline-info">
+                                            <i class="fa fa-eye"/> عرض
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- تقارير المشروع -->
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-2">
+                                    <i class="fa fa-file-pdf-o fa-2x text-danger mb-1"/>
+                                    <h6 class="card-title small mb-1">تقارير المشروع</h6>
+                                    <h4 class="text-danger mb-2">
+                                        <field name="project_reports_count"/>
+                                    </h4>
+                                    <div class="d-grid gap-1">
+                                        <button name="action_upload_file" 
+                                                type="object" 
+                                                context="{'default_category': 'reports'}"
+                                                class="btn btn-sm btn-danger">
+                                            <i class="fa fa-upload"/> إرفاق
+                                        </button>
+                                        <button name="action_view_project_reports" 
+                                                type="object" 
+                                                class="btn btn-sm btn-outline-danger">
+                                            <i class="fa fa-eye"/> عرض
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- عقود المشروع -->
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-2">
+                                    <i class="fa fa-file-contract fa-2x text-dark mb-1"/>
+                                    <h6 class="card-title small mb-1">عقود المشروع</h6>
+                                    <h4 class="text-dark mb-2">
+                                        <field name="project_contracts_count"/>
+                                    </h4>
+                                    <div class="d-grid gap-1">
+                                        <button name="action_upload_file" 
+                                                type="object" 
+                                                context="{'default_category': 'contracts'}"
+                                                class="btn btn-sm btn-dark">
+                                            <i class="fa fa-upload"/> إرفاق
+                                        </button>
+                                        <button name="action_view_project_contracts" 
+                                                type="object" 
+                                                class="btn btn-sm btn-outline-dark">
+                                            <i class="fa fa-eye"/> عرض
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- فواتير ومستخلصات -->
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-2">
+                                    <i class="fa fa-money fa-2x text-warning mb-1"/>
+                                    <h6 class="card-title small mb-1">فواتير ومستخلصات</h6>
+                                    <h4 class="text-warning mb-2">
+                                        <field name="invoices_payments_count"/>
+                                    </h4>
+                                    <div class="d-grid gap-1">
+                                        <button name="action_upload_file" 
+                                                type="object" 
+                                                context="{'default_category': 'invoices'}"
+                                                class="btn btn-sm btn-warning">
+                                            <i class="fa fa-upload"/> إرفاق
+                                        </button>
+                                        <button name="action_view_invoices_payments" 
+                                                type="object" 
+                                                class="btn btn-sm btn-outline-warning">
+                                            <i class="fa fa-eye"/> عرض
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- ملفات عامة -->
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="card h-100 border-warning">
+                                <div class="card-body text-center p-2">
+                                    <i class="fa fa-folder fa-2x text-secondary mb-1"/>
+                                    <h6 class="card-title small mb-1">ملفات عامة</h6>
+                                    <h4 class="text-secondary mb-2">
+                                        <field name="general_files_count"/>
+                                    </h4>
+                                    <div class="d-grid gap-1">
+                                        <button name="action_quick_categorize_files" 
+                                                type="object" 
+                                                class="btn btn-sm btn-warning"
+                                                invisible="general_files_count == 0">
+                                            <i class="fa fa-tags"/> تصنيف الملفات
+                                        </button>
+                                        <div class="btn-group d-flex gap-1">
+                                            <button name="action_upload_file" 
+                                                    type="object" 
+                                                    context="{'default_category': 'general'}"
+                                                    class="btn btn-sm btn-secondary flex-fill">
+                                                <i class="fa fa-upload"/> إرفاق
+                                            </button>
+                                            <button name="action_view_general_files" 
+                                                    type="object" 
+                                                    class="btn btn-sm btn-outline-secondary flex-fill">
+                                                <i class="fa fa-eye"/> عرض
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
