@@ -6,7 +6,6 @@ __pycache__/
 # Odoo Database & Logs
 *.db
 *.log
-*.csv
 *.xlsx
 
 # Virtual environment
