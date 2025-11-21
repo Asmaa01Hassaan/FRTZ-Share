@@ -1,7 +1,11 @@
 from odoo import models, fields, api, _
 from datetime import datetime
 import calendar
+import json
 
+class PurchaseOrder(models.Model):
+    _inherit = 'purchase.order'
+    project_id = fields.Many2one('project.project')
 
 class OperationalExpenseCategory(models.Model):
     _name = 'operational.expense.category'
@@ -64,19 +68,19 @@ class CrmLead(models.Model):
         for rec in self:
             rec.total_expense_amount = sum(line.total_amount for line in rec.expense_ids)
 
-    def action_open_expense_lines(self):
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Expenses',
-            'view_mode': 'tree,form',
-            'res_model': 'hr.expense',
-            'domain': [('lead_id', '=', self.id)],
-            'context': {
-                'default_lead_id': self.id,
-                'search_default_lead_id': self.id,
-            },
-        }
+    # def action_open_expense_lines(self):
+    #     self.ensure_one()
+    #     return {
+    #         'type': 'ir.actions.act_window',
+    #         'name': 'Expenses',
+    #         'view_mode': 'tree,form',
+    #         'res_model': 'hr.expense',
+    #         'domain': [('lead_id', '=', self.id)],
+    #         'context': {
+    #             'default_lead_id': self.id,
+    #             'search_default_lead_id': self.id,
+    #         },
+    #     }
 
     quotation_ids = fields.One2many(
         'sale.order', 'opportunity_id', string='Quotations'
@@ -451,39 +455,42 @@ class ProjectProject(models.Model):
 
     def _compute_vendor_bill_count(self):
         for project in self:
-            count = self.env['account.move'].search_count([
+            project.vendor_bill_count = self.env['account.move'].search_count([
                 ('move_type', '=', 'in_invoice'),
                 ('project_id', '=', project.id)
             ])
-            project.vendor_bill_count = count
+
 
     def action_view_vendor_bills(self):
         self.ensure_one()
+
         bills = self.env['account.move'].search([
             ('move_type', '=', 'in_invoice'),
             ('project_id', '=', self.id)
         ])
+        ctx = {
+            'default_project_id': self.id,
+            'default_move_type': 'in_invoice',
+            'default_invoice_line_ids': [
+                (0, 0, {
+                    "analytic_distribution": {self.account_id.id: 100} if self.account_id else {},
+                })
+            ],
+        }
+
         action = {
             'name': 'Vendor Bills',
             'res_model': 'account.move',
+            'view_mode': 'list,form',
             'type': 'ir.actions.act_window',
-            'context': {'default_project_id': self.id, 'default_move_type': 'in_invoice'},
+            'context': ctx,
+            'domain': [
+                ('move_type', '=', 'in_invoice'),
+                ('project_id', '=', self.id),
+            ],
         }
-        if len(bills) == 1:
-            action.update({
-                'view_mode': 'form',
-                'res_id': bills.id,
-            })
-        elif bills:
-            action.update({
-                'domain': [('id', 'in', bills.ids)],
-                'view_mode': 'list,form',
-            })
-        else:
-            action.update({
-                'view_mode': 'form',
-            })
         return action
+
 
     project_expense_total = fields.Monetary(
         string="Total Expenses",
@@ -518,25 +525,105 @@ class ProjectProject(models.Model):
 
     def action_view_purchase_orders(self):
         self.ensure_one()
+
         PO = self.env['purchase.order']
         po_has_project = 'project_id' in PO._fields
         proj_has_aa = 'analytic_account_id' in self._fields
 
+        # Domain: filter POs related to this project or analytic account
         domain = []
         if proj_has_aa and self.analytic_account_id:
             domain = [('order_line.account_analytic_id', '=', self.analytic_account_id.id)]
         elif po_has_project:
             domain = [('project_id', '=', self.id)]
 
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Purchase Orders'),
-            'res_model': 'purchase.order',
-            'view_mode': 'list,form',
-            'target': 'current',
-            'domain': domain,
-            'context': {'default_origin': self.name},
+        # Prepare action from the original Purchase RFQ action
+        action = self.env["ir.actions.actions"]._for_xml_id("purchase.purchase_rfq")
+
+        # Force list view first, then form view
+        try:
+            list_view = self.env.ref("purchase.purchase_order_view_tree").id
+            form_view = self.env.ref("purchase.purchase_order_form").id
+            action["views"] = [(list_view, "list"), (form_view, "form")]
+        except Exception:
+            pass
+
+        # Update domain
+        action["domain"] = domain
+
+        # Update context defaults
+        ctx = dict(self.env.context or {})
+        ctx.update({
+            "default_project_id": self.id if po_has_project else False,
+            "default_origin": self.name,
+        })
+        action["context"] = ctx
+
+        return action
+
+    def action_view_customer_invoices(self):
+        self.ensure_one()
+
+        # Prepare analytic distribution for new invoice creation
+        analytic = {self.account_id.id: 100} if self.account_id else {}
+
+        ctx = {
+            'default_project_id': self.id,
+            'default_move_type': 'out_invoice',
+            'default_invoice_line_ids': [
+                (0, 0, {
+                    'analytic_distribution': analytic,
+                })
+            ],
         }
+
+        return {
+            'name': 'Customer Invoices',
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move',
+            'view_mode': 'list,form',
+            'domain': [
+                ('move_type', '=', 'out_invoice'),
+                ('project_id', '=', self.id),
+            ],
+            'context': ctx,
+        }
+
+
+
+    def action_view_expense(self):
+        self.ensure_one()
+
+        # Get original HR Expense action
+        action = self.env["ir.actions.actions"]._for_xml_id(
+            "hr_expense.hr_expense_actions_my_all"
+        )
+
+        # Force list then form view
+        try:
+            list_view = self.env.ref("hr_expense.hr_expense_view_tree").id
+            form_view = self.env.ref("hr_expense.hr_expense_view_form").id
+            action["views"] = [(list_view, "list"), (form_view, "form")]
+        except Exception:
+            pass
+
+        # Show only expenses for this project
+        action["domain"] = [
+            ("project_id", "=", self.id),
+        ]
+
+        # Default context when creating new expense
+        ctx = dict(self.env.context or {})
+        ctx.update({
+            "default_project_id": self.id,
+            "default_analytic_distribution": {
+                str(self.account_id.id): 100
+            } if self.account_id else {},
+        })
+        action["context"] = ctx
+
+        return action
+
 
     def _compute_project_expense_total(self):
         for rec in self:
@@ -609,18 +696,23 @@ class ProjectProject(models.Model):
             project.timeline_html = html
 
     customer_invoice_count = fields.Integer(
-        string="عدد فواتير العملاء",
+        string="فواتير العملاء",
         compute='_compute_customer_invoice_count',
         store=True
     )
 
     def _compute_customer_invoice_count(self):
+        AccountMove = self.env['account.move']
         for project in self:
-            count = self.env['account.move'].search_count([
+            # نبحث عن كل الفواتير من نوع Customer Invoice (out_invoice) المرتبطة بالمشروع
+            project.customer_invoice_count = AccountMove.search_count([
                 ('move_type', '=', 'out_invoice'),
                 ('project_id', '=', project.id)
             ])
-            project.customer_invoice_count = count
+
+
+
+
     
     @api.depends('date_start', 'date', 'crm_lead_ids.contract_files_count', 'crm_lead_ids.purchase_files_count')
     def _compute_project_statistics(self):
