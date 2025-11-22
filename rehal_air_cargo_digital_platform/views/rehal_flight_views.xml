@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_rehal_flight_list" model="ir.ui.view">
+        <field name="name">rehal.flight.list</field>
+        <field name="model">rehal.flight</field>
+        <field name="arch" type="xml">
+            <list string="Flights" decoration-danger="state == 'cancelled'" decoration-info="state == 'scheduled'">
+                <field name="name"/>
+                <field name="flight_code"/>
+                <field name="origin"/>
+                <field name="destination"/>
+                <field name="departure_date"/>
+                <field name="departure_time" widget="float_time"/>
+                <field name="total_spots"/>
+                <field name="available_spots"/>
+                <field name="booked_spots"/>
+                <field name="state" widget="badge" decoration-success="state == 'scheduled'" decoration-info="state == 'in_transit'" decoration-muted="state == 'arrived'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_rehal_flight_form" model="ir.ui.view">
+        <field name="name">rehal.flight.form</field>
+        <field name="model">rehal.flight</field>
+        <field name="arch" type="xml">
+            <form string="Flight">
+                <header>
+                    <button name="action_schedule" string="Schedule" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_in_transit" string="In Transit" type="object" invisible="state != 'scheduled'"/>
+                    <button name="action_arrived" string="Arrived" type="object" invisible="state not in ['scheduled', 'in_transit']"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ['arrived', 'cancelled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,scheduled,in_transit,arrived"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="action" name="%(action_rehal_spot)d" icon="fa-cubes" context="{'default_flight_id': id, 'search_default_flight_id': id}">
+                            <field string="Spots" name="spot_ids" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="action" name="%(action_rehal_shipment)d" icon="fa-truck" context="{'default_flight_id': id, 'search_default_flight_id': id}">
+                            <field string="Shipments" name="shipment_ids" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="flight_code"/>
+                            <field name="state"/>
+                        </group>
+                        <group>
+                            <field name="departure_date"/>
+                            <field name="departure_time" widget="float_time"/>
+                            <field name="arrival_date"/>
+                            <field name="arrival_time" widget="float_time"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="origin"/>
+                            <field name="destination"/>
+                            <field name="aircraft_type"/>
+                        </group>
+                        <group>
+                            <field name="total_spots"/>
+                            <field name="available_spots" readonly="1"/>
+                            <field name="booked_spots" readonly="1"/>
+                            <field name="can_book" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Spots" name="spots">
+                            <field name="spot_ids" nolabel="1">
+                                <list string="Spots" decoration-danger="state == 'full'" decoration-warning="state == 'booked'" decoration-success="state == 'available'">
+                                    <field name="name"/>
+                                    <field name="state" widget="badge" decoration-danger="state == 'full'" decoration-warning="state == 'booked'" decoration-success="state == 'available'"/>
+                                    <field name="capacity"/>
+                                    <field name="capacity_used"/>
+                                    <field name="capacity_available"/>
+                                    <field name="utilization_percent" widget="progressbar"/>
+                                    <field name="spot_color_class" invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Shipments" name="shipments">
+                            <field name="shipment_ids" nolabel="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="shipper_name"/>
+                                    <field name="consignee_name"/>
+                                    <field name="weight"/>
+                                    <field name="total_cost"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Spot Status" name="spot_status">
+                            <div class="oe_read_only">
+                                <field name="spot_status_summary" nolabel="1"/>
+                            </div>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Internal notes about this flight..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_rehal_flight_search" model="ir.ui.view">
+        <field name="name">rehal.flight.search</field>
+        <field name="model">rehal.flight</field>
+        <field name="arch" type="xml">
+            <search string="Search Flights">
+                <field name="name"/>
+                <field name="flight_code"/>
+                <field name="origin"/>
+                <field name="destination"/>
+                <filter string="Scheduled" name="scheduled" domain="[('state', '=', 'scheduled')]"/>
+                <filter string="In Transit" name="in_transit" domain="[('state', '=', 'in_transit')]"/>
+                <separator/>
+                <filter string="Today" name="today" domain="[('departure_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="This Week" name="this_week" domain="[('departure_date', '&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Departure Date" name="group_departure" context="{'group_by': 'departure_date'}"/>
+                    <filter string="Origin" name="group_origin" context="{'group_by': 'origin'}"/>
+                    <filter string="Destination" name="group_destination" context="{'group_by': 'destination'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_rehal_flight" model="ir.actions.act_window">
+        <field name="name">Flights</field>
+        <field name="res_model">rehal.flight</field>
+        <field name="view_mode">list,form,kanban,calendar</field>
+    </record>
+
+    <record id="view_rehal_flight_kanban" model="ir.ui.view">
+        <field name="name">rehal.flight.kanban</field>
+        <field name="model">rehal.flight</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_dashboard">
+                <field name="name"/>
+                <field name="state"/>
+                <field name="departure_date"/>
+                <field name="available_spots"/>
+                <field name="booked_spots"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                        <div class="o_kanban_record_subtitle">
+                                            <field name="flight_code"/> - <field name="origin"/> to <field name="destination"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div>Departure: <field name="departure_date"/> <field name="departure_time" widget="float_time"/></div>
+                                    <div>Available: <field name="available_spots"/> / Booked: <field name="booked_spots"/></div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_rehal_flight_calendar" model="ir.ui.view">
+        <field name="name">rehal.flight.calendar</field>
+        <field name="model">rehal.flight</field>
+        <field name="arch" type="xml">
+            <calendar string="Flights" date_start="departure_date" color="state" event_open_popup="true">
+                <field name="name"/>
+                <field name="origin"/>
+                <field name="destination"/>
+                <field name="available_spots"/>
+            </calendar>
+        </field>
+    </record>
+</odoo>
+

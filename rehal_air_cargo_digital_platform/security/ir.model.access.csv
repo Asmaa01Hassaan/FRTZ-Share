@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rehal_flight_user,rehal.flight.user,model_rehal_flight,base.group_user,1,1,1,1
+access_rehal_flight_manager,rehal.flight.manager,model_rehal_flight,base.group_system,1,1,1,1
+access_rehal_spot_user,rehal.spot.user,model_rehal_spot,base.group_user,1,1,1,1
+access_rehal_spot_manager,rehal.spot.manager,model_rehal_spot,base.group_system,1,1,1,1
+access_rehal_shipment_user,rehal.shipment.user,model_rehal_shipment,base.group_user,1,1,1,1
+access_rehal_shipment_manager,rehal.shipment.manager,model_rehal_shipment,base.group_system,1,1,1,1
+access_rehal_flight_portal,rehal.flight.portal,model_rehal_flight,base.group_portal,1,0,0,0
+access_rehal_spot_portal,rehal.spot.portal,model_rehal_spot,base.group_portal,1,0,0,0
+access_rehal_shipment_portal,rehal.shipment.portal,model_rehal_shipment,base.group_portal,1,1,1,0
+

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_rehal_spot_list" model="ir.ui.view">
+        <field name="name">rehal.spot.list</field>
+        <field name="model">rehal.spot</field>
+        <field name="arch" type="xml">
+            <list string="Spots" decoration-danger="state == 'full'" decoration-warning="state == 'booked'" decoration-success="state == 'available'">
+                <field name="name"/>
+                <field name="flight_id"/>
+                <field name="state" widget="badge" decoration-danger="state == 'full'" decoration-warning="state == 'booked'" decoration-success="state == 'available'"/>
+                <field name="capacity"/>
+                <field name="capacity_used"/>
+                <field name="capacity_available"/>
+                <field name="utilization_percent" widget="progressbar"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_rehal_spot_form" model="ir.ui.view">
+        <field name="name">rehal.spot.form</field>
+        <field name="model">rehal.spot</field>
+        <field name="arch" type="xml">
+            <form string="Spot">
+                <header>
+                    <button name="action_mark_full" string="Mark Full" type="object" invisible="state == 'full'"/>
+                    <button name="action_mark_available" string="Mark Available" type="object" invisible="state == 'available'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="available,booked,full"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="action" name="%(action_rehal_shipment)d" icon="fa-truck" context="{'default_spot_id': id, 'default_flight_id': flight_id, 'search_default_spot_id': id}">
+                            <field string="Shipments" name="shipment_ids" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="flight_id"/>
+                            <field name="state" widget="badge"/>
+                        </group>
+                        <group>
+                            <field name="capacity"/>
+                            <field name="capacity_used"/>
+                            <field name="capacity_available"/>
+                            <field name="utilization_percent" widget="progressbar"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Shipments" name="shipments">
+                            <field name="shipment_ids" nolabel="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="shipper_name"/>
+                                    <field name="weight"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_rehal_spot_search" model="ir.ui.view">
+        <field name="name">rehal.spot.search</field>
+        <field name="model">rehal.spot</field>
+        <field name="arch" type="xml">
+            <search string="Search Spots">
+                <field name="name"/>
+                <field name="flight_id"/>
+                <filter string="Available" name="available" domain="[('state', '=', 'available')]"/>
+                <filter string="Booked" name="booked" domain="[('state', '=', 'booked')]"/>
+                <filter string="Full" name="full" domain="[('state', '=', 'full')]"/>
+                <filter string="Flight" name="flight_id" domain="[('flight_id', '=', context.get('search_default_flight_id'))]" invisible="1"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Flight" name="group_flight" context="{'group_by': 'flight_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_rehal_spot" model="ir.actions.act_window">
+        <field name="name">Spots</field>
+        <field name="res_model">rehal.spot</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
+

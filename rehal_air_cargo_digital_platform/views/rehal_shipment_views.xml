@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_rehal_shipment_list" model="ir.ui.view">
+        <field name="name">rehal.shipment.list</field>
+        <field name="model">rehal.shipment</field>
+        <field name="arch" type="xml">
+            <list string="Shipments">
+                <field name="name"/>
+                <field name="flight_id"/>
+                <field name="spot_id"/>
+                <field name="shipper_name"/>
+                <field name="consignee_name"/>
+                <field name="weight"/>
+                <field name="total_cost"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_rehal_shipment_form" model="ir.ui.view">
+        <field name="name">rehal.shipment.form</field>
+        <field name="model">rehal.shipment</field>
+        <field name="arch" type="xml">
+            <form string="Shipment">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_in_transit" string="In Transit" type="object" invisible="state != 'confirmed'"/>
+                    <button name="action_deliver" string="Deliver" type="object" invisible="state not in ['confirmed', 'in_transit']"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ['delivered', 'cancelled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_transit,delivered"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="tracking_number" readonly="state != 'confirmed'"/>
+                            <field name="booking_date"/>
+                            <field name="flight_id" options="{'no_create': True}"/>
+                            <field name="spot_id" domain="[('flight_id', '=', flight_id), ('state', 'in', ['available', 'booked'])]" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="state" widget="badge"/>
+                            <field name="partner_id"/>
+                            <field name="sale_order_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Shipper Information" name="shipper">
+                            <group>
+                                <group>
+                                    <field name="shipper_name"/>
+                                    <field name="shipper_phone"/>
+                                    <field name="shipper_email"/>
+                                </group>
+                                <group>
+                                    <field name="origin_address" placeholder="Full origin address..."/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Consignee Information" name="consignee">
+                            <group>
+                                <group>
+                                    <field name="consignee_name"/>
+                                    <field name="consignee_phone"/>
+                                    <field name="consignee_email"/>
+                                </group>
+                                <group>
+                                    <field name="destination_address" placeholder="Full destination address..."/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Shipment Details" name="details">
+                            <group>
+                                <group>
+                                    <field name="description" placeholder="Description of goods..."/>
+                                    <field name="weight"/>
+                                    <field name="volume"/>
+                                    <field name="pieces"/>
+                                    <field name="declared_value"/>
+                                </group>
+                                <group>
+                                    <field name="base_rate" readonly="1"/>
+                                    <field name="weight_rate" readonly="1"/>
+                                    <field name="fuel_surcharge" readonly="1"/>
+                                    <field name="total_cost" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Delivery" name="delivery">
+                            <group>
+                                <field name="delivery_date" readonly="1"/>
+                            </group>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Internal notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_rehal_shipment_search" model="ir.ui.view">
+        <field name="name">rehal.shipment.search</field>
+        <field name="model">rehal.shipment</field>
+        <field name="arch" type="xml">
+            <search string="Search Shipments">
+                <field name="name"/>
+                <field name="tracking_number"/>
+                <field name="shipper_name"/>
+                <field name="consignee_name"/>
+                <field name="flight_id"/>
+                <field name="spot_id"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Confirmed" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter string="In Transit" name="in_transit" domain="[('state', '=', 'in_transit')]"/>
+                <filter string="Delivered" name="delivered" domain="[('state', '=', 'delivered')]"/>
+                <filter string="Flight" name="flight_id" domain="[('flight_id', '=', context.get('search_default_flight_id'))]" invisible="1"/>
+                <filter string="Spot" name="spot_id" domain="[('spot_id', '=', context.get('search_default_spot_id'))]" invisible="1"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Flight" name="group_flight" context="{'group_by': 'flight_id'}"/>
+                    <filter string="Booking Date" name="group_booking" context="{'group_by': 'booking_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_rehal_shipment" model="ir.actions.act_window">
+        <field name="name">Shipments</field>
+        <field name="res_model">rehal.shipment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
+

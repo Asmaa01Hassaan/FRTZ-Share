@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="flights_list_template" name="Flights List">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <h1>Available Flights</h1>
+                            <form method="get" action="/rehal/flights" class="mb-4">
+                                <div class="input-group">
+                                    <input type="text" name="search" class="form-control" placeholder="Search flights..." t-att-value="search"/>
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </form>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Flight Number</th>
+                                            <th>Route</th>
+                                            <th>Departure</th>
+                                            <th>Available Spots</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="flights" t-as="flight">
+                                            <tr>
+                                                <td><strong t-esc="flight.name"/></td>
+                                                <td>
+                                                    <span t-esc="flight.origin"/> → <span t-esc="flight.destination"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="flight.departure_date"/> 
+                                                    <span t-esc="'%02d:%02d' % (int(flight.departure_time), int((flight.departure_time - int(flight.departure_time)) * 60))"/>
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-success" t-esc="flight.available_spots"/> / 
+                                                    <span t-esc="flight.total_spots"/>
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-info" t-esc="flight.state"/>
+                                                </td>
+                                                <td>
+                                                    <a t-attf-href="/rehal/flight/{{flight.id}}" class="btn btn-sm btn-primary">View Details</a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="not flights">
+                                            <tr>
+                                                <td colspan="6" class="text-center">No flights available</td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <t t-if="pager">
+                                <div class="pager d-flex justify-content-center">
+                                    <t t-call="website.pager"/>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="flight_details_template" name="Flight Details">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <h1>Flight Details: <span t-esc="flight.name"/></h1>
+                            
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Flight Information</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>Flight Code:</strong> <span t-esc="flight.flight_code"/></p>
+                                            <p><strong>Route:</strong> <span t-esc="flight.origin"/> → <span t-esc="flight.destination"/></p>
+                                            <p><strong>Departure:</strong> 
+                                                <span t-esc="flight.departure_date"/> 
+                                                <span t-esc="'%02d:%02d' % (int(flight.departure_time), int((flight.departure_time - int(flight.departure_time)) * 60))"/>
+                                            </p>
+                                            <p><strong>Arrival:</strong> 
+                                                <span t-esc="flight.arrival_date"/> 
+                                                <span t-esc="'%02d:%02d' % (int(flight.arrival_time), int((flight.arrival_time - int(flight.arrival_time)) * 60))"/>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Total Spots:</strong> <span t-esc="flight.total_spots"/></p>
+                                            <p><strong>Available Spots:</strong> <span class="badge badge-success" t-esc="flight.available_spots"/></p>
+                                            <p><strong>Booked Spots:</strong> <span class="badge badge-warning" t-esc="flight.booked_spots"/></p>
+                                            <p><strong>Status:</strong> <span class="badge badge-info" t-esc="flight.state"/></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Available Spots</h5>
+                                    <div class="row" id="spots-container">
+                                        <t t-foreach="flight.spot_ids" t-as="spot">
+                                            <div class="col-md-3 mb-3">
+                                                <div class="card spot-card" t-att-class="spot.spot_color_class">
+                                                    <div class="card-body text-center">
+                                                        <h6 t-esc="spot.name"/>
+                                                        <p class="mb-1">
+                                                            <span class="badge" t-att-class="'badge-danger' if spot.state == 'full' else ('badge-warning' if spot.state == 'booked' else 'badge-success')" t-esc="spot.status_display"/>
+                                                        </p>
+                                                        <p class="small mb-0">
+                                                            Capacity: <span t-esc="'%.1f' % spot.capacity"/> kg<br/>
+                                                            Used: <span t-esc="'%.1f' % spot.capacity_used"/> kg<br/>
+                                                            Available: <span t-esc="'%.1f' % spot.capacity_available"/> kg
+                                                        </p>
+                                                        <div class="progress mt-2" style="height: 10px;">
+                                                            <div class="progress-bar" t-attf-style="width: {{ spot.utilization_percent }}%;" t-att-class="'bg-danger' if spot.state == 'full' else ('bg-warning' if spot.state == 'booked' else 'bg-success')"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <t t-if="can_book">
+                                    <a t-attf-href="/rehal/flight/{{flight.id}}/book" class="btn btn-lg btn-primary">Book a Spot</a>
+                                </t>
+                                <t t-if="not can_book">
+                                    <div class="alert alert-warning">
+                                        <strong>Booking Closed:</strong> Booking deadline has passed. 
+                                        Booking must be made at least 2 hours before departure.
+                                        <br/>
+                                        <small>Deadline was: <span t-esc="booking_deadline"/></small>
+                                    </div>
+                                </t>
+                                <a href="/rehal/flights" class="btn btn-secondary">Back to Flights</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="booking_form_template" name="Booking Form">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <h1>Book a Spot - <span t-esc="flight.name"/></h1>
+                            
+                            <form method="post" t-attf-action="/rehal/flight/{{flight.id}}/book/submit" class="needs-validation" novalidate="">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card mb-3">
+                                            <div class="card-header">
+                                                <h5>Shipper Information</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label>Shipper Name <span class="text-danger">*</span></label>
+                                                    <input type="text" name="shipper_name" class="form-control" required=""/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Shipper Phone</label>
+                                                    <input type="text" name="shipper_phone" class="form-control"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Shipper Email</label>
+                                                    <input type="email" name="shipper_email" class="form-control"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Origin City</label>
+                                                    <select name="origin_address" class="form-control">
+                                                        <option value="">Select a city...</option>
+                                                        <t t-foreach="ksa_cities" t-as="city">
+                                                            <option t-att-value="city" t-esc="city"/>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="card mb-3">
+                                            <div class="card-header">
+                                                <h5>Consignee Information</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label>Consignee Name <span class="text-danger">*</span></label>
+                                                    <input type="text" name="consignee_name" class="form-control" required=""/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Consignee Phone</label>
+                                                    <input type="text" name="consignee_phone" class="form-control"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Consignee Email</label>
+                                                    <input type="email" name="consignee_email" class="form-control"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Destination City</label>
+                                                    <select name="destination_address" class="form-control">
+                                                        <option value="">Select a city...</option>
+                                                        <t t-foreach="ksa_cities" t-as="city">
+                                                            <option t-att-value="city" t-esc="city"/>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <h5>Shipment Details</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Select Spot <span class="text-danger">*</span></label>
+                                                    <select name="spot_id" class="form-control" required="">
+                                                        <option value="">-- Select a Spot --</option>
+                                                        <t t-foreach="available_spots" t-as="spot">
+                                                            <option t-att-value="spot.id" t-esc="'%s - Available: %.1f kg' % (spot.name, spot.capacity_available)"/>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Weight (kg) <span class="text-danger">*</span></label>
+                                                    <input type="number" name="weight" class="form-control" step="0.01" min="0.01" required=""/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Volume (m³)</label>
+                                                    <input type="number" name="volume" class="form-control" step="0.01" min="0"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Number of Pieces</label>
+                                                    <input type="number" name="pieces" class="form-control" value="1" min="1"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Description</label>
+                                                    <textarea name="description" class="form-control" rows="2"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-lg btn-primary">Submit Booking</button>
+                                    <a t-attf-href="/rehal/flight/{{flight.id}}" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="booking_confirmation_template" name="Booking Confirmation">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-success text-center">
+                                <h2>Booking Confirmed!</h2>
+                                <p>Your shipment has been successfully booked.</p>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Booking Details</h5>
+                                    <p><strong>Shipment Number:</strong> <span t-esc="shipment.name"/></p>
+                                    <p t-if="shipment.tracking_number"><strong>Tracking Number:</strong> <span t-esc="shipment.tracking_number"/></p>
+                                    <p><strong>Flight:</strong> <span t-esc="shipment.flight_id.name"/></p>
+                                    <p><strong>Spot:</strong> <span t-esc="shipment.spot_id.name if shipment.spot_id else 'N/A'"/></p>
+                                    <p><strong>Total Cost:</strong> <span t-esc="shipment.total_cost"/> <span t-esc="shipment.currency_id.symbol"/></p>
+                                    <p><strong>Status:</strong> <span class="badge badge-info" t-esc="shipment.state"/></p>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-4">
+                                <a href="/rehal/flights" class="btn btn-primary">View More Flights</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

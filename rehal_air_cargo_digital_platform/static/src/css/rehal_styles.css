@@ -1,0 +1,39 @@
+/* Rehal Air Cargo - Backend Styles */
+
+/* Spot color coding */
+.spot-full {
+    background-color: #ffebee !important;
+    border-left: 4px solid #d32f2f !important;
+}
+
+.spot-partial {
+    background-color: #fff3e0 !important;
+    border-left: 4px solid #ff9800 !important;
+}
+
+.spot-empty {
+    background-color: #e8f5e9 !important;
+    border-left: 4px solid #4caf50 !important;
+}
+
+/* Flight kanban cards */
+.o_kanban_view .oe_kanban_card {
+    border-radius: 4px;
+}
+
+/* Spot status badges */
+.badge-spot-full {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.badge-spot-partial {
+    background-color: #ff9800;
+    color: white;
+}
+
+.badge-spot-empty {
+    background-color: #4caf50;
+    color: white;
+}
+

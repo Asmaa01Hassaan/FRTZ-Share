@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_rehal_flight" model="ir.sequence">
+            <field name="name">Flight Sequence</field>
+            <field name="code">rehal.flight</field>
+            <field name="prefix">FLT</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+        </record>
+        
+        <record id="seq_rehal_shipment" model="ir.sequence">
+            <field name="name">Shipment Sequence</field>
+            <field name="code">rehal.shipment</field>
+            <field name="prefix">SHM</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+        </record>
+        
+        <record id="seq_rehal_shipment_tracking" model="ir.sequence">
+            <field name="name">Shipment Tracking Sequence</field>
+            <field name="code">rehal.shipment.tracking</field>
+            <field name="prefix">TRK</field>
+            <field name="padding">8</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+        </record>
+    </data>
+</odoo>
+

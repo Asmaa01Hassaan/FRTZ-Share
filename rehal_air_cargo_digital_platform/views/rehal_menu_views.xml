@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_rehal_root" name="Rehal Air Cargo" sequence="100" web_icon="rehal_air_cargo_digital_platform,static/description/icon.png"/>
+    
+    <menuitem id="menu_rehal_flights" name="Flights" parent="menu_rehal_root" action="action_rehal_flight" sequence="10"/>
+    <menuitem id="menu_rehal_spots" name="Spots" parent="menu_rehal_root" action="action_rehal_spot" sequence="20"/>
+    <menuitem id="menu_rehal_shipments" name="Shipments" parent="menu_rehal_root" action="action_rehal_shipment" sequence="30"/>
+    <menuitem id="menu_rehal_sale_orders" name="Sale Orders" parent="menu_rehal_root" action="sale.action_orders" sequence="40"/>
+</odoo>
+

@@ -1,0 +1,105 @@
+/* Rehal Air Cargo - Public Website Styles */
+
+.spot-card {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.spot-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.spot-card.spot-full {
+    border-color: #d32f2f;
+    background-color: #ffebee;
+}
+
+.spot-card.spot-partial {
+    border-color: #ff9800;
+    background-color: #fff3e0;
+}
+
+.spot-card.spot-empty {
+    border-color: #4caf50;
+    background-color: #e8f5e9;
+}
+
+.spot-card .card-body {
+    padding: 1rem;
+}
+
+.spot-card h6 {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.progress {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    transition: width 0.6s ease;
+}
+
+/* Flight list table */
+.table-responsive {
+    margin-top: 1rem;
+}
+
+.badge {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Booking form */
+.needs-validation .form-group {
+    margin-bottom: 1rem;
+}
+
+.card {
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .spot-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Alert messages */
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+    color: #856404;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
