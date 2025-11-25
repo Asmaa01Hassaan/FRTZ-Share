@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Settings View -->
+    <record id="res_config_settings_view_form_inherit_whatsapp" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.whatsapp</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="WhatsApp Invitations" name="whatsapp_wedding_invitations">
+                    <setting string="WhatsApp Server URL" help="URL of the WhatsApp server (e.g., http://localhost:3000)">
+                        <field name="whatsapp_server_url" placeholder="http://localhost:3000"/>
+                    </setting>
+                    <setting string="Delay Between Messages (ms)" help="Delay (in milliseconds) between each WhatsApp message to avoid rate limiting.">
+                        <field name="whatsapp_delay_between_messages" placeholder="2000"/>
+                    </setting>
+                    <setting string="Docker Container Name" help="Name of the Docker container that runs the WhatsApp bridge service.">
+                        <field name="whatsapp_bridge_container_name" placeholder="whatsapp-bridge"/>
+                    </setting>
+                    <setting string="Test Connection" help="Check that the WhatsApp server is reachable and authenticated.">
+                        <button name="action_test_whatsapp_connection"
+                                type="object"
+                                string="Test Connection"
+                                class="btn-secondary"/>
+                    </setting>
+                    <setting string="WhatsApp QR Code" help="Click refresh to fetch the latest QR code and scan it with the WhatsApp mobile app.">
+                        <button name="action_fetch_whatsapp_qr_code"
+                                type="object"
+                                string="Refresh QR Code"
+                                class="btn-secondary me-3"/>
+                        <div class="mt16 mb8 o_text_center">
+                            <field name="whatsapp_qr_code_image"
+                                   widget="image"
+                                   class="o_wedding_qr_preview"
+                                   readonly="1"
+                                   nolabel="1"
+                                   options="{'preview_image': False, 'size': [300, 300]}"/>
+                        </div>
+                        <field name="whatsapp_qr_code_text" readonly="1" placeholder="QR string will appear after clicking Refresh" />
+                    </setting>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

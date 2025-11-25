@@ -1,0 +1,221 @@
+{
+  "name": "Wedding Invitations via WhatsApp",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "wedding-invitations",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "wedding-invitations"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse incoming data from webhook\nconst guests = $input.item.json.guests || [];\nconst messageTemplate = $input.item.json.messageTemplate || `\n🎉 *Wedding Invitation* 🎉\n\nDear {name},\n\nYou are cordially invited to celebrate our special day!\n\n📅 Date: [Your Wedding Date]\n📍 Venue: [Your Venue]\n⏰ Time: [Your Time]\n\nWe would be honored to have you join us on this joyous occasion.\n\nPlease RSVP by [RSVP Date]\n\nLooking forward to celebrating with you!\n\nWith love,\n[Your Names]\n`;\n\nconst delay = $input.item.json.delay || 2000;\n\nreturn guests.map((guest, index) => ({\n  json: {\n    guest: guest,\n    messageTemplate: messageTemplate,\n    delay: delay,\n    index: index\n  }\n}));"
+      },
+      "id": "prepare-guests",
+      "name": "Prepare Guests",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/api/send-bulk",
+        "authentication": "none",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"guests\": [{\n    \"name\": \"{{ $json.guest.name }}\",\n    \"phoneNumber\": \"{{ $json.guest.phoneNumber || $json.guest.phone || $json.guest.number }}\",\n    \"guestName\": \"{{ $json.guest.guestName || $json.guest.name }}\"\n  }],\n  \"messageTemplate\": \"{{ $json.messageTemplate }}\",\n  \"delay\": {{ $json.delay }}\n}",
+        "options": {}
+      },
+      "id": "send-whatsapp",
+      "name": "Send WhatsApp Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  \"success\": true,\n  \"message\": \"Wedding invitations sent successfully\",\n  \"totalGuests\": {{ $json.total }},\n  \"sent\": {{ $json.sent }},\n  \"failed\": {{ $json.failed }},\n  \"results\": {{ $json.results }},\n  \"errors\": {{ $json.errors }}\n} }}"
+      },
+      "id": "webhook-response",
+      "name": "Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-status",
+              "leftValue": "={{ $json.success }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-success",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "log-success",
+              "name": "logMessage",
+              "value": "=Wedding invitations sent successfully",
+              "type": "string"
+            },
+            {
+              "id": "log-details",
+              "name": "details",
+              "value": "={{ $json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "log-success-node",
+      "name": "Log Success",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [950, 200]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "log-error",
+              "name": "logMessage",
+              "value": "=Error sending wedding invitations",
+              "type": "string"
+            },
+            {
+              "id": "log-error-details",
+              "name": "errorDetails",
+              "value": "={{ $json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "log-error-node",
+      "name": "Log Error",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [950, 400]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Prepare Guests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Guests": {
+      "main": [
+        [
+          {
+            "node": "Send WhatsApp Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send WhatsApp Message": {
+      "main": [
+        [
+          {
+            "node": "Check Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Success": {
+      "main": [
+        [
+          {
+            "node": "Log Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Success": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Error": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "1"
+}
+
