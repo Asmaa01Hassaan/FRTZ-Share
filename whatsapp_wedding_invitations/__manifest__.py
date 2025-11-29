@@ -39,7 +39,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/calendar_event_views.xml',
-        # 'views/event_event_views.xml',
+        'views/event_event_views.xml',
         'views/event_guest_views.xml',
         'views/res_config_settings_views.xml',
         'views/whatsapp_qr_session_views.xml',

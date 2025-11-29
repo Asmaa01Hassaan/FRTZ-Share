@@ -15,9 +15,9 @@
                         icon="fa-whatsapp"
                         invisible="guest_count == 0"/>
             </xpath>
-            <xpath expr="//field[@name='description']" position="after">
-                <field name="invitation_image"/>
-            </xpath>
+<!--            <xpath expr="//field[@name='description']" position="after">-->
+<!--                <field name="invitation_image"/>-->
+<!--            </xpath>-->
 
             <xpath expr="//sheet" position="before">
                 <header>

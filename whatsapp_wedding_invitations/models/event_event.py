@@ -41,6 +41,34 @@ class EventEvent(models.Model):
 
         return events
 
+    def open_related_calendar_event(self):
+        self.ensure_one()
+
+        cal_event = self.env['calendar.event'].search([('id', '=', self.calendar_event_id.id)], limit=1)
+
+        if not cal_event:
+            # رسالة لو مفيش calendar مرتبط
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'No Related Calendar Event',
+                    'message': 'This Event is not linked to any Calendar entry.',
+                    'type': 'warning',
+                    'sticky': False,
+                }
+            }
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Calendar Event',
+            'res_model': 'calendar.event',
+            'view_mode': 'list,form',  # list + form
+            'domain': [('id', '=', cal_event.id)],
+            'res_id': cal_event.id,
+            'target': 'current',
+        }
+
     def _compute_whatsapp_stats(self):
         for event in self:
             registrations = event.registration_ids
