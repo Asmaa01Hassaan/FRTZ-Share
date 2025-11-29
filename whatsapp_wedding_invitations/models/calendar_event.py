@@ -37,6 +37,33 @@ class CalendarEvent(models.Model):
         default=lambda self: self._default_invitation_template(),
         help='Message template for WhatsApp invitations. Use {name} for guest name, {event_name} for event name, {date} for event date, {venue} for venue.'
     )
+
+    def open_related_event(self):
+        self.ensure_one()
+
+        event = self.env['event.event'].search([('calendar_event_id', '=', self.id)], limit=1)
+
+        if not event:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'No Related Event',
+                    'message': 'This calendar entry is not linked to any Event.',
+                    'type': 'warning',
+                    'sticky': False,
+                }
+            }
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Event',
+            'res_model': 'event.event',
+            'view_mode': 'list,form',
+            'domain': [('calendar_event_id', '=', self.id)],
+            'res_id': event.id,
+            'target': 'current',
+        }
     
     @api.depends('event_guest_ids')
     def _compute_guest_count(self):

@@ -15,7 +15,19 @@
                         icon="fa-whatsapp"
                         invisible="guest_count == 0"/>
             </xpath>
-            
+            <xpath expr="//field[@name='description']" position="after">
+                <field name="invitation_image"/>
+            </xpath>
+
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="open_related_event"
+                            type="object"
+                            string="Open Event"
+                            class="btn-primary"/>
+                </header>
+            </xpath>
+
             <!-- Add guests section in notebook -->
             <!-- Note: If notebook doesn't exist in calendar.event form, this will need to be adjusted -->
             <xpath expr="//notebook" position="inside">
@@ -26,8 +38,8 @@
                         <field name="invitation_failed_count" widget="statinfo" string="Invitations Failed"/>
                     </group>
                     <group>
-                        <field name="invitation_message_template" 
-                               placeholder="Message template for invitations. Use {name}, {event_name}, {date}, {venue}, {time} as placeholders."
+                        <field name="invitation_message_template"
+                               placeholder="Message template for invitations. Use {name}, {event_name},{date},{venue}, {time} as placeholders."
                                widget="text"/>
                     </group>
                     <field name="event_guest_ids" nolabel="1">
@@ -35,7 +47,7 @@
                             <field name="name" required="1"/>
                             <field name="phone_number" required="1"/>
                             <field name="email"/>
-                            <field name="invitation_status" widget="badge" 
+                            <field name="invitation_status" widget="badge"
                                    decoration-success="invitation_status == 'sent'"
                                    decoration-danger="invitation_status == 'failed'"
                                    decoration-muted="invitation_status == 'not_sent'"/>
@@ -62,7 +74,7 @@
                                     </group>
                                 </group>
                                 <group>
-                                    <field name="invitation_error" readonly="1" 
+                                    <field name="invitation_error" readonly="1"
                                            invisible="invitation_status != 'failed'"/>
                                     <field name="message_id" readonly="1"/>
                                     <field name="notes"/>

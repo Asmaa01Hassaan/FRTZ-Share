@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields
+from odoo import models, fields,api
 from odoo.exceptions import UserError
 
 
@@ -25,6 +25,21 @@ class EventEvent(models.Model):
         string='WhatsApp Invitations Failed',
         compute='_compute_whatsapp_stats',
     )
+
+    calendar_event_id = fields.Many2one('calendar.event', string="Calendar Event")
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        events = super(EventEvent, self).create(vals_list)
+
+        for ev in events:
+            cal = self.env['calendar.event'].create({
+                'name': ev.name,
+                'allday': False,
+            })
+            ev.calendar_event_id = cal.id
+
+        return events
 
     def _compute_whatsapp_stats(self):
         for event in self:
