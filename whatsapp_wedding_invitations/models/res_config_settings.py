@@ -18,7 +18,7 @@ class ResConfigSettings(models.TransientModel):
         string='WhatsApp Server URL',
         config_parameter='whatsapp_wedding_invitations.server_url',
         default='http://localhost:3000',
-        help='URL of the WhatsApp server (e.g., http://localhost:3000)'
+        help='URL of the WhatsApp server. For production: http://localhost:3000 (when using --network host)'
     )
     
     whatsapp_delay_between_messages = fields.Integer(
@@ -134,6 +134,18 @@ class ResConfigSettings(models.TransientModel):
     def _ensure_whatsapp_bridge_running(self):
         """Ensure the Docker container hosting the WhatsApp bridge is running."""
         container_name = self.whatsapp_bridge_container_name or 'whatsapp-bridge'
+        server_url = self.whatsapp_server_url or 'http://localhost:3000'
+        
+        # First, try to check if WhatsApp server is accessible directly
+        try:
+            req = urllib.request.Request(f'{server_url}/api/status')
+            with urllib.request.urlopen(req, timeout=3) as response:
+                if response.status == 200:
+                    return  # Server is running, no need to check Docker
+        except Exception:
+            pass  # Server not accessible, check Docker
+        
+        # If direct connection fails, check Docker container
         check_cmd = [
             'docker', 'ps',
             '--filter', f'name=^{container_name}$',
@@ -147,7 +159,8 @@ class ResConfigSettings(models.TransientModel):
                 timeout=10,
             )
         except FileNotFoundError:
-            raise UserError('Docker command not found. Please install Docker and ensure it is in the PATH.')
+            # Docker not available, but server might be running without Docker
+            return
         except subprocess.TimeoutExpired:
             raise UserError('Checking Docker container status timed out.')
 

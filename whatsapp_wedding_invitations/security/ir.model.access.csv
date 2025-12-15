@@ -2,6 +2,8 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_event_guest_user,event.guest.user,model_event_guest,base.group_user,1,1,1,1
 access_event_guest_public,event.guest.public,model_event_guest,,1,0,0,0
 access_whatsapp_invitation_wizard_user,whatsapp.invitation.wizard.user,model_whatsapp_invitation_wizard,base.group_user,1,1,1,1
+access_whatsapp_attachment_wizard_user,whatsapp.attachment.wizard.user,model_whatsapp_attachment_wizard,base.group_user,1,1,1,1
+access_whatsapp_confirmation_wizard_user,whatsapp.confirmation.wizard.user,model_whatsapp_confirmation_wizard,base.group_user,1,1,1,1
 access_whatsapp_qr_session_user,whatsapp.qr.session.user,model_whatsapp_qr_session,base.group_user,1,1,1,1
 
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
@@ -9,7 +9,7 @@ class CalendarEvent(models.Model):
 
     event_guest_ids = fields.One2many(
         'event.guest',
-        'event_id',
+        'calendar_event_id',
         string='Guests',
         help='List of guests invited to this event'
     )
@@ -32,11 +32,82 @@ class CalendarEvent(models.Model):
         store=True
     )
     
+    # RSVP Stats
+    rsvp_pending_count = fields.Integer(
+        string='Pending RSVPs',
+        compute='_compute_rsvp_stats',
+        store=True
+    )
+    
+    rsvp_accepted_count = fields.Integer(
+        string='Accepted RSVPs',
+        compute='_compute_rsvp_stats',
+        store=True
+    )
+    
+    rsvp_declined_count = fields.Integer(
+        string='Declined RSVPs',
+        compute='_compute_rsvp_stats',
+        store=True
+    )
+    
+    total_expected_attendees = fields.Integer(
+        string='Total Expected Attendees',
+        compute='_compute_rsvp_stats',
+        store=True,
+        help='Total number of people expected (guests + companions)'
+    )
+    
+    def action_view_guests(self):
+        """Open guest list filtered by this calendar event"""
+        self.ensure_one()
+        return {
+            'name': f'Guests - {self.name}',
+            'type': 'ir.actions.act_window',
+            'res_model': 'event.guest',
+            'view_mode': 'tree,form',
+            'domain': [('calendar_event_id', '=', self.id)],
+            'context': {
+                'default_calendar_event_id': self.id,
+                'search_default_group_by_rsvp_status': 1,
+            }
+        }
+    
     invitation_message_template = fields.Text(
         string='Invitation Message Template',
         default=lambda self: self._default_invitation_template(),
-        help='Message template for WhatsApp invitations. Use {name} for guest name, {event_name} for event name, {date} for event date, {venue} for venue.'
+        help='''Message template for WhatsApp invitations.
+        
+Available placeholders:
+• {name} - Guest full name
+• {guestName} - Guest first name
+• {event_name} - Event name
+• {date} - Event date
+• {venue} - Venue/Location
+• {time} - Event time
+• {organizer} - Organizer name
+• {image_url} - Invitation image URL
+• {confirm_url} - RSVP confirm link
+• {decline_url} - RSVP decline link'''
     )
+    
+    invitation_image = fields.Binary(
+        string='Invitation Image',
+        attachment=True,
+        store=True,
+        help='Image to send with the invitation message (optional). Supported formats: JPG, PNG, GIF.'
+    )
+    
+    invitation_image_filename = fields.Char(
+        string='Image Filename',
+        help='Filename of the invitation image'
+    )
+    
+    invitation_image_url = fields.Char(
+        string='Invitation Image URL',
+        help='Public URL of the invitation image. Use this if you want to include an image link in the message. The image must be publicly accessible.'
+    )
+
 
     def open_related_event(self):
         self.ensure_one()
@@ -64,7 +135,6 @@ class CalendarEvent(models.Model):
             'res_id': event.id,
             'target': 'current',
         }
-    
     @api.depends('event_guest_ids')
     def _compute_guest_count(self):
         for record in self:
@@ -80,25 +150,46 @@ class CalendarEvent(models.Model):
                 lambda g: g.invitation_status == 'failed'
             ))
     
+    @api.depends('event_guest_ids.rsvp_status', 'event_guest_ids.total_attendees')
+    def _compute_rsvp_stats(self):
+        for record in self:
+            guests = record.event_guest_ids
+            record.rsvp_pending_count = len(guests.filtered(lambda g: g.rsvp_status == 'pending'))
+            record.rsvp_accepted_count = len(guests.filtered(lambda g: g.rsvp_status == 'accepted'))
+            record.rsvp_declined_count = len(guests.filtered(lambda g: g.rsvp_status == 'declined'))
+            record.total_expected_attendees = sum(guests.filtered(lambda g: g.rsvp_status == 'accepted').mapped('total_attendees'))
+    
     def _default_invitation_template(self):
-        return """🎉 *Wedding Invitation* 🎉
+        return """💒 *دعوة زفاف* 💒
 
-Dear {name},
+مرحباً *{name}*
 
-You are cordially invited to celebrate our special day!
+يسعدنا دعوتك لمشاركتنا أجمل لحظات حياتنا!
 
-📅 Event: {event_name}
-📅 Date: {date}
-📍 Venue: {venue}
-⏰ Time: {time}
+✨ *{event_name}* ✨
 
-We would be honored to have you join us on this joyous occasion.
+📅 التاريخ: {date}
+📍 المكان: {venue}
+⏰ الوقت: {time}
 
-Please RSVP at your earliest convenience.
+┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
 
-Looking forward to celebrating with you!
+📸 *شاهد بطاقة الدعوة* 👇
+{image_url}
 
-With love,
+┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+
+✅ *للتأكيد اضغط هنا* 👇
+{confirm_url}
+
+❌ *للاعتذار اضغط هنا* 👇
+{decline_url}
+
+┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+
+نتشرف بحضوركم! 💕
+
+مع حبنا،
 {organizer}"""
     
     def action_send_whatsapp_invitations(self):
@@ -124,6 +215,40 @@ With love,
                 'default_event_id': self.id,
                 'default_guest_ids': guests_with_phone.ids,
                 'default_message_template': self.invitation_message_template or self._default_invitation_template(),
+                'default_invitation_image': self.invitation_image,
+                'default_invitation_image_filename': self.invitation_image_filename,
+            }
+        }
+    
+    def action_send_whatsapp_attachments(self):
+        """Open wizard to send WhatsApp attachments to guests"""
+        self.ensure_one()
+        
+        if not self.event_guest_ids:
+            raise UserError('Please add guests to the event before sending attachments.')
+        
+        # Filter guests with phone numbers
+        guests_with_phone = self.event_guest_ids.filtered(lambda g: g.phone_number)
+        
+        if not guests_with_phone:
+            raise UserError('No guests have phone numbers. Please add phone numbers to guests.')
+        
+        # Get attachments related to this event
+        attachments = self.env['ir.attachment'].search([
+            ('res_model', '=', 'calendar.event'),
+            ('res_id', '=', self.id)
+        ])
+        
+        return {
+            'name': 'Send WhatsApp Attachments',
+            'type': 'ir.actions.act_window',
+            'res_model': 'whatsapp.attachment.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_event_id': self.id,
+                'default_guest_ids': guests_with_phone.ids,
+                'default_attachment_ids': attachments.ids if attachments else [],
             }
         }
     
@@ -147,5 +272,53 @@ With love,
         if self.location:
             return self.location
         return 'TBD'
+    
+    def _get_invitation_image_url(self):
+        """Get invitation image URL"""
+        self.ensure_one()
+        # If user provided a direct URL, use it
+        if self.invitation_image_url:
+            return self.invitation_image_url
+        # Otherwise return empty string (placeholder will be removed)
+        return ''
+    
+    def action_send_rsvp_requests(self):
+        """Open wizard to send RSVP confirmation requests"""
+        self.ensure_one()
+        
+        if not self.event_guest_ids:
+            raise UserError('Please add guests to the event before sending RSVP requests.')
+        
+        # Filter guests with phone numbers
+        guests_with_phone = self.event_guest_ids.filtered(lambda g: g.phone_number)
+        
+        if not guests_with_phone:
+            raise UserError('No guests have phone numbers. Please add phone numbers to guests.')
+        
+        return {
+            'name': 'Send RSVP Requests',
+            'type': 'ir.actions.act_window',
+            'res_model': 'whatsapp.confirmation.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_event_id': self.id,
+            }
+        }
+    
+    def action_view_rsvp_stats(self):
+        """View RSVP statistics and guest list"""
+        self.ensure_one()
+        return {
+            'name': f'RSVP Status - {self.name}',
+            'type': 'ir.actions.act_window',
+            'res_model': 'event.guest',
+            'view_mode': 'tree,form',
+            'domain': [('event_id', '=', self.id)],
+            'context': {
+                'default_event_id': self.id,
+                'search_default_group_by_rsvp_status': 1,
+            }
+        }
 
 

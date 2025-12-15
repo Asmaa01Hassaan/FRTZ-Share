@@ -6,19 +6,6 @@
         <field name="model">calendar.event</field>
         <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
         <field name="arch" type="xml">
-            <!-- Add button in sheet after name field -->
-            <xpath expr="//sheet//field[@name='name']" position="after">
-                <button name="action_send_whatsapp_invitations"
-                        type="object"
-                        string="Send WhatsApp Invitations"
-                        class="btn-primary float-end"
-                        icon="fa-whatsapp"
-                        invisible="guest_count == 0"/>
-            </xpath>
-<!--            <xpath expr="//field[@name='description']" position="after">-->
-<!--                <field name="invitation_image"/>-->
-<!--            </xpath>-->
-
             <xpath expr="//sheet" position="before">
                 <header>
                     <button name="open_related_event"
@@ -26,58 +13,187 @@
                             string="Open Event"
                             class="btn-primary"/>
                 </header>
+
             </xpath>
 
+            <!-- Add buttons in sheet after name field -->
+<!--            <xpath expr="//sheet//field[@name='name']" position="after">-->
+<!--                -->
+<!--            </xpath>-->
+            
             <!-- Add guests section in notebook -->
             <!-- Note: If notebook doesn't exist in calendar.event form, this will need to be adjusted -->
             <xpath expr="//notebook" position="inside">
-                <page string="Guests" name="guests">
+                <page string="Guests &amp; RSVP" name="guests">
+                    <div class="float-end mb-2">
+<!--                    <button name="action_send_whatsapp_invitations"-->
+<!--                            type="object"-->
+<!--                            string="📨 Send Invitations"-->
+<!--                            class="btn-primary"-->
+<!--                            invisible="guest_count == 0"/>-->
+                    <button name="action_send_rsvp_requests"
+                            type="object"
+                            string="📩 Send RSVP Requests"
+                            class="btn-success ms-1"
+                            invisible="guest_count == 0"/>
+                    <button name="action_send_whatsapp_attachments"
+                            type="object"
+                            string="📎 Send Attachments"
+                            class="btn-secondary ms-1"
+                            invisible="guest_count == 0"/>
+                </div>
+                    <!-- Stats Section -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-primary text-white">
+                                    <strong>📋 Invitation Status</strong>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row text-center">
+                                        <div class="col">
+                                            <field name="guest_count" widget="statinfo" string="Total" 
+                                                   action="action_view_guests"/>
+                                        </div>
+                                        <div class="col">
+                                            <field name="invitation_sent_count" widget="statinfo" string="Sent"
+                                                   action="action_view_guests"
+                                                   context="{'search_default_invitation_sent': 1}"/>
+                                        </div>
+                                        <div class="col">
+                                            <field name="invitation_failed_count" widget="statinfo" string="Failed"
+                                                   action="action_view_guests"
+                                                   context="{'search_default_invitation_failed': 1}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-success text-white">
+                                    <strong>✅ RSVP Status</strong>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row text-center">
+                                        <div class="col">
+                                            <field name="rsvp_pending_count" widget="statinfo" string="Pending"
+                                                   action="action_view_guests"
+                                                   context="{'search_default_rsvp_pending': 1}"/>
+                                        </div>
+                                        <div class="col">
+                                            <field name="rsvp_accepted_count" widget="statinfo" string="Accepted"
+                                                   action="action_view_guests"
+                                                   context="{'search_default_rsvp_accepted': 1}"/>
+                                        </div>
+                                        <div class="col">
+                                            <field name="rsvp_declined_count" widget="statinfo" string="Declined"
+                                                   action="action_view_guests"
+                                                   context="{'search_default_rsvp_declined': 1}"/>
+                                        </div>
+                                        <div class="col">
+                                            <field name="total_expected_attendees" widget="statinfo" string="Expected"
+                                                   action="action_view_guests"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <group>
-                        <field name="guest_count" widget="statinfo" string="Total Guests"/>
-                        <field name="invitation_sent_count" widget="statinfo" string="Invitations Sent"/>
-                        <field name="invitation_failed_count" widget="statinfo" string="Invitations Failed"/>
-                    </group>
-                    <group>
-                        <field name="invitation_message_template"
-                               placeholder="Message template for invitations. Use {name}, {event_name},{date},{venue}, {time} as placeholders."
-                               widget="text"/>
+                        <group>
+                            <field name="invitation_message_template" 
+                                   placeholder="Message template for invitations. Use {name}, {event_name}, {date}, {venue}, {time} as placeholders."
+                                   widget="text"/>
+                        </group>
+                        <group>
+                            <label for="invitation_image_url" string="Image URL (Recommended)"/>
+                            <field name="invitation_image_url" 
+                                   placeholder="https://example.com/invitation.jpg"
+                                   widget="url"/>
+                            <div class="text-muted">
+                                <i class="fa fa-info-circle"/> Paste a public URL to your invitation image. Use {image_url} placeholder in your message template.
+                            </div>
+                            <separator string="Or Upload Image File (PNG/JPG/GIF)"/>
+                            <label for="invitation_image" string="Invitation Image"/>
+                            <div class="o_row">
+                                <field name="invitation_image" widget="image" class="oe_avatar"/>
+                            </div>
+                            <field name="invitation_image_filename" invisible="1"/>
+                            <div class="text-muted" invisible="not invitation_image">
+                                <i class="fa fa-whatsapp"/> This image will be sent as an attachment (PNG, JPG, or GIF) to each guest's WhatsApp.
+                            </div>
+                        </group>
                     </group>
                     <field name="event_guest_ids" nolabel="1">
                         <list string="Guests" editable="bottom">
                             <field name="name" required="1"/>
                             <field name="phone_number" required="1"/>
-                            <field name="email"/>
-                            <field name="invitation_status" widget="badge"
+                            <field name="email" optional="hide"/>
+                            <field name="invitation_status" widget="badge" 
                                    decoration-success="invitation_status == 'sent'"
                                    decoration-danger="invitation_status == 'failed'"
                                    decoration-muted="invitation_status == 'not_sent'"/>
-                            <field name="invitation_sent_date"/>
                             <field name="rsvp_status" widget="badge"
                                    decoration-success="rsvp_status == 'accepted'"
                                    decoration-danger="rsvp_status == 'declined'"
-                                   decoration-muted="rsvp_status == 'pending'"/>
-                            <field name="notes"/>
+                                   decoration-warning="rsvp_status == 'pending'"/>
+                            <field name="companions_count" string="👥 Companions" sum="Total"/>
+                            <field name="total_attendees" string="📊 Total" sum="Total Expected"/>
+                            <field name="rsvp_response_date" string="Response Date" optional="hide"/>
+                            <field name="rsvp_response_method" optional="hide"/>
+                            <field name="confirmation_sent" widget="boolean_toggle" optional="hide"/>
+                            <field name="notes" optional="hide"/>
                         </list>
                         <form string="Guest">
                             <sheet>
+                                <div class="oe_button_box" name="button_box">
+                                    <button name="action_confirm_attendance" type="object" 
+                                            string="✅ Confirm" class="oe_stat_button"
+                                            invisible="rsvp_status == 'accepted'"/>
+                                    <button name="action_decline_attendance" type="object" 
+                                            string="❌ Decline" class="oe_stat_button"
+                                            invisible="rsvp_status == 'declined'"/>
+                                    <button name="action_reset_rsvp" type="object" 
+                                            string="🔄 Reset RSVP" class="oe_stat_button"
+                                            invisible="rsvp_status == 'pending'"/>
+                                </div>
                                 <group>
-                                    <group>
+                                    <group string="Guest Information">
                                         <field name="name" required="1"/>
                                         <field name="phone_number" required="1"/>
                                         <field name="email"/>
-                                    </group>
-                                    <group>
                                         <field name="event_id" readonly="1"/>
+                                    </group>
+                                    <group string="Invitation Status">
                                         <field name="invitation_status"/>
                                         <field name="invitation_sent_date" readonly="1"/>
-                                        <field name="rsvp_status"/>
+                                        <field name="invitation_error" readonly="1" 
+                                               invisible="invitation_status != 'failed'"/>
+                                        <field name="message_id" readonly="1"/>
                                     </group>
                                 </group>
                                 <group>
-                                    <field name="invitation_error" readonly="1"
-                                           invisible="invitation_status != 'failed'"/>
-                                    <field name="message_id" readonly="1"/>
-                                    <field name="notes"/>
+                                    <group string="RSVP Status">
+                                        <field name="rsvp_status"/>
+                                        <field name="rsvp_response_date" readonly="1"/>
+                                        <field name="rsvp_response_method" readonly="1"/>
+                                        <field name="companions_count"/>
+                                        <field name="total_attendees" readonly="1"/>
+                                    </group>
+                                    <group string="Confirmation Links">
+                                        <field name="confirmation_sent" readonly="1"/>
+                                        <field name="confirmation_sent_date" readonly="1"/>
+                                        <field name="confirm_url" widget="url" readonly="1" 
+                                               string="✅ Confirm Link"/>
+                                        <field name="decline_url" widget="url" readonly="1"
+                                               string="❌ Decline Link"/>
+                                        <field name="confirmation_token" readonly="1" invisible="1"/>
+                                    </group>
+                                </group>
+                                <group string="Messages">
+                                    <field name="rsvp_message" readonly="1" placeholder="Guest's response message"/>
+                                    <field name="notes" placeholder="Internal notes about this guest"/>
                                 </group>
                             </sheet>
                         </form>

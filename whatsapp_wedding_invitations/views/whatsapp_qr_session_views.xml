@@ -17,6 +17,18 @@
                             string="Check Connection"
                             class="btn-secondary"
                             icon="fa-check-circle"/>
+                    <button name="action_restart_server"
+                            type="object"
+                            string="Restart Server"
+                            class="btn-warning"
+                            icon="fa-power-off"
+                            confirm="Are you sure you want to restart the WhatsApp Server? This will wait 15 seconds for reconnection."/>
+                    <button name="action_check_odoo_server"
+                            type="object"
+                            string="Check Odoo Server"
+                            class="btn-info"
+                            icon="fa-server"
+                            confirm="This will wait 20 seconds then check if Odoo server is responding. Continue?"/>
                     <field name="status" widget="statusbar" 
                            statusbar_visible="disconnected,qr_ready,connected"/>
                 </header>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="view_hr_employee_delegation_tree" model="ir.ui.view">
+        <field name="name">hr.employee.delegation.tree</field>
+        <field name="model">hr.employee.delegation</field>
+        <field name="arch" type="xml">
+            <list string="Employee Delegations" decoration-success="state=='active'" decoration-muted="state in ['expired', 'cancelled']">
+                <field name="employee_id"/>
+                <field name="delegate_to_employee_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="reason"/>
+                <field name="state" widget="badge" decoration-success="state=='active'" decoration-danger="state=='expired'" decoration-warning="state=='draft'"/>
+                <field name="is_current" invisible="1"/>
+                <field name="delegated_opportunities_count"/>
+                <field name="delegated_tasks_count"/>
+                <field name="delegated_activities_count"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_hr_employee_delegation_form" model="ir.ui.view">
+        <field name="name">hr.employee.delegation.form</field>
+        <field name="model">hr.employee.delegation</field>
+        <field name="arch" type="xml">
+            <form string="Employee Delegation">
+                <header>
+                    <button name="action_activate" string="Activate" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ['draft', 'active']" confirm="Are you sure you want to cancel this delegation?"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,expired"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_delegated_opportunities" type="object" class="oe_stat_button" icon="fa-bullseye" invisible="delegated_opportunities_count == 0">
+                            <field name="delegated_opportunities_count" widget="statinfo" string="Opportunities"/>
+                        </button>
+                        <button name="action_view_delegated_tasks" type="object" class="oe_stat_button" icon="fa-tasks" invisible="delegated_tasks_count == 0">
+                            <field name="delegated_tasks_count" widget="statinfo" string="Tasks"/>
+                        </button>
+                        <button name="action_view_delegated_activities" type="object" class="oe_stat_button" icon="fa-calendar-check-o" invisible="delegated_activities_count == 0">
+                            <field name="delegated_activities_count" widget="statinfo" string="Activities"/>
+                        </button>
+                    </div>
+                    
+                    <widget name="web_ribbon" title="Active" bg_color="bg-success" invisible="state != 'active'"/>
+                    <widget name="web_ribbon" title="Expired" bg_color="bg-danger" invisible="state != 'expired'"/>
+                    
+                    <group>
+                        <group string="Delegation Information">
+                            <field name="employee_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="user_id" readonly="1"/>
+                            <field name="delegate_to_employee_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="delegate_to_user_id" readonly="1"/>
+                        </group>
+                        <group string="Period">
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="is_current" invisible="1"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Reason">
+                            <field name="reason"/>
+                        </group>
+                        <group>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Notes">
+                        <field name="notes" nolabel="1" placeholder="Additional information about this delegation..."/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_hr_employee_delegation_kanban" model="ir.ui.view">
+        <field name="name">hr.employee.delegation.kanban</field>
+        <field name="model">hr.employee.delegation</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="employee_id"/>
+                <field name="delegate_to_employee_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+                <field name="reason"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="employee_id"/> → <field name="delegate_to_employee_id"/>
+                                    </strong>
+                                </div>
+                                <span class="float-end badge" t-attf-class="badge-{{record.state.raw_value == 'active' ? 'success' : (record.state.raw_value == 'expired' ? 'danger' : 'warning')}}">
+                                    <field name="state"/>
+                                </span>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <field name="date_from"/> - <field name="date_to"/>
+                                <br/>
+                                <span class="badge badge-secondary"><field name="reason"/></span>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_hr_employee_delegation_search" model="ir.ui.view">
+        <field name="name">hr.employee.delegation.search</field>
+        <field name="model">hr.employee.delegation</field>
+        <field name="arch" type="xml">
+            <search string="Employee Delegations">
+                <field name="employee_id"/>
+                <field name="delegate_to_employee_id"/>
+                <field name="reason"/>
+                <filter string="Current" name="current" domain="[('is_current', '=', True)]"/>
+                <filter string="Active" name="active" domain="[('state', '=', 'active')]"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Expired" name="expired" domain="[('state', '=', 'expired')]"/>
+                <separator/>
+                <filter string="Vacation" name="vacation" domain="[('reason', '=', 'vacation')]"/>
+                <filter string="Resignation" name="resignation" domain="[('reason', '=', 'resignation')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Original Employee" name="group_employee" context="{'group_by': 'employee_id'}"/>
+                    <filter string="Delegate To" name="group_delegate" context="{'group_by': 'delegate_to_employee_id'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Reason" name="group_reason" context="{'group_by': 'reason'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_hr_employee_delegation" model="ir.actions.act_window">
+        <field name="name">Employee Delegations</field>
+        <field name="res_model">hr.employee.delegation</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="context">{'search_default_current': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new delegation
+            </p>
+            <p>
+                Delegate work to another employee during vacations, sick leave, or other absences.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_hr_employee_delegation_root"
+              name="Delegations"
+              parent="hr.menu_hr_root"
+              sequence="50"/>
+    
+    <menuitem id="menu_hr_employee_delegation"
+              name="Employee Delegations"
+              parent="menu_hr_employee_delegation_root"
+              action="action_hr_employee_delegation"
+              sequence="10"/>
+</odoo>
+

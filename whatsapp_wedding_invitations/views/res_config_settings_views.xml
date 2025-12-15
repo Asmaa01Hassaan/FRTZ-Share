@@ -11,7 +11,7 @@
                     <setting string="WhatsApp Server URL" help="URL of the WhatsApp server (e.g., http://localhost:3000)">
                         <field name="whatsapp_server_url" placeholder="http://localhost:3000"/>
                     </setting>
-                    <setting string="Delay Between Messages (ms)" help="Delay (in milliseconds) between each WhatsApp message to avoid rate limiting.">
+                    <setting string="Min Delay Between Messages (ms)" help="Minimum delay in milliseconds between each WhatsApp message. Actual delay will be random between this value and +1500ms (e.g., 2000 → random 2000-3500ms) to appear more human-like and avoid rate limiting.">
                         <field name="whatsapp_delay_between_messages" placeholder="2000"/>
                     </setting>
                     <setting string="Docker Container Name" help="Name of the Docker container that runs the WhatsApp bridge service.">

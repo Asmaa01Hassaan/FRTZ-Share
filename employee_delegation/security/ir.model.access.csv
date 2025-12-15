@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_employee_delegation_user,hr.employee.delegation.user,model_hr_employee_delegation,base.group_user,1,0,0,0
+access_hr_employee_delegation_hr_officer,hr.employee.delegation.hr_officer,model_hr_employee_delegation,hr.group_hr_user,1,1,1,0
+access_hr_employee_delegation_hr_manager,hr.employee.delegation.hr_manager,model_hr_employee_delegation,hr.group_hr_manager,1,1,1,1
+

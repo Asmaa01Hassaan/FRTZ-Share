@@ -25,14 +25,16 @@
                             invisible="whatsapp_registration_count == 0"/>
                 </group>
             </xpath>
+
             <xpath expr="//header" position="inside">
                 <button name="open_related_calendar_event"
-                        type="object"
-                        string="Calender Event"
+                        type="object" string="Calender Event"
                         class="btn-primary"/>
             </xpath>
         </field>
     </record>
 </odoo>
+
+
 
 

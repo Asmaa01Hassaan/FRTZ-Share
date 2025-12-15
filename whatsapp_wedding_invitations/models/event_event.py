@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields,api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
@@ -25,13 +25,26 @@ class EventEvent(models.Model):
         string='WhatsApp Invitations Failed',
         compute='_compute_whatsapp_stats',
     )
+    whatsapp_invitation_image = fields.Binary(
+        string='Invitation Image',
+        attachment=True,
+        store=True,
+        help='Image to send with the invitation message (optional). Supported formats: JPG, PNG, GIF.'
+    )
+    whatsapp_invitation_image_filename = fields.Char(
+        string='Image Filename',
+        help='Filename of the invitation image'
+    )
+    whatsapp_invitation_image_url = fields.Char(
+        string='Invitation Image URL',
+        help='Public URL of the invitation image. Use this if you want to include an image link in the message. The image must be publicly accessible.'
+    )
 
     calendar_event_id = fields.Many2one('calendar.event', string="Calendar Event")
 
     @api.model_create_multi
     def create(self, vals_list):
         events = super(EventEvent, self).create(vals_list)
-
         for ev in events:
             cal = self.env['calendar.event'].create({
                 'name': ev.name,
@@ -42,33 +55,51 @@ class EventEvent(models.Model):
         return events
 
     def open_related_calendar_event(self):
+
         self.ensure_one()
 
         cal_event = self.env['calendar.event'].search([('id', '=', self.calendar_event_id.id)], limit=1)
 
         if not cal_event:
             # رسالة لو مفيش calendar مرتبط
+
             return {
+
                 'type': 'ir.actions.client',
+
                 'tag': 'display_notification',
+
                 'params': {
+
                     'title': 'No Related Calendar Event',
+
                     'message': 'This Event is not linked to any Calendar entry.',
+
                     'type': 'warning',
+
                     'sticky': False,
+
                 }
+
             }
 
         return {
-            'type': 'ir.actions.act_window',
-            'name': 'Calendar Event',
-            'res_model': 'calendar.event',
-            'view_mode': 'list,form',  # list + form
-            'domain': [('id', '=', cal_event.id)],
-            'res_id': cal_event.id,
-            'target': 'current',
-        }
 
+            'type': 'ir.actions.act_window',
+
+            'name': 'Calendar Event',
+
+            'res_model': 'calendar.event',
+
+            'view_mode': 'list,form',  # list + form
+
+            'domain': [('id', '=', cal_event.id)],
+
+            'res_id': cal_event.id,
+
+            'target': 'current',
+
+        }
     def _compute_whatsapp_stats(self):
         for event in self:
             registrations = event.registration_ids
@@ -93,6 +124,9 @@ You are invited to *{event_name}*!
 📅 Date: {date}
 📍 Venue: {venue}
 ⏰ Time: {time}
+📸 View our invitation:
+{image_url}
+
 
 We hope to see you there. Please confirm your attendance.
 
@@ -117,6 +151,15 @@ Best regards,
         if self.address_id:
             return self.address_id.display_name
         return 'Online'
+    
+    def _get_invitation_image_url(self):
+        """Get invitation image URL"""
+        self.ensure_one()
+        # If user provided a direct URL, use it
+        if self.whatsapp_invitation_image_url:
+            return self.whatsapp_invitation_image_url
+        # Otherwise return empty string (placeholder will be removed)
+        return ''
 
     def action_send_whatsapp_invitations(self):
         self.ensure_one()
@@ -136,6 +179,9 @@ Best regards,
                 'default_event_id': self.id,
                 'default_registration_ids': registrations_with_phone.ids,
                 'default_message_template': self.whatsapp_message_template or self._default_whatsapp_invitation_template(),
+                'default_invitation_image': self.whatsapp_invitation_image,
+                'default_invitation_image_filename': self.whatsapp_invitation_image_filename,
             },
         }
+
 

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Employee Form -->
+    <record id="view_employee_form_delegation" model="ir.ui.view">
+        <field name="name">hr.employee.form.delegation</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <!-- Add button box -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_delegations" type="object" class="oe_stat_button" icon="fa-exchange" invisible="delegation_count == 0">
+                    <field name="delegation_count" widget="statinfo" string="Delegations"/>
+                </button>
+                <button name="action_view_assigned_tasks" type="object" class="oe_stat_button" icon="fa-tasks" invisible="assigned_tasks_count == 0">
+                    <field name="assigned_tasks_count" widget="statinfo" string="Tasks"/>
+                </button>
+                <button name="action_view_assigned_projects" type="object" class="oe_stat_button" icon="fa-folder" invisible="assigned_projects_count == 0">
+                    <field name="assigned_projects_count" widget="statinfo" string="Projects"/>
+                </button>
+                <button name="action_view_assigned_opportunities" type="object" class="oe_stat_button" icon="fa-bullseye" invisible="assigned_opportunities_count == 0">
+                    <field name="assigned_opportunities_count" widget="statinfo" string="Opportunities"/>
+                </button>
+                <button name="action_view_assigned_activities" type="object" class="oe_stat_button" icon="fa-calendar-check-o" invisible="assigned_activities_count == 0">
+                    <field name="assigned_activities_count" widget="statinfo" string="Activities"/>
+                </button>
+            </xpath>
+            
+            <!-- Add Delegations Tab -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Delegations" name="delegations">
+                    <group>
+                        <group>
+                            <field name="has_active_delegation" invisible="1"/>
+                            <field name="active_delegation_id" invisible="not has_active_delegation" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="delegation_ids">
+                        <list string="Delegations" decoration-success="state=='active'" decoration-muted="state in ['expired', 'cancelled']">
+                            <field name="delegate_to_employee_id"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="reason"/>
+                            <field name="state" widget="badge" decoration-success="state=='active'" decoration-danger="state=='expired'"/>
+                            <button name="action_activate" string="Activate" type="object" icon="fa-check-circle" invisible="state != 'draft'"/>
+                            <button name="action_cancel" string="Cancel" type="object" icon="fa-times-circle" invisible="state not in ['draft', 'active']"/>
+                        </list>
+                        <form>
+                            <header>
+                                <button name="action_activate" string="Activate" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                                <button name="action_cancel" string="Cancel" type="object" invisible="state not in ['draft', 'active']"/>
+                                <field name="state" widget="statusbar" statusbar_visible="draft,active,expired"/>
+                            </header>
+                            <sheet>
+                                <group>
+                                    <group>
+                                        <field name="delegate_to_employee_id"/>
+                                        <field name="date_from"/>
+                                        <field name="date_to"/>
+                                    </group>
+                                    <group>
+                                        <field name="reason"/>
+                                        <field name="notes"/>
+                                    </group>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </page>
+                
+                <!-- Add Work Assignment Tab -->
+                <page string="Work Assignment" name="work_assignment">
+                    <group>
+                        <group>
+                            <field name="assigned_tasks_count" widget="statinfo" string="   Assigned Tasks"/>
+                            <field name="assigned_projects_count" widget="statinfo" string="   Assigned Projects"/>
+                        </group>
+                        <group>
+                            <field name="assigned_opportunities_count" widget="statinfo" string="   Assigned Opportunities"/>
+                            <field name="assigned_activities_count" widget="statinfo" string="   Assigned Activities"/>
+                        </group>
+                    </group>
+                    
+                    <div class="oe_button_box" name="work_button_box">
+                        <button name="action_view_assigned_tasks" type="object" class="oe_stat_button" icon="fa-tasks" invisible="assigned_tasks_count == 0">
+                            <field name="assigned_tasks_count" widget="statinfo" string=" Tasks"/>
+                        </button>
+                        <button name="action_view_assigned_projects" type="object" class="oe_stat_button" icon="fa-folder" invisible="assigned_projects_count == 0">
+                            <field name="assigned_projects_count" widget="statinfo" string=" Projects"/>
+                        </button>
+                        <button name="action_view_assigned_opportunities" type="object" class="oe_stat_button" icon="fa-bullseye" invisible="assigned_opportunities_count == 0">
+                            <field name="assigned_opportunities_count" widget="statinfo" string=" Opportunities"/>
+                        </button>
+                        <button name="action_view_assigned_activities" type="object" class="oe_stat_button" icon="fa-calendar-check-o" invisible="assigned_activities_count == 0">
+                            <field name="assigned_activities_count" widget="statinfo" string=" Activities"/>
+                        </button>
+                    </div>
+                    
+                    <div class="alert alert-info" role="alert">
+                        <strong>Work Assignment Summary:</strong> This page shows all work currently assigned to this employee across different modules.
+                        <br/>
+                        <button name="refresh_work_statistics" type="object" class="btn btn-sm btn-primary" string="Refresh Statistics"/>
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Mail Activity Form -->
+    <record id="view_mail_activity_form_delegation" model="ir.ui.view">
+        <field name="name">mail.activity.form.delegation</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail.mail_activity_view_form_popup"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="delegated_user_id" invisible="not delegated_user_id" readonly="1" string="Delegated To"/>
+                <field name="is_delegated" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Mail Activity List -->
+    <record id="view_mail_activity_tree_delegation" model="ir.ui.view">
+        <field name="name">mail.activity.list.delegation</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail.mail_activity_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="delegated_user_id" optional="show" string="Delegated To"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>
+

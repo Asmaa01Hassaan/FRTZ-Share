@@ -8,7 +8,7 @@
             <list string="Guests">
                 <field name="name"/>
                 <field name="phone_number"/>
-                <field name="email"/>
+                <field name="email" optional="hide"/>
                 <field name="event_id"/>
                 <field name="invitation_status" widget="badge" 
                        decoration-success="invitation_status == 'sent'"
@@ -17,7 +17,12 @@
                 <field name="rsvp_status" widget="badge"
                        decoration-success="rsvp_status == 'accepted'"
                        decoration-danger="rsvp_status == 'declined'"
-                       decoration-muted="rsvp_status == 'pending'"/>
+                       decoration-warning="rsvp_status == 'pending'"/>
+                <field name="auto_reply_count" string="📨 Auto-Reply" optional="hide"/>
+                <field name="companions_count" string="👥"/>
+                <field name="total_attendees" string="📊" sum="Total"/>
+                <field name="rsvp_response_date" optional="hide"/>
+                <field name="rsvp_response_method" optional="hide"/>
             </list>
         </field>
     </record>
@@ -29,24 +34,79 @@
         <field name="arch" type="xml">
             <form string="Guest">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_confirm_attendance" type="object" 
+                                string="✅ Confirm Attendance" class="oe_stat_button"
+                                invisible="rsvp_status == 'accepted'"
+                                icon="fa-check-circle"/>
+                        <button name="action_decline_attendance" type="object" 
+                                string="❌ Decline" class="oe_stat_button"
+                                invisible="rsvp_status == 'declined'"
+                                icon="fa-times-circle"/>
+                        <button name="action_reset_rsvp" type="object" 
+                                string="🔄 Reset RSVP" class="oe_stat_button"
+                                invisible="rsvp_status == 'pending'"
+                                icon="fa-refresh"/>
+                    </div>
                     <group>
-                        <group>
+                        <group string="Guest Information">
                             <field name="name" required="1"/>
                             <field name="phone_number" required="1"/>
                             <field name="email"/>
+                            <field name="event_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
                         </group>
-                        <group>
-                            <field name="event_id"/>
+                        <group string="Invitation Status">
                             <field name="invitation_status"/>
                             <field name="invitation_sent_date" readonly="1"/>
-                            <field name="rsvp_status"/>
+                            <field name="invitation_error" readonly="1" 
+                                   invisible="invitation_status != 'failed'"/>
+                            <field name="message_id" readonly="1"/>
                         </group>
                     </group>
                     <group>
-                        <field name="invitation_error" readonly="1" 
-                               invisible="invitation_status != 'failed'"/>
-                        <field name="message_id" readonly="1"/>
-                        <field name="notes"/>
+                        <group string="RSVP Status">
+                            <field name="rsvp_status"/>
+                            <field name="rsvp_response_date" readonly="1"/>
+                            <field name="rsvp_response_method" readonly="1"/>
+                            <field name="auto_reply_count" readonly="1" 
+                                   help="Number of times auto-reply has been sent (max 4 times)"/>
+                            <field name="companions_count"/>
+                            <field name="total_attendees" readonly="1"/>
+                        </group>
+                        <group string="Confirmation Details">
+                            <field name="confirmation_sent" readonly="1"/>
+                            <field name="confirmation_sent_date" readonly="1"/>
+                            <field name="confirmation_token" readonly="1"/>
+                            <field name="confirm_url" widget="url" readonly="1" 
+                                   string="✅ Confirm Link"/>
+                            <field name="decline_url" widget="url" readonly="1"
+                                   string="❌ Decline Link"/>
+                        </group>
+                    </group>
+                    <group string="Messages">
+                        <field name="rsvp_message" readonly="1" placeholder="Guest's response message"/>
+                        <field name="notes" placeholder="Internal notes about this guest"/>
+                    </group>
+                    
+                    <!-- Barcode and QR Code from Registration -->
+                    <group string="Barcode &amp; QR Code" name="barcode_qr_group" invisible="not registration_barcode">
+                        <group>
+                            <field name="registration_barcode" readonly="1"/>
+                            <field name="registration_barcode_image" widget="image"
+                                   options="{'size': [400, 150]}"
+                                   readonly="1"/>
+                            <div class="alert alert-info" role="alert">
+                                <strong>Barcode:</strong> Scan this barcode for check-in.
+                            </div>
+                        </group>
+                        <group>
+                            <field name="registration_barcode_qr_image" widget="image"
+                                   options="{'size': [200, 200]}"
+                                   readonly="1"/>
+                            <div class="alert alert-info" role="alert">
+                                <strong>QR Code:</strong> Scan this QR code for quick check-in.
+                            </div>
+                        </group>
                     </group>
                 </sheet>
             </form>
@@ -63,16 +123,32 @@
                 <field name="phone_number"/>
                 <field name="email"/>
                 <field name="event_id"/>
+                <separator/>
                 <filter string="Invitation Sent" name="invitation_sent" 
                         domain="[('invitation_status', '=', 'sent')]"/>
                 <filter string="Invitation Failed" name="invitation_failed" 
                         domain="[('invitation_status', '=', 'failed')]"/>
                 <filter string="Not Sent" name="invitation_not_sent" 
                         domain="[('invitation_status', '=', 'not_sent')]"/>
-                <filter string="RSVP Accepted" name="rsvp_accepted" 
+                <separator/>
+                <filter string="RSVP Pending" name="rsvp_pending" 
+                        domain="[('rsvp_status', '=', 'pending')]"/>
+                <filter string="Will Attend ✅" name="rsvp_accepted" 
                         domain="[('rsvp_status', '=', 'accepted')]"/>
-                <filter string="RSVP Declined" name="rsvp_declined" 
+                <filter string="Will Not Attend ❌" name="rsvp_declined" 
                         domain="[('rsvp_status', '=', 'declined')]"/>
+                <separator/>
+                <filter string="Confirmation Not Sent" name="confirmation_not_sent" 
+                        domain="[('confirmation_sent', '=', False)]"/>
+                <filter string="Confirmation Sent" name="confirmation_sent" 
+                        domain="[('confirmation_sent', '=', True)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Event" name="group_by_event" context="{'group_by': 'event_id'}"/>
+                    <filter string="RSVP Status" name="group_by_rsvp_status" context="{'group_by': 'rsvp_status'}"/>
+                    <filter string="Invitation Status" name="group_by_invitation_status" context="{'group_by': 'invitation_status'}"/>
+                    <filter string="Response Method" name="group_by_response_method" context="{'group_by': 'rsvp_response_method'}"/>
+                </group>
             </search>
         </field>
     </record>
@@ -83,14 +159,29 @@
         <field name="res_model">event.guest</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="view_event_guest_search"/>
+        <field name="context">{'search_default_group_by_rsvp_status': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create your first guest!
             </p>
             <p>
                 Add guests to events and send them WhatsApp invitations.
+                <br/>Track RSVP responses and manage attendance.
             </p>
         </field>
     </record>
+    
+   <menuitem id="menu_whatsapp_invitations_guests"
+              name="Event Guests"
+              web_icon="whatsapp_wedding_invitations,static/description/icon2.png"
+              sequence="50"/>
+
+
+    <!-- Menu: Guests after Calendar Configuration menu -->
+    <menuitem id="menu_calendar_guests"
+              name="Guests"
+              parent="whatsapp_wedding_invitations.menu_whatsapp_invitations_guests"
+              action="action_event_guest"
+              sequence="10"/>
 </odoo>
 

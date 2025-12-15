@@ -1,0 +1,926 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Confirmation Form Template -->
+    <template id="confirmation_form" name="Wedding RSVP Form">
+        <t t-call="web.frontend_layout">
+            <t t-set="title">تأكيد الحضور - RSVP</t>
+            <div class="wedding-rsvp-container">
+                <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&amp;family=Playfair+Display:wght@400;500;600;700&amp;display=swap');
+                    
+                    .wedding-rsvp-container {
+                        min-height: 100vh;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 20px;
+                        font-family: 'Tajawal', sans-serif;
+                    }
+                    
+                    .rsvp-card {
+                        background: rgba(255, 255, 255, 0.95);
+                        backdrop-filter: blur(10px);
+                        border-radius: 24px;
+                        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                        max-width: 500px;
+                        width: 100%;
+                        padding: 40px;
+                        text-align: center;
+                    }
+                    
+                    .rsvp-icon {
+                        font-size: 64px;
+                        margin-bottom: 20px;
+                    }
+                    
+                    .rsvp-title {
+                        font-family: 'Playfair Display', serif;
+                        font-size: 32px;
+                        font-weight: 600;
+                        color: #1a1a2e;
+                        margin-bottom: 10px;
+                    }
+                    
+                    .rsvp-subtitle {
+                        color: #666;
+                        font-size: 18px;
+                        margin-bottom: 30px;
+                    }
+                    
+                    .guest-name {
+                        font-size: 24px;
+                        font-weight: 700;
+                        color: #667eea;
+                        margin-bottom: 20px;
+                        padding: 15px;
+                        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ed 100%);
+                        border-radius: 12px;
+                    }
+                    
+                    .event-info {
+                        background: #f8f9fa;
+                        padding: 20px;
+                        border-radius: 12px;
+                        margin-bottom: 30px;
+                    }
+                    
+                    .event-name {
+                        font-size: 20px;
+                        font-weight: 600;
+                        color: #333;
+                    }
+                    
+                    .event-date {
+                        color: #666;
+                        margin-top: 8px;
+                    }
+                    
+                    .form-group {
+                        margin-bottom: 20px;
+                        text-align: right;
+                    }
+                    
+                    .form-label {
+                        display: block;
+                        font-weight: 500;
+                        margin-bottom: 8px;
+                        color: #333;
+                    }
+                    
+                    .form-control {
+                        width: 100%;
+                        padding: 12px 16px;
+                        border: 2px solid #e0e0e0;
+                        border-radius: 12px;
+                        font-size: 16px;
+                        font-family: 'Tajawal', sans-serif;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .form-control:focus {
+                        outline: none;
+                        border-color: #667eea;
+                        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+                    }
+                    
+                    .btn-submit {
+                        width: 100%;
+                        padding: 16px 32px;
+                        font-size: 18px;
+                        font-weight: 600;
+                        border: none;
+                        border-radius: 12px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        font-family: 'Tajawal', sans-serif;
+                    }
+                    
+                    .btn-confirm {
+                        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+                        color: white;
+                    }
+                    
+                    .btn-confirm:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 10px 20px rgba(17, 153, 142, 0.3);
+                    }
+                    
+                    .btn-decline {
+                        background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+                        color: white;
+                    }
+                    
+                    .btn-decline:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 10px 20px rgba(235, 51, 73, 0.3);
+                    }
+                    
+                    .companions-input {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 15px;
+                    }
+                    
+                    .companions-btn {
+                        width: 44px;
+                        height: 44px;
+                        border: none;
+                        border-radius: 50%;
+                        background: #667eea;
+                        color: white;
+                        font-size: 24px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .companions-btn:hover {
+                        background: #5a6fd6;
+                        transform: scale(1.1);
+                    }
+                    
+                    .companions-value {
+                        font-size: 32px;
+                        font-weight: 700;
+                        color: #333;
+                        min-width: 60px;
+                    }
+                    
+                    .note-text {
+                        font-size: 14px;
+                        color: #888;
+                        margin-top: 10px;
+                    }
+                </style>
+                
+                <div class="rsvp-card">
+                    <div class="rsvp-icon">
+                        <t t-if="action == 'confirm'">💒</t>
+                        <t t-else="">💌</t>
+                    </div>
+                    
+                    <h1 class="rsvp-title">
+                        <t t-if="action == 'confirm'">تأكيد الحضور</t>
+                        <t t-else="">الاعتذار عن الحضور</t>
+                    </h1>
+                    
+                    <p class="rsvp-subtitle">
+                        <t t-if="action == 'confirm'">Confirm Your Attendance</t>
+                        <t t-else="">Decline Invitation</t>
+                    </p>
+                    
+                    <div class="guest-name">
+                        <t t-esc="guest.name"/>
+                    </div>
+                    
+                    <div class="event-info">
+                        <div class="event-name">
+                            <t t-esc="guest.event_id.name"/>
+                        </div>
+                        <div class="event-date">
+                            📅 <t t-esc="guest.event_id.start" t-options='{"widget": "datetime", "format": "dd MMMM yyyy - HH:mm"}'/>
+                        </div>
+                    </div>
+                    
+                    <form t-attf-action="/wedding/{{ action }}/{{ token }}" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        
+                        <t t-if="action == 'confirm'">
+                            <div class="form-group">
+                                <label class="form-label">عدد المرافقين (Companions)</label>
+                                <div class="companions-input">
+                                    <button type="button" class="companions-btn" onclick="decrementCompanions()">−</button>
+                                    <span class="companions-value" id="companionsValue">0</span>
+                                    <button type="button" class="companions-btn" onclick="incrementCompanions()">+</button>
+                                </div>
+                                <input type="hidden" name="companions" id="companionsInput" value="0"/>
+                                <p class="note-text">لا يشمل نفسك | Does not include yourself</p>
+                            </div>
+                        </t>
+                        
+                        <div class="form-group">
+                            <label class="form-label">رسالة (اختياري) - Message (Optional)</label>
+                            <textarea name="message" class="form-control" rows="3" 
+                                      t-att-placeholder="'شكراً لكم...' if action == 'confirm' else 'نعتذر...'"></textarea>
+                        </div>
+                        
+                        <button type="submit" t-attf-class="btn-submit {{ 'btn-confirm' if action == 'confirm' else 'btn-decline' }}">
+                            <t t-if="action == 'confirm'">✅ تأكيد الحضور - Confirm</t>
+                            <t t-else="">❌ تأكيد الاعتذار - Decline</t>
+                        </button>
+                    </form>
+                </div>
+                
+                <script>
+                    let companions = 0;
+                    
+                    function incrementCompanions() {
+                        if (companions &lt; 10) {
+                            companions++;
+                            updateCompanionsDisplay();
+                        }
+                    }
+                    
+                    function decrementCompanions() {
+                        if (companions > 0) {
+                            companions--;
+                            updateCompanionsDisplay();
+                        }
+                    }
+                    
+                    function updateCompanionsDisplay() {
+                        document.getElementById('companionsValue').textContent = companions;
+                        document.getElementById('companionsInput').value = companions;
+                    }
+                </script>
+            </div>
+        </t>
+    </template>
+    
+    <!-- Confirmation Success Template -->
+    <template id="confirmation_success" name="Wedding RSVP Success">
+        <t t-call="web.frontend_layout">
+            <t t-set="title">تم التأكيد - Confirmed</t>
+            <div class="wedding-success-container">
+                <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&amp;family=Playfair+Display:wght@400;500;600;700&amp;display=swap');
+                    
+                    .wedding-success-container {
+                        min-height: 100vh;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 20px;
+                        font-family: 'Tajawal', sans-serif;
+                    }
+                    
+                    .success-card {
+                        background: rgba(255, 255, 255, 0.95);
+                        backdrop-filter: blur(10px);
+                        border-radius: 24px;
+                        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                        max-width: 500px;
+                        width: 100%;
+                        padding: 50px 40px;
+                        text-align: center;
+                    }
+                    
+                    .success-icon {
+                        font-size: 80px;
+                        margin-bottom: 20px;
+                        animation: bounceIn 0.6s ease-out;
+                    }
+                    
+                    @keyframes bounceIn {
+                        0% { transform: scale(0); opacity: 0; }
+                        50% { transform: scale(1.2); }
+                        100% { transform: scale(1); opacity: 1; }
+                    }
+                    
+                    .success-title {
+                        font-family: 'Playfair Display', serif;
+                        font-size: 32px;
+                        font-weight: 600;
+                        color: #1a1a2e;
+                        margin-bottom: 15px;
+                    }
+                    
+                    .success-message {
+                        font-size: 18px;
+                        color: #666;
+                        margin-bottom: 30px;
+                        line-height: 1.8;
+                    }
+                    
+                    .guest-badge {
+                        display: inline-block;
+                        padding: 12px 30px;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        border-radius: 50px;
+                        font-size: 18px;
+                        font-weight: 600;
+                        margin-bottom: 30px;
+                    }
+                    
+                    .event-details {
+                        background: #f8f9fa;
+                        padding: 25px;
+                        border-radius: 16px;
+                        margin-bottom: 30px;
+                    }
+                    
+                    .event-detail-item {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                        margin: 10px 0;
+                        font-size: 16px;
+                        color: #555;
+                    }
+                    
+                    .status-confirmed {
+                        color: #11998e;
+                    }
+                    
+                    .status-declined {
+                        color: #eb3349;
+                    }
+                    
+                    .close-message {
+                        font-size: 14px;
+                        color: #999;
+                        margin-top: 20px;
+                    }
+                </style>
+                
+                <div class="success-card">
+                    <div class="success-icon">
+                        <t t-if="status == 'confirmed'">🎉</t>
+                        <t t-else="">💔</t>
+                    </div>
+                    
+                    <h1 class="success-title">
+                        <t t-if="status == 'confirmed'">
+                            <span class="status-confirmed">تم تأكيد حضورك!</span>
+                        </t>
+                        <t t-else="">
+                            <span class="status-declined">تم تسجيل اعتذارك</span>
+                        </t>
+                    </h1>
+                    
+                    <p class="success-message">
+                        <t t-if="status == 'confirmed'">
+                            شكراً لك <strong><t t-esc="guest.name"/></strong>!<br/>
+                            نتطلع لرؤيتك في حفلنا 💕<br/><br/>
+                            Thank you! We look forward to seeing you!
+                        </t>
+                        <t t-else="">
+                            شكراً لإعلامنا <strong><t t-esc="guest.name"/></strong><br/>
+                            نتمنى لك كل التوفيق 🙏<br/><br/>
+                            Thank you for letting us know. Best wishes!
+                        </t>
+                    </p>
+                    
+                    <div class="guest-badge">
+                        <t t-esc="guest.name"/>
+                    </div>
+                    
+                    <div class="event-details">
+                        <div class="event-detail-item">
+                            <span>📍</span>
+                            <span><t t-esc="event.name"/></span>
+                        </div>
+                        <div class="event-detail-item">
+                            <span>📅</span>
+                            <span><t t-esc="event.start" t-options='{"widget": "datetime", "format": "dd MMMM yyyy"}'></t></span>
+                        </div>
+                        <div class="event-detail-item">
+                            <span>⏰</span>
+                            <span><t t-esc="event.start" t-options='{"widget": "datetime", "format": "HH:mm"}'></t></span>
+                        </div>
+                        <t t-if="status == 'confirmed' and guest.companions_count > 0">
+                            <div class="event-detail-item">
+                                <span>👥</span>
+                                <span>+<t t-esc="guest.companions_count"/> مرافقين</span>
+                            </div>
+                        </t>
+                    </div>
+                    
+                    <p class="close-message">
+                        يمكنك إغلاق هذه الصفحة الآن<br/>
+                        You can close this page now
+                    </p>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+    <!-- Confirmation Error Template -->
+    <template id="confirmation_error" name="Wedding RSVP Error">
+        <t t-call="web.frontend_layout">
+            <t t-set="title">خطأ - Error</t>
+            <div class="wedding-error-container">
+                <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&amp;display=swap');
+                    
+                    .wedding-error-container {
+                        min-height: 100vh;
+                        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 20px;
+                        font-family: 'Tajawal', sans-serif;
+                    }
+                    
+                    .error-card {
+                        background: rgba(255, 255, 255, 0.95);
+                        backdrop-filter: blur(10px);
+                        border-radius: 24px;
+                        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                        max-width: 450px;
+                        width: 100%;
+                        padding: 50px 40px;
+                        text-align: center;
+                    }
+                    
+                    .error-icon {
+                        font-size: 80px;
+                        margin-bottom: 20px;
+                    }
+                    
+                    .error-title {
+                        font-size: 28px;
+                        font-weight: 700;
+                        color: #eb3349;
+                        margin-bottom: 20px;
+                    }
+                    
+                    .error-message {
+                        font-size: 18px;
+                        color: #666;
+                        line-height: 1.8;
+                    }
+                </style>
+                
+                <div class="error-card">
+                    <div class="error-icon">⚠️</div>
+                    <h1 class="error-title">خطأ - Error</h1>
+                    <p class="error-message">
+                        <t t-esc="error_message"/><br/><br/>
+                        <t t-esc="error_message_en"/>
+                    </p>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+    <!-- RSVP Status Template -->
+    <template id="rsvp_status" name="Wedding RSVP Status">
+        <t t-call="web.frontend_layout">
+            <t t-set="title">حالة التأكيد - RSVP Status</t>
+            <div class="wedding-status-container">
+                <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&amp;family=Playfair+Display:wght@400;500;600;700&amp;display=swap');
+                    
+                    .wedding-status-container {
+                        min-height: 100vh;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 20px;
+                        font-family: 'Tajawal', sans-serif;
+                    }
+                    
+                    .status-card {
+                        background: rgba(255, 255, 255, 0.95);
+                        backdrop-filter: blur(10px);
+                        border-radius: 24px;
+                        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                        max-width: 500px;
+                        width: 100%;
+                        padding: 40px;
+                        text-align: center;
+                    }
+                    
+                    .status-badge {
+                        display: inline-block;
+                        padding: 10px 25px;
+                        border-radius: 50px;
+                        font-size: 16px;
+                        font-weight: 600;
+                        margin: 20px 0;
+                    }
+                    
+                    .badge-pending {
+                        background: #ffeaa7;
+                        color: #d68910;
+                    }
+                    
+                    .badge-accepted {
+                        background: #d5f5e3;
+                        color: #1e8449;
+                    }
+                    
+                    .badge-declined {
+                        background: #fadbd8;
+                        color: #c0392b;
+                    }
+                    
+                    .action-buttons {
+                        display: flex;
+                        gap: 15px;
+                        margin-top: 30px;
+                    }
+                    
+                    .action-btn {
+                        flex: 1;
+                        padding: 14px 20px;
+                        border: none;
+                        border-radius: 12px;
+                        font-size: 16px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        text-decoration: none;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .btn-green {
+                        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+                        color: white;
+                    }
+                    
+                    .btn-red {
+                        background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+                        color: white;
+                    }
+                    
+                    .action-btn:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+                    }
+                </style>
+                
+                <div class="status-card">
+                    <h2 style="font-family: 'Playfair Display', serif; font-size: 28px; margin-bottom: 10px;">
+                        حالة التأكيد
+                    </h2>
+                    <p style="color: #666; margin-bottom: 20px;">RSVP Status</p>
+                    
+                    <h3 style="font-size: 24px; color: #667eea; margin-bottom: 15px;">
+                        <t t-esc="guest.name"/>
+                    </h3>
+                    
+                    <div t-attf-class="status-badge badge-{{ guest.rsvp_status }}">
+                        <t t-if="guest.rsvp_status == 'pending'">⏳ في الانتظار - Pending</t>
+                        <t t-elif="guest.rsvp_status == 'accepted'">✅ سيحضر - Will Attend</t>
+                        <t t-else="">❌ لن يحضر - Will Not Attend</t>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin: 20px 0;">
+                        <p style="margin: 0; font-size: 18px;"><t t-esc="event.name"/></p>
+                        <p style="margin: 8px 0 0 0; color: #666;">
+                            📅 <t t-esc="event.start" t-options='{"widget": "datetime", "format": "dd MMMM yyyy - HH:mm"}'/>
+                        </p>
+                    </div>
+                    
+                    <t t-if="guest.rsvp_status == 'pending'">
+                        <div class="action-buttons">
+                            <a t-attf-href="/wedding/confirm/{{ guest.confirmation_token }}" class="action-btn btn-green">
+                                ✅ تأكيد الحضور
+                            </a>
+                            <a t-attf-href="/wedding/decline/{{ guest.confirmation_token }}" class="action-btn btn-red">
+                                ❌ الاعتذار
+                            </a>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Guest Form Template -->
+    <template id="guest_form_template" name="Add Guest Form">
+        <t t-call="web.frontend_layout">
+            <t t-set="title">إضافة ضيف - Add Guest</t>
+            <t t-set="errors" t-value="errors or {}"/>
+            <t t-set="form_data" t-value="form_data or {}"/>
+            <t t-set="events" t-value="events or request.env['calendar.event'].sudo().search([('active', '=', True)], order='start desc', limit=100)"/>
+            <div class="guest-form-container">
+                <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&amp;display=swap');
+                    
+                    .guest-form-container {
+                        min-height: 100vh;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 20px;
+                        font-family: 'Tajawal', sans-serif;
+                    }
+                    
+                    .guest-form-card {
+                        background: rgba(255, 255, 255, 0.95);
+                        backdrop-filter: blur(10px);
+                        border-radius: 24px;
+                        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                        max-width: 600px;
+                        width: 100%;
+                        padding: 40px;
+                    }
+                    
+                    .guest-form-title {
+                        font-size: 32px;
+                        font-weight: 700;
+                        color: #1a1a2e;
+                        margin-bottom: 10px;
+                        text-align: center;
+                    }
+                    
+                    .guest-form-subtitle {
+                        color: #666;
+                        font-size: 16px;
+                        margin-bottom: 30px;
+                        text-align: center;
+                    }
+                    
+                    .form-group {
+                        margin-bottom: 20px;
+                    }
+                    
+                    .form-label {
+                        display: block;
+                        font-weight: 500;
+                        color: #333;
+                        margin-bottom: 8px;
+                        font-size: 14px;
+                    }
+                    
+                    .form-control {
+                        width: 100%;
+                        padding: 12px 16px;
+                        border: 2px solid #e0e0e0;
+                        border-radius: 12px;
+                        font-size: 16px;
+                        font-family: 'Tajawal', sans-serif;
+                        transition: all 0.3s ease;
+                        box-sizing: border-box;
+                    }
+                    
+                    .form-control:focus {
+                        outline: none;
+                        border-color: #667eea;
+                        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+                    }
+                    
+                    .form-error {
+                        color: #e74c3c;
+                        font-size: 14px;
+                        margin-top: 5px;
+                    }
+                    
+                    .btn-submit {
+                        width: 100%;
+                        padding: 14px;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        border: none;
+                        border-radius: 12px;
+                        font-size: 18px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        font-family: 'Tajawal', sans-serif;
+                        margin-top: 10px;
+                    }
+                    
+                    .btn-submit:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+                    }
+                    
+                    .btn-submit:active {
+                        transform: translateY(0);
+                    }
+                    
+                    .alert-error {
+                        background: #fee;
+                        border: 1px solid #e74c3c;
+                        color: #c0392b;
+                        padding: 12px;
+                        border-radius: 8px;
+                        margin-bottom: 20px;
+                    }
+                </style>
+                
+                <div class="guest-form-card">
+                    <h1 class="guest-form-title">إضافة ضيف جديد</h1>
+                    <p class="guest-form-subtitle">أضف ضيفاً جديداً إلى الحدث</p>
+                    
+                    <t t-if="errors.get('general')">
+                        <div class="alert-error">
+                            <t t-esc="errors.get('general')"/>
+                        </div>
+                    </t>
+                    
+                    <form method="POST" action="/event/add-guest">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="form-group">
+                            <label class="form-label" for="name">الاسم الكامل *</label>
+                            <input 
+                                type="text" 
+                                id="name" 
+                                name="name" 
+                                class="form-control" 
+                                required="required"
+                                t-att-value="form_data.get('name', '')"
+                                placeholder="أدخل الاسم الكامل"
+                            />
+                            <t t-if="errors.get('name')">
+                                <div class="form-error" t-esc="errors.get('name')"/>
+                            </t>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="phone_number">رقم الهاتف *</label>
+                            <input 
+                                type="tel" 
+                                id="phone_number" 
+                                name="phone_number" 
+                                class="form-control" 
+                                required="required"
+                                t-att-value="form_data.get('phone_number', '')"
+                                placeholder="مثال: 201234567890"
+                            />
+                            <t t-if="errors.get('phone_number')">
+                                <div class="form-error" t-esc="errors.get('phone_number')"/>
+                            </t>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="email">البريد الإلكتروني (اختياري)</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                class="form-control"
+                                t-att-value="form_data.get('email', '')"
+                                placeholder="example@email.com"
+                            />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="calendar_event_id">الحدث *</label>
+                            <select 
+                                id="calendar_event_id" 
+                                name="calendar_event_id" 
+                                class="form-control" 
+                                required="required"
+                            >
+                                <option value="">-- اختر الحدث --</option>
+                                <t t-foreach="events" t-as="event">
+                                    <option 
+                                        t-att-value="event.id"
+                                        t-att-selected="form_data.get('calendar_event_id') == str(event.id)"
+                                    >
+                                        <t t-esc="event.name"/>
+                                        <t t-if="event.start"> - <t t-esc="event.start.strftime('%Y-%m-%d')"/></t>
+                                    </option>
+                                </t>
+                            </select>
+                            <t t-if="errors.get('calendar_event_id')">
+                                <div class="form-error" t-esc="errors.get('calendar_event_id')"/>
+                            </t>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit">إضافة الضيف</button>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Guest Form Success Template -->
+    <template id="guest_form_success" name="Guest Added Successfully">
+        <t t-call="web.frontend_layout">
+            <t t-set="title">تمت الإضافة بنجاح</t>
+            <div class="guest-form-container">
+                <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&amp;display=swap');
+                    
+                    .guest-form-container {
+                        min-height: 100vh;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 20px;
+                        font-family: 'Tajawal', sans-serif;
+                    }
+                    
+                    .success-card {
+                        background: rgba(255, 255, 255, 0.95);
+                        backdrop-filter: blur(10px);
+                        border-radius: 24px;
+                        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                        max-width: 500px;
+                        width: 100%;
+                        padding: 40px;
+                        text-align: center;
+                    }
+                    
+                    .success-icon {
+                        font-size: 64px;
+                        color: #27ae60;
+                        margin-bottom: 20px;
+                    }
+                    
+                    .success-title {
+                        font-size: 28px;
+                        font-weight: 700;
+                        color: #1a1a2e;
+                        margin-bottom: 10px;
+                    }
+                    
+                    .success-message {
+                        color: #666;
+                        font-size: 16px;
+                        margin-bottom: 30px;
+                    }
+                    
+                    .guest-info {
+                        background: #f8f9fa;
+                        border-radius: 12px;
+                        padding: 20px;
+                        margin-bottom: 20px;
+                        text-align: right;
+                    }
+                    
+                    .info-row {
+                        margin-bottom: 10px;
+                    }
+                    
+                    .info-label {
+                        font-weight: 600;
+                        color: #333;
+                    }
+                    
+                    .btn-back {
+                        display: inline-block;
+                        padding: 12px 24px;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 12px;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .btn-back:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+                    }
+                </style>
+                
+                <div class="success-card">
+                    <div class="success-icon">✅</div>
+                    <h1 class="success-title">تمت الإضافة بنجاح!</h1>
+                    <p class="success-message">تم إضافة الضيف إلى الحدث بنجاح</p>
+                    
+                    <div class="guest-info">
+                        <div class="info-row">
+                            <span class="info-label">الاسم:</span>
+                            <t t-esc="guest.name"/>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">رقم الهاتف:</span>
+                            <t t-esc="guest.phone_number"/>
+                        </div>
+                        <t t-if="guest.email">
+                            <div class="info-row">
+                                <span class="info-label">البريد الإلكتروني:</span>
+                                <t t-esc="guest.email"/>
+                            </div>
+                        </t>
+                        <div class="info-row">
+                            <span class="info-label">الحدث:</span>
+                            <t t-esc="event.name"/>
+                        </div>
+                    </div>
+                    
+                    <a href="/event/add-guest" class="btn-back">إضافة ضيف آخر</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
+
+
+
+

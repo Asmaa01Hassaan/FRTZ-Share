@@ -9,6 +9,7 @@ import subprocess
 import io
 import base64
 import logging
+import time
 
 _logger = logging.getLogger(__name__)
 
@@ -200,9 +201,153 @@ class WhatsAppQRSession(models.Model):
         except Exception as e:
             raise UserError(f'❌ Error: {str(e)}')
     
+    def action_check_odoo_server(self):
+        """Check Odoo server status using curl"""
+        self.ensure_one()
+        
+        try:
+            # Wait 5 seconds (reduced for production)
+            time.sleep(5)
+            
+            # Check Odoo server status - try localhost first (for production server)
+            check_cmd = [
+                'curl', '-s', '-o', '/dev/null',
+                '-w', 'HTTP Status: %{http_code}\n',
+                'http://localhost:8069/web/login'
+            ]
+            
+            _logger.info('Checking Odoo server status...')
+            
+            result = subprocess.run(
+                check_cmd,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            
+            output = result.stdout.strip()
+            http_code = None
+            
+            # Extract HTTP status code from output
+            if 'HTTP Status:' in output:
+                try:
+                    http_code = output.split('HTTP Status:')[1].strip()
+                except:
+                    pass
+            
+            if result.returncode == 0 and http_code == '200':
+                message = '✅ Server is ready and responding!\n\nHTTP Status: 200\nOdoo server is running correctly.'
+                msg_type = 'success'
+            else:
+                message = f'⚠️ Server check completed.\n\nOutput: {output}\nReturn code: {result.returncode}'
+                if http_code and http_code != '200':
+                    message += f'\nHTTP Status: {http_code}'
+                msg_type = 'warning'
+            
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Odoo Server Status',
+                    'message': message,
+                    'type': msg_type,
+                    'sticky': True,
+                }
+            }
+            
+        except FileNotFoundError:
+            raise UserError('❌ curl command not found. Please install curl.')
+        except subprocess.TimeoutExpired:
+            raise UserError('❌ Checking Odoo server status timed out.')
+        except Exception as e:
+            _logger.error(f'Error checking Odoo server: {str(e)}', exc_info=True)
+            raise UserError(f'❌ Error checking server: {str(e)}')
+    
+    def action_restart_server(self):
+        """Restart WhatsApp Server Docker container"""
+        self.ensure_one()
+        container_name = self.container_name
+        
+        try:
+            # Check if container exists
+            check_cmd = [
+                'docker', 'ps', '-a',
+                '--filter', f'name=^{container_name}$',
+                '--format', '{{.Names}}'
+            ]
+            
+            result = subprocess.run(
+                check_cmd,
+                capture_output=True,
+                text=True,
+                timeout=10,
+            )
+            
+            if result.returncode != 0:
+                raise UserError(f'❌ Failed to check Docker container: {result.stderr}')
+            
+            if not result.stdout.strip():
+                raise UserError(f'❌ Docker container "{container_name}" not found. Please check the container name in settings.')
+            
+            # Restart the container
+            restart_cmd = ['docker', 'restart', container_name]
+            _logger.info(f'Restarting Docker container: {container_name}')
+            
+            restart_result = subprocess.run(
+                restart_cmd,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            
+            if restart_result.returncode != 0:
+                raise UserError(f'❌ Failed to restart Docker container "{container_name}": {restart_result.stderr}')
+            
+            # Wait for the server to fully start (WhatsApp needs ~15 seconds to connect)
+            time.sleep(15)
+            
+            # Update status
+            self.write({
+                'status': 'disconnected',
+                'qr_code_image': False,
+                'qr_code_text': False,
+            })
+            
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'WhatsApp Server',
+                    'message': f'✅ تم إعادة تشغيل السيرفر بنجاح! اضغط "Check Connection" للتحقق أو "Refresh QR Code" إذا كنت تحتاج QR جديد\n\n✅ Server restarted successfully! Click "Check Connection" to verify or "Refresh QR Code" if you need a new QR',
+                    'type': 'success',
+                    'sticky': True,
+                }
+            }
+            
+        except FileNotFoundError:
+            raise UserError('❌ Docker command not found. Please install Docker and ensure it is in the PATH.')
+        except subprocess.TimeoutExpired:
+            raise UserError(f'❌ Restarting Docker container "{container_name}" timed out.')
+        except Exception as e:
+            _logger.error(f'Error restarting WhatsApp server: {str(e)}', exc_info=True)
+            raise UserError(f'❌ Error restarting server: {str(e)}')
+    
     def _ensure_whatsapp_bridge_running(self):
         """Ensure the Docker container hosting the WhatsApp bridge is running."""
         container_name = self.container_name
+        
+        # First, try to check if WhatsApp server is accessible directly
+        server_url = self.server_url
+        try:
+            req = urllib.request.Request(f'{server_url}/api/status')
+            with urllib.request.urlopen(req, timeout=3) as response:
+                if response.status == 200:
+                    _logger.info('WhatsApp server is accessible at %s', server_url)
+                    return  # Server is running, no need to check Docker
+        except Exception as e:
+            _logger.info('WhatsApp server not accessible directly, checking Docker: %s', str(e))
+        
+        # If direct connection fails, check Docker container
         check_cmd = [
             'docker', 'ps',
             '--filter', f'name=^{container_name}$',
@@ -216,7 +361,9 @@ class WhatsAppQRSession(models.Model):
                 timeout=10,
             )
         except FileNotFoundError:
-            raise UserError('Docker command not found. Please install Docker and ensure it is in the PATH.')
+            # Docker not available, but server might be running without Docker
+            _logger.warning('Docker command not found, assuming WhatsApp server is managed externally')
+            return
         except subprocess.TimeoutExpired:
             raise UserError('Checking Docker container status timed out.')
 
