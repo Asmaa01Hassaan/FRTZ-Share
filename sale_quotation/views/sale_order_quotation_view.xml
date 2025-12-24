@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="sale_oeder_inherit_form" model="ir.ui.view">
+        <field name="name">sale.order.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem
+            id="root_new_menu_sales_order"
+            name="Sales Orders"/>
+
+    <menuitem
+            id="root_menu_sales_order"
+            parent="root_new_menu_sales_order"
+            name="Order"/>
+    <menuitem
+            id="menu_sales_order"
+            name="Sales Orders"
+            parent="root_menu_sales_order"
+            action="sale.action_orders"
+            sequence="10"/>
+    <menuitem
+            id="menu_quotation_order"
+            name="Quotation"
+            parent="root_menu_sales_order"
+            action="sale.action_quotations_with_onboarding"
+            sequence="10"/>
+
+</odoo>
