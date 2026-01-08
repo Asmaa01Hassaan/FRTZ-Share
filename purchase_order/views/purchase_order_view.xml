@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="purchase_oeder_inherit_form" model="ir.ui.view">
+        <field name="name">purchase.order.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="readonly">0</attribute>
+<!--                <attribute name="widget">statusbar</attribute>-->
+                <attribute name="statusbar_visible">draft,purchase</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_cancel']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='print_quotation']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@class='oe_highlight']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_done']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <menuitem
+            id="root_new_menu_purchase_order"
+            name="FRTZ Purchase"
+            web_icon="purchase_order,static/description/icon.png"/>
+    <menuitem
+            id="root_menu_purchase_order"
+            parent="root_new_menu_purchase_order"
+            name="Orders"/>
+    <menuitem
+            id="menu_purchase_order"
+            name="Requests for Quotation"
+            parent="root_menu_purchase_order"
+            action="purchase.purchase_rfq"
+            sequence="10"/>
+    <menuitem
+            id="menu_quotation_order"
+            name="Purchase Orders"
+            parent="root_menu_purchase_order"
+            action="purchase.purchase_form_action"
+            sequence="10"/>
+
+</odoo>
