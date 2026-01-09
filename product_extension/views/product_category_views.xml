@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add code field next to name in product category form view -->
+    <record id="view_product_category_form_code" model="ir.ui.view">
+        <field name="name">product.category.form.code</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Add code field on the same line as name -->
+            <xpath expr="//div[@class='oe_title']/h1/field[@name='name']" position="after">
+                <field name="code" class="ms-2" placeholder="Code"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

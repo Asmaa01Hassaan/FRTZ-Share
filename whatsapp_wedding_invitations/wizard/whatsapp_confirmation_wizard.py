@@ -392,7 +392,9 @@ class WhatsAppConfirmationWizard(models.TransientModel):
                         message_sent = True
                         _logger.info(f'Confirmation message sent to {guest.name}')
                     else:
-                        _logger.warning(f'Failed to send message to {guest.name}: {result.get("error")}')
+                        err = result.get('error') or f'Unknown error (keys: {list(result.keys())})'
+                        _logger.warning(f'Failed to send message to {guest.name}: {err}')
+                        errors.append(f'{guest.name}: {err}')
                 
                 # Update guest record if at least one method succeeded
                 if message_sent or attachments_sent:
@@ -403,7 +405,11 @@ class WhatsAppConfirmationWizard(models.TransientModel):
                     })
                     sent_count += 1
                 else:
-                    errors.append(f'{guest.name}: Failed to send confirmation')
+                    # If no exception was raised, capture any known failure signals to help debugging
+                    if not send_separate_message and not self.attachment_ids:
+                        errors.append(f'{guest.name}: Nothing to send (method={self.confirmation_method})')
+                    else:
+                        errors.append(f'{guest.name}: Failed to send confirmation (no success returned)')
                     failed_count += 1
                     
             except Exception as e:
