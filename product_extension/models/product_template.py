@@ -10,6 +10,12 @@ class ProductTemplate(models.Model):
         help="Product code identifier"
     )
 
+    subscription_ok = fields.Boolean(
+        string='Subscription',
+        default=True,
+        help="Can be used in subscription orders"
+    )
+
     display_name = fields.Char(
         string='Display Name',
         compute='_compute_display_name',

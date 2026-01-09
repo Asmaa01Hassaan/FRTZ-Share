@@ -10,7 +10,7 @@
         - Code fields displayed on the same line as name fields
     """,
     "author": "Your Company",
-    "depends": ["product"],
+    "depends": ["product", "stock", "sale"],
     "data": [
         "security/ir.model.access.csv",
         "views/product_template_views.xml",
