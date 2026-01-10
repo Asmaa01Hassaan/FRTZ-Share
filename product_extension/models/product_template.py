@@ -23,7 +23,13 @@ class ProductTemplate(models.Model):
         store=True,
         index=True
     )
-    internal_reference_new = fields.Char(string="Internal Reference")
+    internal_reference_new = fields.Char(
+        string="Internal Reference"
+    )
+    cost_method = fields.Selection(
+        related='categ_id.property_cost_method',
+        readonly=True
+    )
 
     @api.constrains('internal_reference_new', 'categ_id')
     def _check_internal_reference_new(self):
