@@ -13,8 +13,12 @@
             <xpath expr="//sheet" position="inside">
                 <group string="Reference Validation">
                     <field name="reference_type"/>
-                    <field name="validation_mode"/>
-                    <field name="reference_length"/>
+                    <field name="validation_mode"
+                           invisible="reference_type != 'validation'"
+                    />
+                    <field name="reference_length"
+                            invisible="reference_type != 'validation'"
+                    />
                     <field name="reference_char_type"/>
                 </group>
             </xpath>
