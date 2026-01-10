@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_product_form_inherit" model="ir.ui.view">
+        <field name="name">product.form.inherit.display_type</field>
+        <field name="model">product.attribute</field>
+        <field name="inherit_id" ref="product.product_attribute_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='attribute_values']" position="after">
+                <page name="new_page" string="New Page">
+                    <group>
+                        <field name="text_value"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='attribute_values']" position="attributes">
+                <attribute name="invisible">display_type == 'text'</attribute>
+            </xpath>
+            <xpath expr="//page[@name='new_page']" position="attributes">
+                <attribute name="invisible">display_type != 'text'</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
