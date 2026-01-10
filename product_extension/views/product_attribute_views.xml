@@ -5,18 +5,11 @@
         <field name="model">product.attribute</field>
         <field name="inherit_id" ref="product.product_attribute_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='attribute_values']" position="after">
-                <page name="new_page" string="New Page">
-                    <group>
-                        <field name="text_value"/>
-                    </group>
-                </page>
-            </xpath>
             <xpath expr="//page[@name='attribute_values']" position="attributes">
                 <attribute name="invisible">display_type == 'text'</attribute>
             </xpath>
-            <xpath expr="//page[@name='new_page']" position="attributes">
-                <attribute name="invisible">display_type != 'text'</attribute>
+            <xpath expr="//field[@name='create_variant']" position="attributes">
+                <attribute name="readonly">display_type == 'text'</attribute>
             </xpath>
         </field>
     </record>
