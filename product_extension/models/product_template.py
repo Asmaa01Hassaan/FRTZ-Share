@@ -86,3 +86,19 @@ class ProductTemplate(models.Model):
         records = self.search(domain + args, limit=limit)
         return records.name_get()
 
+
+class ProductTemplateAttributeLine(models.Model):
+    _inherit = 'product.template.attribute.line'
+
+    @api.constrains('value_ids', 'attribute_id')
+    def _check_valid_values(self):
+        for line in self:
+            if line.attribute_id.display_type == 'text':
+                continue
+            if not line.value_ids:
+                raise ValidationError(_(
+                    "The attribute %(attribute)s must have at least one value for the product %(product)s.",
+                    attribute=line.attribute_id.name,
+                    product=line.product_tmpl_id.name
+                ))
+
