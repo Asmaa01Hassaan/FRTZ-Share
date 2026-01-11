@@ -43,7 +43,7 @@ class ProductTemplate(models.Model):
                 if cat.validation_mode == 'length':
                     if not cat.reference_length:
                         continue
-                    if len(ref) != cat.reference_length:
+                    if len(ref) > cat.reference_length:
                         raise ValidationError(
                             f"Internal Reference must be exactly "
                             f"{cat.reference_length} characters."
