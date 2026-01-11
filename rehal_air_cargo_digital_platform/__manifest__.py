@@ -42,10 +42,10 @@
         'views/rehal_templates.xml',
     ],
     'assets': {
-        'web.assets_backend': [
-            'rehal_air_cargo_digital_platform/static/src/css/rehal_styles.css',
-            'rehal_air_cargo_digital_platform/static/src/js/rehal_flight.js',
-        ],
+        # 'web.assets_backend': [
+        #     'rehal_air_cargo_digital_platform/static/src/css/rehal_styles.css',
+        #     'rehal_air_cargo_digital_platform/static/src/js/rehal_flight.js',
+        # ],
         'web.assets_frontend': [
             'rehal_air_cargo_digital_platform/static/src/css/rehal_public.css',
             'rehal_air_cargo_digital_platform/static/src/js/rehal_public.js',

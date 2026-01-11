@@ -10,6 +10,18 @@
             <xpath expr="//div[@class='oe_title']/h1/field[@name='name']" position="after">
                 <field name="code" class="ms-2" placeholder="Code"/>
             </xpath>
+            <xpath expr="//sheet" position="inside">
+                <group string="Reference Validation">
+                    <field name="reference_type"/>
+                    <field name="validation_mode"
+                           invisible="reference_type != 'validation'"
+                    />
+                    <field name="reference_length"
+                            invisible="reference_type != 'validation'"
+                    />
+                    <field name="reference_char_type"/>
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>

@@ -16,6 +16,33 @@ class ProductCategory(models.Model):
         store=True,
         index=True
     )
+    reference_type = fields.Selection([
+        ('manual', 'Manual'),
+        ('validation', 'Validation'),
+        ('automatic', 'Automatic'),
+    ], default='manual')
+
+    validation_mode = fields.Selection([
+        ('length', 'Length'),
+        ('type', 'Type'),
+    ])
+
+    reference_length = fields.Integer(string="Required Length")
+
+    reference_char_type = fields.Selection([
+        ('number', 'Numbers Only'),
+        ('mix', 'Mixed'),
+    ])
+
+    show_validation_fields = fields.Boolean(
+        compute='_compute_show_validation_fields',
+        store=False
+    )
+
+    @api.depends('reference_type')
+    def _compute_show_validation_fields(self):
+        for cat in self:
+            cat.show_validation_fields = cat.reference_type == 'validation'
 
     @api.depends('name', 'code')
     def _compute_display_name(self):
