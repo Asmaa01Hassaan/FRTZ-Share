@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+import re
 
 
 class ProductTemplate(models.Model):
@@ -35,7 +36,7 @@ class ProductTemplate(models.Model):
     def _check_internal_reference_new(self):
         for product in self:
             cat = product.categ_id
-            ref = product.internal_reference_new or ''
+            ref = str(product.internal_reference_new or '')
 
             if not cat or cat.reference_type == 'manual':
                 continue
@@ -48,14 +49,17 @@ class ProductTemplate(models.Model):
                             f"Internal Reference must be exactly "
                             f"{cat.reference_length} characters."
                         )
-                if cat.validation_mode == 'type':
+                if cat.validation_mode in ('type', 'length'):
                     if cat.reference_char_type == 'number':
                         if not ref.isdigit():
                             raise ValidationError(
                                 "Internal Reference must contain numbers only."
                             )
-                    if cat.reference_char_type == 'mix':
-                        pass
+                    elif cat.reference_char_type == 'mix':
+                        if not (re.search(r'[A-Za-z]', ref) and re.search(r'\d', ref)):
+                            raise ValidationError(
+                                "Internal Reference must contain both letters and numbers."
+                            )
 
     @api.depends('name', 'code')
     def _compute_display_name(self):

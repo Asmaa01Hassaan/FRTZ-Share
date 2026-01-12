@@ -25,12 +25,12 @@
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
             <!-- Add code field after name field inside the d-flex div -->
-            <xpath expr="//div[hasclass('oe_title')]//h1/div[@class='d-flex']/field[@name='name']" position="after">
-                <field name="code"
-                       class="ms-2"
-                       style="width: 200px; font-size: 14px;"
-                       placeholder="Code"/>
-            </xpath>
+            <!--            <xpath expr="//div[hasclass('oe_title')]//h1/div[@class='d-flex']/field[@name='name']" position="after">-->
+            <!--                <field name="code"-->
+            <!--                       class="ms-2"-->
+            <!--                       style="width: 200px; font-size: 14px;"-->
+            <!--                       placeholder="Code"/>-->
+            <!--            </xpath>-->
             <!-- Hide default_code field in product form -->
             <xpath expr="//field[@name='default_code']" position="attributes">
                 <attribute name="invisible">True</attribute>
@@ -44,6 +44,7 @@
                 <group>
                     <field name="categ_id" string="Category" class="mb-2" required="1"/>
                     <field name="type" class="ms-2 mb-2"/>
+                    <field name="code"/>
                 </group>
             </xpath>
         </field>
@@ -123,8 +124,36 @@
             </xpath>
 
             <xpath expr="//field[@name='standard_price']" position="attributes">
-                <attribute name="readonly"> cost_method != 'standard'</attribute>
+                <attribute name="readonly">cost_method != 'standard'</attribute>
             </xpath>
+
+            <xpath expr="//field[@name='invoice_policy']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='upsell']" position="before">
+                <group name="billing_policy_custom" string="Invoicing">
+                    <field name="invoice_policy"/>
+                </group>
+            </xpath>
+
+            <xpath expr="//label[@for='is_storable']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='is_storable']/parent::div" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//group[.//field[@name='route_ids']]" position="before">
+                <group string="Inventory Tracking">
+                    <label for="is_storable" class="oe_inline" invisible="type != 'consu'"/>
+                    <div class="o_row w-100" invisible="type != 'consu'">
+                        <field name="is_storable"/>
+                        <field name="tracking" invisible="not is_storable" groups="stock.group_production_lot"/>
+                    </div>
+                </group>
+            </xpath>
+
         </field>
     </record>
 
