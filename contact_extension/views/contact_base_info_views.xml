@@ -6,60 +6,254 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
 
+            <!-- Make name field readonly when use_name_parts checkbox is checked -->
+            <!-- Target the individual name field (id='individual') since use_name_parts only applies to individuals -->
+            <xpath expr="//div[hasclass('oe_title')]//h1/field[@name='name' and @id='individual']"
+                   position="attributes">
+                <attribute name="readonly">use_name_parts</attribute>
+            </xpath>
+
+            <!-- Add flex class to h1 for proper layout -->
+            <xpath expr="//div[hasclass('oe_title')]//h1" position="attributes">
+                <attribute name="class">d-flex align-items-center gap-3</attribute>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="before">
+                <span invisible="is_company">Company Name</span>
+            </xpath>
+            <!-- Add ref field after name field in header -->
+            <xpath expr="//div[hasclass('oe_title')]//h1" position="after">
+
+                <group>
+                    <field name="ref"
+                           placeholder="Reference"/>
+                </group>
+
+            </xpath>
+
+            <xpath expr="//group[group/div[@class='o_address_format']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
             <xpath expr="//group[group/div[@class='o_address_format']]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
 
             <xpath expr="//page[@name='contact_addresses']" position="attributes">
+                <attribute name="invisible">not is_company</attribute>
+                <attribute name="string">Contacts</attribute>
+            </xpath>
+
+
+            <!-- Make credit_limits group invisible in Accounting page -->
+            <xpath expr="//page[@name='accounting']//group[@name='credit_limits']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
 
-            <xpath expr="//page[@name='contact_addresses']" position="after">
-                <page name="basic_info" string="Contact  Info">
+            <!-- Add Divisions page after Accounting (companies only) -->
+            <xpath expr="//page[@name='accounting']" position="after">
+                <page name="divisions_page" string="Divisions" invisible="not is_company">
+                    <group>
+                        <field name="division_ids" nolabel="1">
+                            <list editable="bottom" string="Divisions">
+                                <field name="department"/>
+                                <field name="reference"/>
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- Add credit_limits group before banks group in Accounting page -->
+            <xpath expr="//page[@name='accounting']//group[@name='banks']" position="before">
+                <group string="Credit Limits"
+                       name="credit_limits"
+                       groups="account.group_account_invoice,account.group_account_readonly"
+                       invisible="not show_credit_limit">
+                    <field name="credit"/>
+                    <field name="days_sales_outstanding"/>
+                    <label for="use_partner_credit_limit"/>
+                    <div class="o_row">
+                        <field name="use_partner_credit_limit"/>
+                        <field name="credit_limit" class="oe_inline" widget="monetary"
+                               options="{'currency_field': 'currency_id'}" invisible="not use_partner_credit_limit"/>
+                    </div>
+                    <field name="max_salary_deduction" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="max_installments_amount" widget="monetary"
+                           options="{'currency_field': 'currency_id'}"/>
+                    <field name="max_grantees_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </group>
+            </xpath>
+
+
+            <xpath expr="//page[@name='contact_addresses']" position="before">
+                <page name="basic_info_additional" string="Basic info">
                     <group>
                         <group>
-                            <field name="function" placeholder="e.g. Sales Director" invisible="is_company"/>
-                            <field name="phone" widget="phone"/>
-                            <field name="mobile" widget="phone"/>
-                            <field name="email" widget="email" context="{'gravatar_image': True}" required="user_ids"/>
-                            <field name="website" string="Website" widget="url"
-                                   placeholder="e.g. https://www.odoo.com"/>
+                            <field name="name_from_parts" invisible="1"/>
+                            <field name="use_name_parts" invisible="is_company"
+                                   widget="boolean_toggle"
+                                   string="Use Name Details"/>
+                            <span class="o_form_label" invisible="is_company or not use_name_parts">Full Name</span>
+                            <div class="o_row" invisible="is_company or not use_name_parts">
+                                <field name="first_name" nolabel="1" placeholder="First Name"/>
+                                <field name="father_name" nolabel="1" placeholder="Father Name"/>
+                                <field name="gfather_name" nolabel="1" placeholder="Grandfather Name"/>
+                                <field name="sur_name" nolabel="1" placeholder="Surname"/>
+                            </div>
+                            <field name="division_ids" invisible="1"/>
+                            <field name="uid" string="UID" invisible="is_company"/>
+                            <field name="vat" string="Tax ID" placeholder="e.g. BE0477472701"/>
+                            <field name="status" string="Status"/>
                             <field name="title" options="{&quot;no_open&quot;: True}" placeholder="e.g. Mister"
                                    invisible="is_company"/>
-                            <field name="lang" invisible="active_lang_count &lt;= 1"/>
+                            <field name="function" placeholder="e.g. Sales Director" invisible="is_company"/>
+                            <field name="divisions" invisible="is_company" options="{'no_create': True}"/>
+                            <field name="birth_date" string="Birth Date" invisible="is_company"/>
+                            <field name="hiring_date" string="Hiring Date" invisible="is_company"/>
+                        </group>
+                        <group>
                             <field name="category_id" widget="many2many_tags" options="{'color_field': 'color'}"
                                    placeholder="e.g. &quot;B2B&quot;, &quot;VIP&quot;, &quot;Consulting&quot;, ..."/>
-                        </group>
-
-                        <group>
+                            <field name="lang" invisible="active_lang_count &lt;= 1"/>
+                            <field name="phone" widget="phone" readonly="1"/>
+                            <field name="mobile" widget="phone" readonly="1"/>
+                            <field name="email" widget="email" context="{'gravatar_image': True}" required="user_ids"
+                                   readonly="1"/>
+                            <field name="website" string="Website" widget="url"
+                                   placeholder="e.g. https://www.odoo.com" readonly="1"/>
                             <span class="o_form_label o_td_label o_address_type" name="address_name">
-                                <field name="type" invisible="is_company" readonly="user_ids" required="not is_company"
+                                <field name="type" invisible="1" readonly="user_ids" required="not is_company"
                                        class="fw-bold"/>
-                                <span invisible="not is_company">Address</span>
+                                <span>Address</span>
                             </span>
                             <div class="o_address_format">
                                 <field name="street" placeholder="Street..." class="o_address_street"
-                                       readonly="type == 'contact' and parent_id"/>
+                                       readonly="1"/>
                                 <field name="street2" placeholder="Street 2..." class="o_address_street"
-                                       readonly="type == 'contact' and parent_id"/>
+                                       readonly="1"/>
                                 <field name="city" placeholder="City" class="o_address_city"
-                                       readonly="type == 'contact' and parent_id"/>
+                                       readonly="1"/>
                                 <field name="state_id" class="o_address_state" placeholder="State"
                                        options="{'no_open': True, 'no_quick_create': True}"
-                                       readonly="type == 'contact' and parent_id"
+                                       readonly="1"
                                        context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}"/>
                                 <field name="zip" placeholder="ZIP" class="o_address_zip"
-                                       readonly="type == 'contact' and parent_id"/>
+                                       readonly="1"/>
                                 <div name="partner_address_country" class="d-flex justify-content-between">
                                     <field name="country_id" placeholder="Country" class="o_address_country"
                                            options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"
-                                           readonly="type == 'contact' and parent_id"/>
+                                           readonly="1"/>
                                 </div>
                             </div>
+
                         </group>
-
                     </group>
+                </page>
+                <page name="basic_info" string="Channels">
+                    <field name="channel_ids" nolabel="1">
+                        <list string="Channels" editable="bottom">
+                            <field name="type" string="Type"/>
+                            <field name="channel" required="1"/>
+                            <field name="value" required="1"/>
+                            <field name="status"/>
+                            <field name="is_default"/>
+                        </list>
+                        <form>
+                            <sheet>
+                                <group>
+                                    <group>
+                                        <field name="type" placeholder="e.g. Work, Personal, Emergency"/>
+                                        <field name="channel" required="1"/>
+                                        <field name="value" required="1" placeholder="Enter contact value"/>
+                                    </group>
+                                    <group>
+                                        <field name="status"/>
+                                        <field name="is_default"/>
+                                    </group>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </page>
+                <page name="addresses_page" string="Address">
+                    <field name="contact_address_ids" nolabel="1">
+                        <list string="Addresses" editable="bottom">
+                            <field name="name"/>
+                            <field name="type" options="{'no_open': True}"/>
+                            <field name="street"/>
+                            <field name="street2"/>
+                            <field name="city"/>
+                            <field name="state_id" options="{'no_open': True, 'no_quick_create': True}"/>
+                            <field name="zip"/>
+                            <field name="country_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="is_default"/>
+                        </list>
+                        <form>
+                            <sheet>
+                                <group>
+                                    <group>
+                                        <field name="name" placeholder="e.g. Home Address, Office Address"/>
+                                        <field name="type" options="{'no_open': True}"/>
+                                        <field name="is_default"/>
+                                    </group>
+                                    <group>
+                                        <span class="o_form_label o_td_label o_address_type">
+                                            <span>Address</span>
+                                        </span>
+                                        <div class="o_address_format">
+                                            <field name="street" placeholder="Street..." class="o_address_street"/>
+                                            <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                            <field name="city" placeholder="City" class="o_address_city"/>
+                                            <field name="state_id" class="o_address_state" placeholder="State"
+                                                   options="{'no_open': True, 'no_quick_create': True}"
+                                                   context="{'country_id': country_id, 'default_country_id': country_id}"/>
+                                            <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                            <div name="partner_address_country" class="d-flex justify-content-between">
+                                                <field name="country_id" placeholder="Country" class="o_address_country"
+                                                       options="{'no_open': True, 'no_create': True}"/>
+                                            </div>
+                                        </div>
+                                    </group>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </page>
+                <page name="attachments_page" string="Attachments">
+                    <field name="attachment_ids" nolabel="1">
+                        <list string="Attachments" editable="bottom">
+                            <field name="name" string="Name"/>
+                            <field name="file_data" widget="binary" filename="file_display_name"
+                                   string="File" placeholder="Upload or download file"/>
+                            <!--                            <field name="attachment_id" invisible="1"/>  &lt;!&ndash; For compute dependencies &ndash;&gt;-->
+                            <!--                            <field name="file" invisible="1"/>  &lt;!&ndash; For inverse method &ndash;&gt;-->
+                            <!--                            <field name="filename" invisible="1"/>  &lt;!&ndash; For inverse method &ndash;&gt;-->
+                            <!-- For filename attribute -->
 
+                        </list>
+                        <form>
+                            <sheet>
+                                <group>
+                                    <group>
+                                        <field name="name" placeholder="e.g. Contract Document, ID Copy" required="1"/>
+                                        <field name="filename" invisible="1"/>
+                                        <field name="file_display_name" invisible="1"/>
+                                        <field name="file" filename="filename" widget="binary"
+                                               placeholder="Upload a file"
+                                               attrs="{'invisible': [('attachment_id', '!=', False)], 'required': [('attachment_id', '=', False)]}"/>
+                                        <field name="datas" nolabel="1" class="w-100" filename="name"/>
+
+                                        <field name="attachment_id"
+                                               options="{'no_create': True}"
+                                               attrs="{'invisible': [('file', '!=', False)]}"/>
+                                    </group>
+                                    <group>
+                                        <field name="file_size" readonly="1"/>
+                                        <field name="mimetype" readonly="1"/>
+                                    </group>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
                 </page>
             </xpath>
 

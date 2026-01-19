@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="view_product_form_inherit" model="ir.ui.view">
-        <field name="name">product.form.inherit.display_type</field>
+    <record id="view_product_attribute_form_free_text" model="ir.ui.view">
+        <field name="name">product.attribute.form.free.text</field>
         <field name="model">product.attribute</field>
         <field name="inherit_id" ref="product.product_attribute_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='attribute_values']" position="attributes">
-                <attribute name="invisible">display_type == 'text'</attribute>
+            <!-- Add allow_free_text field after display_type -->
+            <xpath expr="//field[@name='display_type']" position="after">
+                <field name="allow_free_text"
+                       help="Enable this to allow users to enter custom text values for this attribute. This will automatically set Display Type to 'Pills', Variant Creation to 'Never', and create a free text attribute value. The attribute will display as pills in the UI."/>
             </xpath>
+            
+            <!-- Make create_variant readonly when free text is enabled -->
             <xpath expr="//field[@name='create_variant']" position="attributes">
-                <attribute name="readonly">display_type == 'text'</attribute>
+                <attribute name="readonly">allow_free_text</attribute>
+                 <attribute name="invisible">allow_free_text</attribute>
+            </xpath>
+            
+            <!-- Hide display_type when allow_free_text is enabled -->
+            <xpath expr="//field[@name='display_type']" position="attributes">
+                <attribute name="invisible">allow_free_text</attribute>
+            </xpath>
+
+
+            
+            <!-- Hide Attribute Values page when allow_free_text is enabled -->
+            <xpath expr="//page[@name='attribute_values']" position="attributes">
+                <attribute name="invisible">allow_free_text</attribute>
             </xpath>
         </field>
     </record>

@@ -7,20 +7,64 @@
         <field name="inherit_id" ref="product.product_category_form_view"/>
         <field name="arch" type="xml">
             <!-- Add code field on the same line as name -->
-            <xpath expr="//div[@class='oe_title']/h1/field[@name='name']" position="after">
-                <field name="code" class="ms-2" placeholder="Code"/>
+            <xpath expr="//group//field[@name='parent_id']" position="before">
+                <field name="code"  placeholder="Code"/>
             </xpath>
-            <xpath expr="//sheet" position="inside">
-                <group string="Reference Validation">
-                    <field name="reference_type"/>
-                    <field name="validation_mode"
-                           invisible="reference_type != 'validation'"
-                    />
-                    <field name="reference_length"
-                            invisible="reference_type != 'validation'"
-                    />
-                    <field name="reference_char_type"/>
+            <!-- Add Reference Configuration before Account Properties group -->
+            <xpath expr="//group[@name='account_property']" position="before">
+                <!-- Product Type Restrictions -->
+                <group string="Product">
+                    <div class="o_form_label">Product Type:</div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center">
+                            <field name="allow_consu" />
+                            <label for="allow_consu" string="Goods" class="ms-2 mb-0"/>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <field name="allow_service"/>
+                            <label for="allow_service" string="Service" class="ms-2 mb-0"/>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <field name="allow_combo"/>
+                            <label for="allow_combo" string="Combo" class="ms-2 mb-0"/>
+                        </div>
+                    </div>
+                     <field name="reference_type" string="Reference Generation"/>
+
+                    <!-- Automatic mode: Show sequence field -->
+                    <field name="reference_sequence_id"
+                           invisible="reference_type != 'automatic'"
+                           help="Sequence to use for automatic reference generation. If not set, the default sequence will be used."/>
+
+                    <!-- Validation mode: Show validation checkboxes -->
+                    <div invisible="reference_type != 'validation'">
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <div class="d-flex align-items-center">
+                                <field name="validate_length" />
+                                <label for="validate_length" string="Validate Length" class="ms-2 mb-0"/>
+                            </div>
+                            <field name="reference_length"
+                                   invisible="not validate_length"
+                                   class="ms-3"
+                                   style="width: 150px;"
+                                   help="Required length for internal references (only if Validate Length is checked)"/>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center">
+                                <field name="validate_type"/>
+                                <label for="validate_type" string="Validate Type" class="ms-2 mb-0"/>
+                            </div>
+                            <field name="reference_char_type"
+                                   invisible="not validate_type"
+                                   class="ms-3"
+                                   style="width: 200px;"
+                                   help="Character type allowed in internal references (only if Validate Type is checked)"/>
+                        </div>
+                    </div>
+
                 </group>
+              
+
             </xpath>
         </field>
     </record>

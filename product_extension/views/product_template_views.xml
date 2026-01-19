@@ -13,6 +13,7 @@
                     <string></string>
                 </group>
             </xpath>
+
         </field>
     </record>
 
@@ -24,13 +25,8 @@
         <!-- Inherit from the view that injects default_code after categ_id -->
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
-            <!-- Add code field after name field inside the d-flex div -->
-            <!--            <xpath expr="//div[hasclass('oe_title')]//h1/div[@class='d-flex']/field[@name='name']" position="after">-->
-            <!--                <field name="code"-->
-            <!--                       class="ms-2"-->
-            <!--                       style="width: 200px; font-size: 14px;"-->
-            <!--                       placeholder="Code"/>-->
-            <!--            </xpath>-->
+
+
             <!-- Hide default_code field in product form -->
             <xpath expr="//field[@name='default_code']" position="attributes">
                 <attribute name="invisible">True</attribute>
@@ -43,8 +39,14 @@
             <xpath expr="//div[@class='oe_title']" position="after">
                 <group>
                     <field name="categ_id" string="Category" class="mb-2" required="1"/>
+                    <field name="internal_reference_new" string="Reference"
+                           class="ms-2"
+                           style="width: 200px; font-size: 14px;"
+                           readonly="categ_id.reference_type == 'automatic'"
+                           placeholder="Reference"
+                           help="Internal reference for the product. Automatically generated when category is set to 'Automatic'."/>
+
                     <field name="type" class="ms-2 mb-2"/>
-                    <field name="code"/>
                 </group>
             </xpath>
         </field>
@@ -85,6 +87,7 @@
                 <field name="subscription_ok"/>
                 <label for="subscription_ok"/>
             </xpath>
+
         </field>
     </record>
 
@@ -100,9 +103,8 @@
 
             <!-- Hide product_tooltip from General Information page -->
             <xpath expr="//field[@name='product_tooltip']" position="replace"/>
-
             <!-- Add invoice_policy and product_tooltip to Sales page -->
-            <xpath expr="//page[@name='sales']//group[@name='sale']" position="inside">
+            <xpath expr="//page[@name='sales']//group[@name='sale']" position="before">
                 <group name="invoice_policy_group" string="Invoicing">
                     <field name="invoice_policy" required="1" invisible="not sale_ok or type == 'combo'"/>
                     <field name="product_tooltip"
@@ -114,46 +116,73 @@
         </field>
     </record>
 
+    <!-- Add Variants page after Attributes & Variants page -->
+    <record id="view_product_template_variants_page" model="ir.ui.view">
+        <field name="name">product.template.variants.page</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Locate the Attributes & Variants page by the field it contains -->
+            <xpath expr="//page[@name='sales']" position="before">
+                <page name="product_variants_list" string="Varints">
+                    <field name="product_variant_ids" nolabel="1">
+                        <list string="Product Variants">
+                            <field name="default_code" string="Internal Reference"/>
+                            <field name="barcode"/>
+<!--                            <field name="active"/>-->
+                            <field name="standard_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="lst_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="product_template_attribute_value_ids" widget="many2many_tags" readonly="1"/>
+                        </list>
+                        <form>
+                            <sheet>
+                                <group>
+                                    <group>
+                                        <field name="default_code" string="Internal Reference"/>
+                                        <field name="barcode"/>
+                                        <field name="active"/>
+                                    </group>
+                                    <group>
+                                        <field name="standard_price" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"/>
+                                        <field name="lst_price" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="product_template_attribute_value_ids" widget="many2many_tags"
+                                           readonly="1"/>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
     <record id="view_product_template_reference" model="ir.ui.view">
         <field name="name">product.template.reference</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='type']" position="after">
-                <field name="internal_reference_new"/>
-            </xpath>
-
+            <!-- internal_reference_new is now placed after name field in view_product_template_form_code -->
+            <!-- This view only handles standard_price readonly attribute -->
             <xpath expr="//field[@name='standard_price']" position="attributes">
                 <attribute name="readonly">cost_method != 'standard'</attribute>
             </xpath>
+        </field>
+    </record>
 
-            <xpath expr="//field[@name='invoice_policy']" position="attributes">
-                <attribute name="invisible">1</attribute>
+    <!-- Change the string name of the variants page to "Attributes" -->
+    <record id="view_product_template_variants_page_name" model="ir.ui.view">
+        <field name="name">product.template.variants.page.name</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='variants']" position="attributes">
+                <attribute name="string">Attributes</attribute>
             </xpath>
-            <xpath expr="//group[@name='upsell']" position="before">
-                <group name="billing_policy_custom" string="Invoicing">
-                    <field name="invoice_policy"/>
-                </group>
-            </xpath>
-
-            <xpath expr="//label[@for='is_storable']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-
-            <xpath expr="//field[@name='is_storable']/parent::div" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-
-            <xpath expr="//group[.//field[@name='route_ids']]" position="before">
-                <group string="Inventory Tracking">
-                    <label for="is_storable" class="oe_inline" invisible="type != 'consu'"/>
-                    <div class="o_row w-100" invisible="type != 'consu'">
-                        <field name="is_storable"/>
-                        <field name="tracking" invisible="not is_storable" groups="stock.group_production_lot"/>
-                    </div>
-                </group>
-            </xpath>
-
         </field>
     </record>
 

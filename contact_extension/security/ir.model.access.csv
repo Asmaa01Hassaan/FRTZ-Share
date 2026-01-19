@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_contact_addresses_user,contact.addresses.user,model_contact_addresses,base.group_user,1,1,1,1
+access_contact_attachment_user,contact.attachment.user,model_contact_attachment,base.group_user,1,1,1,1
+access_contact_division_user,contact.division.user,model_contact_division,base.group_user,1,1,1,1
+access_contact_channels_user,contact.channels.user,model_contact_channels,base.group_user,1,1,1,1
+

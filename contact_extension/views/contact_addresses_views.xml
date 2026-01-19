@@ -1,0 +1,87 @@
+<odoo>
+    <!-- Contact Addresses Tree View -->
+    <record id="view_contact_addresses_tree" model="ir.ui.view">
+        <field name="name">contact.addresses.tree</field>
+        <field name="model">contact.addresses</field>
+        <field name="arch" type="xml">
+            <list string="Contact Addresses">
+                <field name="name"/>
+                <field name="type"/>
+                <field name="street"/>
+                <field name="street2"/>
+                <field name="city"/>
+                <field name="state_id"/>
+                <field name="zip"/>
+                <field name="country_id"/>
+                <field name="is_default"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Contact Addresses Form View -->
+    <record id="view_contact_addresses_form" model="ir.ui.view">
+        <field name="name">contact.addresses.form</field>
+        <field name="model">contact.addresses</field>
+        <field name="arch" type="xml">
+            <form string="Contact Address">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id" invisible="1"/>
+                            <field name="name" placeholder="e.g. Home Address, Office Address"/>
+                            <field name="type" options="{'no_open': True}"/>
+                            <field name="is_default"/>
+                        </group>
+                        <group>
+                            <span class="o_form_label o_td_label o_address_type">
+                                <span>Address</span>
+                            </span>
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..." class="o_address_street"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="city" placeholder="City" class="o_address_city"/>
+                                <field name="state_id" class="o_address_state" placeholder="State"
+                                       options="{'no_open': True, 'no_quick_create': True}"
+                                       context="{'country_id': country_id, 'default_country_id': country_id}"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <div name="partner_address_country" class="d-flex justify-content-between">
+                                    <field name="country_id" placeholder="Country" class="o_address_country"
+                                           options="{'no_open': True, 'no_create': True}"/>
+                                </div>
+                            </div>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Contact Addresses Search View -->
+    <record id="view_contact_addresses_search" model="ir.ui.view">
+        <field name="name">contact.addresses.search</field>
+        <field name="model">contact.addresses</field>
+        <field name="arch" type="xml">
+            <search string="Contact Addresses">
+                <field name="name"/>
+                <field name="type"/>
+                <field name="city"/>
+                <field name="country_id"/>
+                <field name="partner_id"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action for Contact Addresses -->
+    <record id="action_contact_addresses" model="ir.actions.act_window">
+        <field name="name">Contact Addresses</field>
+        <field name="res_model">contact.addresses</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new contact address
+            </p>
+        </field>
+    </record>
+
+</odoo>
+
