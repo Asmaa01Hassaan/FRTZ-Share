@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Filter Operation Type based on document type -->
+    <record id="view_picking_form_filter_operation_type" model="ir.ui.view">
+        <field name="name">stock.picking.form.filter.operation.type</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <!-- Add computed field for filtering (invisible) -->
+            <xpath expr="//field[@name='picking_type_id']" position="before">
+                <field name="operation_type_code" invisible="1"/>
+            </xpath>
+            <!-- Filter picking_type_id based on the operation type code -->
+            <!-- Show types with matching code, or allow current selection if code is not set -->
+            <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                <attribute name="domain">
+                    ['|', ('code', '=', operation_type_code), ('id', '=', picking_type_id)]
+                </attribute>
+            </xpath>
+            <!-- Add Entry Type field - visible only in Receive form (incoming pickings) -->
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <field name="entry_type" 
+                       string="Entry Type"
+                       invisible="operation_type_code != 'incoming'"
+                       placeholder="Select entry type"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
