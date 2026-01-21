@@ -253,6 +253,39 @@
                                 </group>
                             </sheet>
                         </form>
+                        <kanban>
+                            <field name="name"/>
+                            <field name="mimetype"/>
+                            <field name="datas"/>
+                            <templates>
+                                <t t-name="kanban-box">
+                                    <div class="oe_kanban_global_click o_kanban_card">
+                                        <div class="o_kanban_image text-center mb-2">
+                                            <t t-if="record.mimetype.raw_value
+                                                   and record.mimetype.raw_value.indexOf('pdf') >= 0">
+                                                <img src="/web/static/img/mimetypes/pdf.svg" class="img img-fluid"/>
+                                            </t>
+                                            <t t-else="">
+                                                <img src="/web/static/img/mimetypes/image.svg"
+                                                     class="img img-fluid"/>
+                                            </t>
+                                        </div>
+
+                                        <div class="o_kanban_details">
+                                            <strong>
+                                                <field name="name"/>
+                                            </strong>
+                                            <div class="text-muted small">
+                                                <t t-if="record.mimetype.raw_value">
+                                                    <t t-esc="record.mimetype.raw_value"/>
+                                                </t>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </t>
+                            </templates>
+                        </kanban>
                     </field>
                 </page>
             </xpath>
