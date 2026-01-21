@@ -17,6 +17,10 @@
                     ['|', ('code', '=', operation_type_code), ('id', '=', picking_type_id)]
                 </attribute>
             </xpath>
+
+            <xpath expr="//field[@name='picking_type_code']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
             <!-- Add Entry Type field - visible only in Receive form (incoming pickings) -->
             <xpath expr="//field[@name='picking_type_id']" position="after">
                 <field name="entry_type" 
