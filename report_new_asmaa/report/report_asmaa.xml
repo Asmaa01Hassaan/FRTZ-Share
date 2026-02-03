@@ -2,7 +2,7 @@
 
 <odoo>
     <data>
-        <template id="journal_entry_template_report_asmaa_view">
+          <template id="journal_entry_template_report_asmaa_view">
             <t t-call="web.external_layout">
                 <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
                 <div class="page">
@@ -119,11 +119,13 @@
                             <td style="width: 50%;">أهداف المشروع</td>
                         </tr>
                         <tr>
-                            <td colspan="2">
+                            <td colspan="2"
+                            style="direction: rtl; text-align: justify; height: 150px; vertical-align: top; padding: 15px;">
                                 ىفتلففهفهتفل فلهفلهتفلهتفل فىفلهخفلخهفل ففخلهفلخهفل فلىخلففلخهفل فلىفلىفلخفل
                                 بققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققق
                                 بقققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققق
                                 قبببببببببببببببببببببببببببببببببببببببببببببببببببب
+                                فلاققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققق
                             </td>
                         </tr>
                         <tr class="header-bg">
@@ -132,10 +134,13 @@
                         </tr>
                         <tr>
                             <td colspan="2"
-                                style="text-align: justify; height: 150px; vertical-align: top; padding: 15px;">
+                                style="direction: rtl; text-align: justify; height: 150px; vertical-align: top; padding: 15px;">
                                 اه مما يميز هذا المشرروع هو الوقت المميز والمكان المميز لدينا وهذا من اهم الاشياء
-                                الممكنه لدينا في هذا
-                                this project is very good and can speak to many customer according to this project
+                                 ىقىعقبعبقععبىق قعثىعقىقر قرىعقىعقثىقر قرىرقىقعىثقع قرىعقىعقىثقع
+                                رققققققققققققققققق صخنضضضضضضضضضضضء ثصصصصصصصصصصصى ؤثثثثثثثثثثثثثثثث الممكنه لدينا في هذا
+                                لاتنميؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤ
+                                يؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤ
+                                فللالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالا
                             </td>
                         </tr>
                     </table>
