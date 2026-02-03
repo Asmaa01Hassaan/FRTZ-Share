@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <template id="journal_entry_template_report_asmaa_view">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                <div class="page">
+                    <br/>
+                    <div class="oe_structure"/>
+                    <div>
+                        <h2 style="text-align:center;">
+                            <strong>Project Charter</strong>
+                            <br/>
+                            <strong>ميثاق المشروع</strong>
+                        </h2>
+                    </div>
+                    <br/>
+                    <style>
+                        .project-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                        text-align: center;
+                        border: 1px solid black;
+                        }
+                        .project-table th {
+                        background-color: #d3d3d3; /* اللون الرمادي اللي في الصورة */
+                        border: 1px solid black;
+                        padding: 8px;
+                        font-weight: bold;
+                        }
+                        .project-table td {
+                        border: 1px solid black;
+                        padding: 10px;
+                        }
+                        .header-title {
+                        font-size: 18px;
+                        }
+                        .main-table {
+                        width: 100%;
+                        border: 1px solid black;
+                        border-collapse: collapse;
+                        margin-bottom: 25px;
+                        table-layout: fixed;
+                        }
+                        .main-table td {
+                        border: 1px solid black;
+                        padding: 6px;
+                        text-align: center;
+                        vertical-align: middle;
+                        word-wrap: break-word;
+                        }
+                        .header-bg {
+                        background-color: #d9d9d9;
+                        font-weight: bold;
+                        }
+                    </style>
+                    <table class="project-table">
+                        <tr>
+                            <th colspan="2" class="header-title">Initial info</th>
+                            <th colspan="2" class="header-title">المعلومات الاساسية</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Project Name</th>
+                            <th colspan="2">اسم المشروع</th>
+                        </tr>
+                        <tr>
+                            <td colspan="4">this name wirnjnvn nrenivn pmcner cnniie
+                                يمكنك التحدث الينا من خلال خدمة العملاء
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Client Name</th>
+                            <th>مالك المشروع</th>
+                            <th>Project Manager</th>
+                            <th>مدير المشروع</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2">هذا المشروع سيتيح لنا التوقف علي اقدامنا لمدة طويلة</td>
+                            <td colspan="2">this project will offer the new opportunity to many people</td>
+                        </tr>
+                    </table>
+
+                    <br/>
+
+                    <table class="project-table">
+                        <tr>
+                            <th>Duration</th>
+                            <th>مدة المشروع</th>
+                            <th>Expected start date</th>
+                            <th>تاريخ بدء المشروع</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2">this report is necha هذا المشروع سيقدم اهم انجازاته هذا العام</td>
+                            <td colspan="2">ولا يتم التحاق هذا بما يسمي المشورع الجديد لدي اودوا</td>
+                        </tr>
+                    </table>
+                    <br/>
+
+                    <table class="project-table">
+                        <tr class="header-bg">
+                            <td style="width: 50%;">Project Background</td>
+                            <td style="width: 50%;">نبذة عن المشروع</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"
+                                style="text-align: justify; height: 150px; vertical-align: top; padding: 15px;">
+                                اه مما يميز هذا المشرروع هو الوقت المميز والمكان المميز لدينا وهذا من اهم الاشياء
+                                الممكنه لدينا في هذا
+                                this project is very good and can speak to many customer according to this project
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <table class="project-table">
+                        <tr class="header-bg">
+                            <td style="width: 50%;">Project Objective</td>
+                            <td style="width: 50%;">أهداف المشروع</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                ىفتلففهفهتفل فلهفلهتفلهتفل فىفلهخفلخهفل ففخلهفلخهفل فلىخلففلخهفل فلىفلىفلخفل
+                                بققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققق
+                                بقققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققققق
+                                قبببببببببببببببببببببببببببببببببببببببببببببببببببب
+                            </td>
+                        </tr>
+                        <tr class="header-bg">
+                            <td style="width: 50%;">Project Scope</td>
+                            <td style="width: 50%;">نطاق المشروع</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"
+                                style="text-align: justify; height: 150px; vertical-align: top; padding: 15px;">
+                                اه مما يميز هذا المشرروع هو الوقت المميز والمكان المميز لدينا وهذا من اهم الاشياء
+                                الممكنه لدينا في هذا
+                                this project is very good and can speak to many customer according to this project
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+
+                    <table class="main-table">
+                        <tr class="header-bg">
+                            <td colspan="2">Project Organization</td>
+                            <td colspan="2">هيكلة وتنظيم المشروع</td>
+                        </tr>
+                        <tr class="header-bg">
+                            <td>Role</td>
+                            <td>الدور</td>
+                            <td>Name</td>
+                            <td>الإسم</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">thiiiode</td>
+                            <td colspan="2">edmmkedme</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">enedommew</td>
+                            <td colspan="2">nenewne</td>
+                        </tr>
+                    </table>
+                    <br/>
+
+                    <table class="main-table">
+                        <tr class="header-bg">
+                            <td colspan="4">الافتراضات والقيود</td>
+                        </tr>
+                        <tr class="header-bg">
+                            <td>Constraints</td>
+                            <td>القيود</td>
+                            <td>Assumptions</td>
+                            <td>الافتراضات</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="height: 60px; text-align: right; vertical-align: top;">
+                                frnnrirrfenrfnfrnurnruu
+                            </td>
+                            <td colspan="2" style="height: 60px; text-align: right; vertical-align: top;">
+                                nrunurvnunnrunrnuurnnuerner
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table class="main-table">
+                        <tr class="header-bg">
+                            <td colspan="4">تقييم المخاطر</td>
+                            <td colspan="4">Risk Assessment</td>
+                        </tr>
+                        <tr class="header-bg" style="font-size: 11px;">
+                            <td>Responsible</td>
+                            <td>المسؤول</td>
+                            <td>Action</td>
+                            <td>التصرف المبدئي</td>
+                            <td>Impact</td>
+                            <td>التأثير</td>
+                            <td>Description</td>
+                            <td>الوصف</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                vnnvnvrvjvrvrnjrvnjvrnjrvnjvr
+                            </td>
+                            <td colspan="2">
+                                vrrrrrrrrrrrrrrr
+                            </td>
+                            <td colspan="2">
+                                vrrrrrrrrrrrr
+                            </td>
+                            <td colspan="2">
+                                gbrrrrrrrrrrrrr
+                            </td>
+                        </tr>
+                        <td colspan="2">nnuurfu unvun unvunuv</td>
+                        <td colspan="2">ervvrv vvvr vvvr</td>
+                        <td colspan="2">rrerevrvr rvrveve vrrerevr</td>
+                        <td colspan="2">نةةننةةنرر رىقىثقىر رىثرىثق</td>
+                    </table>
+                    <br/>
+
+
+                    <table class="main-table">
+                        <tr class="header-bg">
+                            <td colspan="4" style="font-size: 16px;">بيانات التواصل مع فريق لَفت</td>
+                        </tr>
+                        <tr class="header-bg">
+                            <td style="width: 25%;">الاسم</td>
+                            <td style="width: 25%;">الوظيفة</td>
+                            <td style="width: 25%;">الهاتف</td>
+                            <td style="width: 25%;">البريد الإلكتروني</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                refrnrfnrjr
+                            </td>
+                            <td>
+                                rieiroroir
+                            </td>
+                            <td>
+                                vmkrm rrmrf
+                            </td>
+                            <td>
+                                briinrfrnur
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>فلان الفلاني</td>
+                            <td>مدير تسويق</td>
+                            <td>01XXXXXXXXX</td>
+                            <td>test@example.com</td>
+                        </tr>
+                        <tr>
+                            <td>فلان الفلاني</td>
+                            <td>مطور برمجيات</td>
+                            <td>01XXXXXXXXX</td>
+                            <td>dev@example.com</td>
+                        </tr>
+                    </table>
+                    <br/>
+
+                    <table class="main-table">
+                        <tr class="header-bg">
+                            <td colspan="4" style="font-size: 16px;">بيانات التواصل مع فريق</td>
+                        </tr>
+                        <tr class="header-bg">
+                            <td style="width: 25%;">الاسم</td>
+                            <td style="width: 25%;">الوظيفة</td>
+                            <td style="width: 25%;">الهاتف</td>
+                            <td style="width: 25%;">البريد الإلكتروني</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                refrnrfnrjr
+                            </td>
+                            <td>
+                                rieiroroir
+                            </td>
+                            <td>
+                                vmkrm rrmrf
+                            </td>
+                            <td>
+                                briinrfrnur
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>فلان الفلاني</td>
+                            <td>مدير تسويق</td>
+                            <td>01XXXXXXXXX</td>
+                            <td>test@example.com</td>
+                        </tr>
+                        <tr>
+                            <td>فلان الفلاني</td>
+                            <td>مطور برمجيات</td>
+                            <td>01XXXXXXXXX</td>
+                            <td>dev@example.com</td>
+                        </tr>
+                    </table>
+                    <br/>
+
+
+                    <div style="margin-top: 30px; direction: rtl; text-align: right;">
+                        <h3 style="color: #2c3e50; border-bottom: 2px solid #2c3e50; padding-bottom: 5px;">قنوات
+                            التواصل
+                        </h3>
+
+                        <ul style="list-style-type: disc; margin-right: 20px; color: #34495e;">
+                            <li style="font-weight: bold; font-size: 16px; margin-bottom: 10px;">
+                                البريد الإلكتروني
+                                <p style="font-weight: normal; font-size: 14px; margin-top: 5px; line-height: 1.6; text-align: justify;">
+                                    يعتد بالبريد الإلكتروني كوثيقة رسمية بالمشروع، وسوف نعتمد على رسائل البريد
+                                    الإلكتروني لتكون وسيلة
+                                    اتصال رسمية. إذا رغبت الجهة بطريقة مختلفة للاتصال؛ فيجب إبلاغ مدير المشروع من طرف
+                                    الشركة
+                                    المشغلة بهذا المطلب، ليتم إدراجها في وثيقة خطة المشروع النهائية.
+                                </p>
+                            </li>
+
+                            <li style="font-weight: bold; font-size: 16px;">
+                                الاتصالات الهاتفية
+                                <p style="font-weight: normal; font-size: 14px; margin-top: 5px; line-height: 1.6; text-align: justify;">
+                                    يعتبر التواصل عن طريق الاتصالات الهاتفية وتطبيق الواتس اب وسيلة اتصال مهمة وفعالة،
+                                    ولكنها لا تمثل
+                                    وسيلة اتصال رسمية، ويجب توثيق ما يعتمد عن طريقها بطرق التواصل الرسمية.
+                                </p>
+                            </li>
+                        </ul>
+
+                        <div style="border-top: 2px solid #3498db; width: 100%; margin-top: 40px;"></div>
+                    </div>
+                    <br/>
+
+                    <div style="margin-top: 20px; direction: rtl; text-align: right;">
+                        <h3 style="color: #2c3e50; font-size: 18px;">مراحل التصعيد</h3>
+                    </div>
+
+                    <table class="main-table">
+                        <tr class="header-bg">
+                            <td style="width: 20%;">البريد</td>
+                            <td style="width: 15%;">الهاتف</td>
+                            <td style="width: 20%;">الاسم</td>
+                            <td style="width: 20%;">المرحلة الإدارية</td>
+                            <td style="width: 25%;">مرحله التصعيد</td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                nunc
+                            </td>
+                            <td>
+                                123456789
+                            </td>
+                            <td>
+                                cvbnm
+                            </td>
+                            <td>
+                                nfjnjnjj
+                            </td>
+                            <td>تصعيد من الدرجة الأولى</td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                dfvgbhnjk
+                            </td>
+                            <td>
+                                hghjkl
+                            </td>
+                            <td>
+                                fghjkl
+                            </td>
+                            <td>
+                                dcfvgbhnjmk,l
+                            </td>
+                            <td>تصعيد من الدرجة الثانية</td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+        <template id="journal_entry_report_template_id_asmaa">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="bi_print_journal_entries.journal_entry_template_report_asmaa_view"
+                       t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+
+        <record id="journal_entry_report_id_asmaa" model="ir.actions.report">
+            <field name="name">Print Asmaa</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bi_print_journal_entries.journal_entry_report_template_id_asmaa</field>
+            <field name="report_file">bi_print_journal_entries.journal_entry_report_template_id_asmaa</field>
+            <field name="print_report_name">'Journal Asmaa'</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>
