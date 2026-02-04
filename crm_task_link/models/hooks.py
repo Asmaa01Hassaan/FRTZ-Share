@@ -35,6 +35,20 @@ class CrmLead(models.Model):
 
     project_id = fields.Many2one('project.project', string="Related Project")
     expense_ids = fields.One2many('hr.expense', 'lead_id', string="Expenses")
+    
+    default_expense_analytic_distribution = fields.Json(
+        string="Default Expense Analytic Distribution",
+        compute="_compute_default_expense_analytic_distribution",
+        store=False,
+    )
+
+    def _compute_default_expense_analytic_distribution(self):
+        """Compute default analytic distribution for expenses from project."""
+        for lead in self:
+            if lead.project_id:
+                lead.default_expense_analytic_distribution = lead.project_id._ensure_default_analytic_distribution() or {}
+            else:
+                lead.default_expense_analytic_distribution = {}
     operational_expense_ids = fields.One2many(
         'operational.expense',
         'lead_id',
@@ -364,18 +378,115 @@ class HrExpense(models.Model):
     # Any custom monetary fields you add MUST reference it
     # custom_amount = fields.Monetary(string="Custom Amount", currency_field='currency_id')
 
-    @api.depends('lead_id', 'analytic_distribution')
+    @api.depends('lead_id', 'project_id', 'analytic_distribution')
     def _compute_project(self):
-        print(self.lead_id)
-        leads = self.env['crm.lead'].search([('expense_ids', '!=', False)])
-        self.project_id = self.lead_id.project_id if self.lead_id else False
-        print(self.project_id)
+        """Compute project_id from lead_id."""
+        for expense in self:
+            # If we have lead_id, get project from it
+            if expense.lead_id and expense.lead_id.project_id:
+                expense.project_id = expense.lead_id.project_id
+
+    @api.model
+    def default_get(self, fields_list):
+        """Set default analytic_distribution from project if available."""
+        res = super().default_get(fields_list)
+        if 'analytic_distribution' in fields_list and not res.get('analytic_distribution'):
+            project = None
+            project_id = None
+            
+            # Case 1: Creating from CRM Lead (via lead_id context)
+            if self._context.get('default_lead_id'):
+                lead = self.env['crm.lead'].browse(self._context.get('default_lead_id'))
+                if lead.exists() and lead.project_id:
+                    project = lead.project_id
+                    project_id = project.id
+                    # Also set lead_id if not already set
+                    if 'lead_id' in fields_list and not res.get('lead_id'):
+                        res['lead_id'] = lead.id
+            
+            # Case 2: Creating from Project (via project_id context)
+            if not project:
+                project_id = (
+                    self._context.get('default_project_id') or 
+                    self._context.get('active_id')
+                )
+                if project_id and (
+                    self._context.get('active_model') == 'project.project' or
+                    self._context.get('default_project_id')
+                ):
+                    project = self.env['project.project'].browse(project_id)
+            
+            # Set analytic_distribution from project
+            if project and project.exists():
+                analytic_distribution = project._ensure_default_analytic_distribution()
+                if analytic_distribution:
+                    res['analytic_distribution'] = analytic_distribution
+                # Also set project_id if not already set
+                if 'project_id' in fields_list and not res.get('project_id'):
+                    res['project_id'] = project_id
+        return res
 
     @api.model
     def create(self, vals):
+        # Set project_id from context if not set
         if not vals.get('project_id') and self._context.get('default_project_id'):
             vals['project_id'] = self._context.get('default_project_id')
+        
+        # Set lead_id from context if not set
+        if not vals.get('lead_id') and self._context.get('default_lead_id'):
+            vals['lead_id'] = self._context.get('default_lead_id')
+        
+        # If project_id is set but lead_id is not, try to find lead from project
+        if vals.get('project_id') and not vals.get('lead_id'):
+            project = self.env['project.project'].browse(vals['project_id'])
+            if project.exists() and project.crm_lead_ids:
+                # Link to the first CRM lead associated with the project
+                vals['lead_id'] = project.crm_lead_ids[0].id
+        
+        # Set analytic_distribution from project if not set
+        if not vals.get('analytic_distribution') and vals.get('project_id'):
+            project = self.env['project.project'].browse(vals['project_id'])
+            if project.exists():
+                analytic_distribution = project._ensure_default_analytic_distribution()
+                if analytic_distribution:
+                    vals['analytic_distribution'] = analytic_distribution
+        
+        # If we have lead_id but no project_id, get it from lead
+        if vals.get('lead_id') and not vals.get('project_id'):
+            lead = self.env['crm.lead'].browse(vals['lead_id'])
+            if lead.exists() and lead.project_id:
+                vals['project_id'] = lead.project_id.id
+                # Also set analytic_distribution if not set
+                if not vals.get('analytic_distribution'):
+                    analytic_distribution = lead.project_id._ensure_default_analytic_distribution()
+                    if analytic_distribution:
+                        vals['analytic_distribution'] = analytic_distribution
+        
         return super().create(vals)
+    
+    def write(self, vals):
+        """Keep lead_id and project_id in sync, and update analytic_distribution from project."""
+        # If project_id is being set but lead_id is not, try to find lead from project
+        if 'project_id' in vals and not vals.get('lead_id'):
+            project = self.env['project.project'].browse(vals['project_id'])
+            if project.exists() and project.crm_lead_ids:
+                vals['lead_id'] = project.crm_lead_ids[0].id
+        
+        # If lead_id is being set but project_id is not, get project from lead
+        if 'lead_id' in vals and not vals.get('project_id'):
+            lead = self.env['crm.lead'].browse(vals['lead_id'])
+            if lead.exists() and lead.project_id:
+                vals['project_id'] = lead.project_id.id
+        
+        # If project_id is being set/changed, update analytic_distribution if not explicitly set
+        if 'project_id' in vals and 'analytic_distribution' not in vals:
+            project = self.env['project.project'].browse(vals['project_id'])
+            if project.exists():
+                analytic_distribution = project._ensure_default_analytic_distribution()
+                if analytic_distribution:
+                    vals['analytic_distribution'] = analytic_distribution
+        
+        return super().write(vals)
 
 
 class AccountMove(models.Model):
@@ -387,10 +498,44 @@ class AccountMove(models.Model):
 class ProjectProject(models.Model):
     _inherit = 'project.project'
 
+    def _ensure_default_analytic_distribution(self):
+        """Ensure each analytic plan column has an account and return a full distribution."""
+        self.ensure_one()
+        plan_model = self.env['account.analytic.plan']
+        project_plan, other_plans = plan_model._get_all_plans()
+        plans = project_plan + other_plans
+
+        for plan in plans:
+            field_name = plan._column_name()
+            if field_name not in self._fields:
+                continue
+
+            if not self[field_name]:
+                account_vals = {
+                    'name': f"{self.name or _('Project')} - {plan.name}",
+                    'company_id': self.company_id.id if self.company_id else False,
+                    'partner_id': self.partner_id.id if getattr(self, 'partner_id', False) else False,
+                    'plan_id': plan.id,
+                }
+                account = self.env['account.analytic.account'].create(account_vals)
+                self[field_name] = account.id
+
+        return self._get_analytic_distribution()
+
+    default_expense_analytic_distribution = fields.Json(
+        string="Default Expense Analytic Distribution",
+        compute="_compute_default_expense_analytic_distribution",
+        store=False,
+    )
+
+    def _compute_default_expense_analytic_distribution(self):
+        """Compute default analytic distribution for expenses."""
+        for project in self:
+            project.default_expense_analytic_distribution = project._ensure_default_analytic_distribution() or {}
+
     user_id = fields.Many2one('res.users', string='Project Manager')
     exporter_document_line_ids = fields.One2many('laft.document.line', 'project_id')
-    expense_ids = fields.One2many('hr.expense', 'project_id', string="Expenses",related='crm_lead_ids.expense_ids',
-        readonly=True)
+    expense_ids = fields.One2many('hr.expense', 'project_id', string="Expenses")
     allocated_hours = fields.Float(string="Allocated Hours")
     allow_timesheets = fields.Boolean(string="Allow Timesheets", default=True)
     date_end = fields.Date(string="Planned End Date")
@@ -463,6 +608,7 @@ class ProjectProject(models.Model):
 
     def action_view_vendor_bills(self):
         self.ensure_one()
+        analytic_distribution = self._ensure_default_analytic_distribution()
 
         bills = self.env['account.move'].search([
             ('move_type', '=', 'in_invoice'),
@@ -473,7 +619,7 @@ class ProjectProject(models.Model):
             'default_move_type': 'in_invoice',
             'default_invoice_line_ids': [
                 (0, 0, {
-                    "analytic_distribution": {self.account_id.id: 100} if self.account_id else {},
+                    "analytic_distribution": analytic_distribution or {},
                 })
             ],
         }
@@ -565,7 +711,7 @@ class ProjectProject(models.Model):
         self.ensure_one()
 
         # Prepare analytic distribution for new invoice creation
-        analytic = {self.account_id.id: 100} if self.account_id else {}
+        analytic = self._ensure_default_analytic_distribution()
 
         ctx = {
             'default_project_id': self.id,
@@ -598,6 +744,7 @@ class ProjectProject(models.Model):
         action = self.env["ir.actions.actions"]._for_xml_id(
             "hr_expense.hr_expense_actions_my_all"
         )
+        analytic_distribution = self._ensure_default_analytic_distribution()
 
         # Force list then form view
         try:
@@ -616,9 +763,7 @@ class ProjectProject(models.Model):
         ctx = dict(self.env.context or {})
         ctx.update({
             "default_project_id": self.id,
-            "default_analytic_distribution": {
-                str(self.account_id.id): 100
-            } if self.account_id else {},
+            "default_analytic_distribution": analytic_distribution or {},
         })
         action["context"] = ctx
 
@@ -722,16 +867,20 @@ class ProjectProject(models.Model):
         for project in self:
             today = date.today()
             
-            # 1. عمر المشروع
-            if project.date_start:
+            # 1. عمر المشروع (من تاريخ الإنشاء حتى تاريخ الانتهاء)
+            if project.date_start and project.date:
+                project.project_age_days = (project.date - project.date_start).days
+            elif project.date_start:
+                # إذا لم يكن هناك تاريخ انتهاء، احسب من الإنشاء حتى اليوم
                 project.project_age_days = (today - project.date_start).days
             else:
                 project.project_age_days = 0
             
-            # 2. الأيام المتبقية
+            # 2. الأيام المتبقية (لا تظهر أرقام سالبة)
             if project.date:
-                project.days_remaining = (project.date - today).days
-                project.is_overdue = project.days_remaining < 0
+                days_calc = (project.date - today).days
+                project.days_remaining = max(0, days_calc)  # لا تظهر أرقام سالبة، 0 كحد أدنى
+                project.is_overdue = days_calc < 0
             else:
                 project.days_remaining = 0
                 project.is_overdue = False

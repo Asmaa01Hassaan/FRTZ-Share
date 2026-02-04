@@ -289,15 +289,16 @@
             <xpath expr="//notebook" position="inside">
                 <page string="المصاريف التشغيلية" style="direction: ltr;">
                     <group>
-                        <field name="expense_ids" context="{'show_sum': True}">
-                            <!--                            editable="bottom"-->
-                            <list>
+                        <field name="expense_ids" 
+                               context="{'show_sum': True, 'default_lead_id': id, 'default_project_id': project_id, 'default_analytic_distribution': default_expense_analytic_distribution, 'active_model': 'crm.lead', 'active_id': id}">
+                            <list editable="bottom">
                                 <field name="name" string="الوصف"/>
                                 <field name="product_id" string="الفئة" domain="[('can_be_expensed', '=', True)]"/>
                                 <field name="total_amount" string="المبلغ" sum="Total"/>
                                 <field name="currency_id"/>
                                 <field name="date" string="تاريخ الصرف"/>
-                                <field name="analytic_distribution" string="المشروع"/>
+                                <field name="analytic_distribution" string="المشروع" widget="analytic_distribution" 
+                                       options="{'product_field': 'product_id', 'account_field': 'account_id', 'business_domain': 'expense'}"/>
                                 <field name="state" string="الحالة"/>
                             </list>
                         </field>

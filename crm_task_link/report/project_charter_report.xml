@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Paper Format for Project Charter (A4 size) -->
+    <record id="paperformat_project_charter" model="report.paperformat">
+        <field name="name">Project Charter</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">20</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">20</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- Report Action -->
+    <record id="action_report_project_charter" model="ir.actions.report">
+        <field name="name">Project Charter</field>
+        <field name="model">project.project</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">crm_task_link.report_project_charter</field>
+        <field name="report_file">crm_task_link.report_project_charter</field>
+        <field name="paperformat_id" ref="paperformat_project_charter"/>
+        <field name="binding_model_id" ref="project.model_project_project"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- QWeb Template -->
+    <template id="report_project_charter">
+        <t t-call="web.html_container">
+
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- Header -->
+                        <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 15px;">
+                            <h1 style="color: #2c3e50; margin: 0; font-size: 28px; font-weight: bold;">
+                                ميثاق المشروع
+                            </h1>
+                            <h2 style="color: #34495e; margin: 10px 0 0 0; font-size: 18px; font-weight: normal;">
+                                Project Charter
+                            </h2>
+                        </div>
+
+                        <!-- Project Information Section -->
+                        <div>
+                            <style>
+                                .project-table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin-bottom: 20px;
+                                text-align: center;
+                                border: 1px solid black;
+                                }
+                                .project-table th {
+                                background-color: #f8f9fa; /* اللون الرمادي اللي في الصورة */
+                                border: 1px solid black;
+                                padding: 8px;
+                                font-weight: bold;
+                                }
+                                .project-table td {
+                                border: 1px solid black;
+                                padding: 10px;
+                                }
+                                .header-title {
+                                font-size: 18px;
+                                }
+                                .main-table {
+                                width: 100%;
+                                border: 1px solid black;
+                                border-collapse: collapse;
+                                margin-bottom: 25px;
+                                table-layout: fixed;
+                                }
+                                .main-table td {
+                                border: 1px solid black;
+                                padding: 6px;
+                                text-align: center;
+                                vertical-align: middle;
+                                word-wrap: break-word;
+                                }
+                                .header-bg {
+                                background-color: #d9d9d9;
+                                font-weight: bold;
+                                }
+                            </style>
+                            <table class="project-table">
+                                <tr>
+                                    <th colspan="2" class="header-title">Initial info</th>
+                                    <th colspan="2" class="header-title">المعلومات الاساسية</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="2">Project Name</th>
+                                    <th colspan="2">اسم المشروع</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <t t-esc="doc.name or ''"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Client Name</th>
+                                    <th>مالك المشروع</th>
+                                    <th>Project Manager</th>
+                                    <th>مدير المشروع</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <t t-esc="doc.partner_id.name if doc.partner_id else 'N/A'"/>
+                                    </td>
+
+                                    <td colspan="2">
+                                        <t t-esc="doc.user_id.name if doc.user_id else 'N/A'"/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <br/>
+
+                            <table class="project-table">
+                                <tr>
+                                    <th>Duration</th>
+                                    <th>مدة المشروع</th>
+                                    <th>Expected start date</th>
+                                    <th>تاريخ بدء المشروع</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <t t-if="doc.date_start and doc.date">
+                                            <t t-set="duration_days" t-value="(doc.date - doc.date_start).days"/>
+                                            <t t-esc="str(duration_days) + ' days'"/>
+                                        </t>
+                                        <t t-if="not (doc.date_start and doc.date)">N/A</t>
+                                    </td>
+                                    <td colspan="2">
+                                        <t t-if="doc.date_start" t-esc="doc.date_start.strftime('%Y-%m-%d')"/>
+                                        <t t-if="not doc.date_start">N/A</t>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br/>
+
+                            <table class="project-table">
+                                <tr class="header-bg">
+                                    <td style="width: 50%;">Project Background</td>
+                                    <td style="width: 50%;">نبذة عن المشروع</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"
+                                        style="text-align: center; height: 150px; vertical-align: top; padding: 15px;direction: rtl;">
+                                        <t t-esc="doc.description or 'لا يوجد وصف / No description available'"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br/>
+                            <br/>
+                            <table class="project-table">
+
+                                <tr class="header-bg">
+                                    <td style="width: 50%;">Project Scope</td>
+                                    <td style="width: 50%;">نطاق المشروع</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"
+                                        style="direction: rtl; text-align: center; height: 150px; vertical-align: top; padding: 15px;">
+
+                                        <t t-if="doc.project_scope" t-out="doc.project_scope"/>
+                                        <t t-else="">لا يوجد وصف / No scope available</t>
+
+
+                                    </td>
+                                </tr>
+                            </table>
+                            <br/>
+                            <!--                            <table class="project-table">-->
+                            <!--                                <tr class="header-bg">-->
+                            <!--                                    <td style="width: 50%;">Project Objective</td>-->
+                            <!--                                    <td style="width: 50%;">أهداف المشروع</td>-->
+                            <!--                                </tr>-->
+                            <!--                                <tr>-->
+                            <!--                                    <td colspan="2"-->
+                            <!--                                        style="direction: rtl; text-align: justify; height: 150px; vertical-align: top; padding: 15px;">-->
+                            <!--                                        <t t-if="doc.project_objective" t-out="doc.project_objective"/>-->
+                            <!--                                        <t t-else="">لا يوجد وصف / No objective available</t>-->
+                            <!--                                    </td>-->
+                            <!--                                </tr>-->
+                            <!--                                <tr class="header-bg">-->
+                            <!--                                    <td style="width: 50%;">Project Scope</td>-->
+                            <!--                                    <td style="width: 50%;">نطاق المشروع</td>-->
+                            <!--                                </tr>-->
+                            <!--                                <tr>-->
+                            <!--                                    <td colspan="2"-->
+                            <!--                                        style="direction: rtl; text-align: justify; height: 150px; vertical-align: top; padding: 15px;">-->
+                            <!--                                        اه مما يميز هذا المشرروع هو الوقت المميز والمكان المميز لدينا وهذا من اهم-->
+                            <!--                                        الاشياء-->
+                            <!--                                        ىقىعقبعبقععبىق قعثىعقىقر قرىعقىعقثىقر قرىرقىقعىثقع قرىعقىعقىثقع-->
+                            <!--                                        رققققققققققققققققق صخنضضضضضضضضضضضء ثصصصصصصصصصصصى ؤثثثثثثثثثثثثثثثث الممكنه لدينا-->
+                            <!--                                        في هذا-->
+                            <!--                                        لاتنميؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤ-->
+                            <!--                                        يؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤ-->
+                            <!--                                        فللالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالا-->
+                            <!--                                    </td>-->
+                            <!--                                </tr>-->
+                            <!--                            </table>-->
+                            <!--                            <br/>-->
+
+                            <!--                            <table class="project-table">-->
+                            <!--                                <tr class="header-bg">-->
+                            <!--                                    <td style="width: 50%;">Project Objective</td>-->
+                            <!--                                    <td style="width: 50%;">أهداف المشروع</td>-->
+                            <!--                                </tr>-->
+                            <!--                                <tr>-->
+                            <!--                                    <td colspan="2"-->
+                            <!--                                        style="direction: rtl; text-align: justify; height: 150px; vertical-align: top; padding: 15px;">-->
+                            <!--                                        <t t-if="doc.project_scope" t-out="doc.project_scope"/>-->
+                            <!--                                        <t t-else="">لا يوجد وصف / No scope available</t>-->
+                            <!--                                    </td>-->
+                            <!--                                </tr>-->
+                            <!--                                <tr class="header-bg">-->
+                            <!--                                    <td style="width: 50%;">Project Scope</td>-->
+                            <!--                                    <td style="width: 50%;">نطاق المشروع</td>-->
+                            <!--                                </tr>-->
+                            <!--                                <tr>-->
+                            <!--                                    <td colspan="2"-->
+                            <!--                                        style="direction: rtl; text-align: justify; height: 150px; vertical-align: top; padding: 15px;">-->
+                            <!--                                        اه مما يميز هذا المشرروع هو الوقت المميز والمكان المميز لدينا وهذا من اهم-->
+                            <!--                                        الاشياء-->
+                            <!--                                        ىقىعقبعبقععبىق قعثىعقىقر قرىعقىعقثىقر قرىرقىقعىثقع قرىعقىعقىثقع-->
+                            <!--                                        رققققققققققققققققق صخنضضضضضضضضضضضء ثصصصصصصصصصصصى ؤثثثثثثثثثثثثثثثث الممكنه لدينا-->
+                            <!--                                        في هذا-->
+                            <!--                                        لاتنميؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤ-->
+                            <!--                                        يؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤؤ-->
+                            <!--                                        فللالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالا-->
+                            <!--                                    </td>-->
+                            <!--                                </tr>-->
+                            <!--                            </table>-->
+                            <!--                            <br/>-->
+
+                            <!--                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">-->
+                            <!--                                <tr>-->
+                            <!--                                    <td colspan="2"-->
+                            <!--                                        style="padding: 8px; border: 1px solid #ddd; background-color: #f8f9fa; font-weight: bold; width: 50%; text-align: left;">-->
+                            <!--                                        Project Background-->
+                            <!--                                    </td>-->
+                            <!--                                    <td colspan="2"-->
+                            <!--                                        style="padding: 8px; border: 1px solid #ddd; background-color: #f8f9fa; font-weight: bold; width: 50%; text-align: right; direction: rtl;">-->
+                            <!--                                        نبذة عن المشروع-->
+                            <!--                                    </td>-->
+                            <!--                                </tr>-->
+                            <!--                                <tr>-->
+                            <!--                                    <td colspan="4"-->
+                            <!--                                        style="padding: 12px; border: 1px solid #ddd; text-align: right; direction: rtl; line-height: 1.6;">-->
+                            <!--                                        <t t-esc="doc.description or 'لا يوجد وصف / No description available'"/>-->
+                            <!--                                    </td>-->
+                            <!--                                </tr>-->
+                            <!--                            </table>-->
+                            <!--                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; table-layout: fixed;">-->
+                            <!--                                <tr>-->
+                            <!--                                    <td colspan="2"-->
+                            <!--                                        style="padding: 8px; border: 1px solid #ddd; background-color: #f8f9fa; font-weight: bold; width: 50%; text-align: left;">-->
+                            <!--                                        Project Objective-->
+                            <!--                                    </td>-->
+                            <!--                                    <td colspan="2"-->
+                            <!--                                        style="padding: 8px; border: 1px solid #ddd; background-color: #f8f9fa; font-weight: bold; width: 50%; text-align: right; direction: rtl;">-->
+                            <!--                                        اهداف المشروع-->
+                            <!--                                    </td>-->
+                            <!--                                </tr>-->
+                            <!--                                <tr>-->
+                            <!--                                    <td colspan="4"-->
+                            <!--                                        style="padding: 12px; border: 1px solid #ddd; direction: rtl; text-align: right; word-wrap: break-word; overflow-wrap: break-word;">-->
+                            <!--                                        <div class="rtl-content"-->
+                            <!--                                             style="direction: rtl !important; text-align: right !important; unicode-bidi: bidi-override; word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap;">-->
+                            <!--                                            <t t-if="doc.project_objective" t-out="doc.project_objective"/>-->
+                            <!--                                            <t t-else="">لا يوجد وصف / No objective available</t>-->
+                            <!--                                        </div>-->
+                            <!--                                    </td>-->
+                            <!--                                </tr>-->
+                            <!--                            </table>-->
+                            <!--                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; table-layout: fixed;">-->
+                            <!--                                <tr>-->
+                            <!--                                    <td colspan="2"-->
+                            <!--                                        style="padding: 8px; border: 1px solid #ddd; background-color: #f8f9fa; font-weight: bold; width: 50%; text-align: left;">-->
+                            <!--                                        Project Scope-->
+                            <!--                                    </td>-->
+                            <!--                                    <td colspan="2"-->
+                            <!--                                        style="padding: 8px; border: 1px solid #ddd; background-color: #f8f9fa; font-weight: bold; width: 50%; text-align: right; direction: rtl;">-->
+                            <!--                                        نطاق المشروع-->
+                            <!--                                    </td>-->
+                            <!--                                </tr>-->
+                            <!--                                <tr>-->
+                            <!--                                    <td colspan="4"-->
+                            <!--                                        style="padding: 12px; border: 1px solid #ddd; direction: rtl; text-align: right; word-wrap: break-word; overflow-wrap: break-word;">-->
+                            <!--                                        <div class="rtl-content"-->
+                            <!--                                             style="direction: rtl !important; text-align: right !important; unicode-bidi: bidi-override; word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap;">-->
+                            <!--                                            <t t-if="doc.project_scope" t-out="doc.project_scope"/>-->
+                            <!--                                            <t t-else="">لا يوجد وصف / No scope available</t>-->
+                            <!--                                        </div>-->
+                            <!--                                    </td>-->
+                            <!--                                </tr>-->
+                            <!--                            </table>-->
+
+                        </div>
+
+                        <!-- Financial Information Section -->
+                        <div style="margin-bottom: 25px;">
+                            <h3 style="color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; text-align: center;">
+                                المعلومات المالية / Financial Information
+                            </h3>
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd; background-color: #f8f9fa; font-weight: bold; width: 50%; text-align: left;">
+                                        Total Budget / الميزانية الكلية
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; width: 50%; text-align: right;">
+                                        <t t-esc="'{:,.2f}'.format(doc.quick_total_budget) if doc.quick_total_budget else '0.00'"/>
+                                        <t t-if="doc.company_currency_id">
+                                            <t t-esc="doc.company_currency_id.symbol or doc.company_currency_id.name"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd; background-color: #f8f9fa; font-weight: bold; text-align: left;">
+                                        Total Spent / المصروف الكلي
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
+                                        <t t-esc="'{:,.2f}'.format(doc.quick_total_spent) if doc.quick_total_spent else '0.00'"/>
+                                        <t t-if="doc.company_currency_id">
+                                            <t t-esc="doc.company_currency_id.symbol or doc.company_currency_id.name"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd; background-color: #f8f9fa; font-weight: bold; text-align: left;">
+                                        Remaining / المتبقي
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
+                                        <t t-esc="'{:,.2f}'.format(doc.quick_remaining) if doc.quick_remaining else '0.00'"/>
+                                        <t t-if="doc.company_currency_id">
+                                            <t t-esc="doc.company_currency_id.symbol or doc.company_currency_id.name"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd; background-color: #f8f9fa; font-weight: bold; text-align: left;">
+                                        Utilization / نسبة الاستخدام
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
+                                        <t t-esc="'{:.2f}%'.format(doc.quick_utilization) if doc.quick_utilization else '0.00%'"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Project Description Section -->
+                        <div style="margin-bottom: 25px;">
+                            <h3 style="color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; text-align: center;">
+                                Project Description / وصف المشروع
+                            </h3>
+                            <div style="padding: 15px; border: 1px solid #ddd; background-color: #f8f9fa; min-height: 100px; text-align: right; direction: rtl; line-height: 1.6;">
+                                <t t-esc="doc.description or 'لا يوجد وصف / No description available'"/>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #333; text-align: center; color: #666; font-size: 12px;">
+                            <p style="margin: 5px 0;">
+                                <t t-esc="'الشركة / Company: ' + (doc.company_id.name if doc.company_id else 'N/A')"/>
+                            </p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

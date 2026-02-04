@@ -1,24 +1,150 @@
-# Python bytecode files
-__pycache__/
+# Odoo specific ignores
 *.pyc
 *.pyo
+__pycache__/
+*.egg-info/
+*.egg
+*.md
+.python-version
+.rar
 
-# Odoo Database & Logs
-*.db
-*.log
-*.xlsx
+# Database dumps and backups
+*.dump
+*.backup
+*.bak
+*.sql
 
-# Virtual environment
-venv/
-.env/
+# Odoo filestore
+/filestore/
+/data/
 
-# Odoo configuration file
+# Odoo configuration files (can contain passwords)
+/odoo.conf
+/debian/
+/.odoorc
 *.conf
 
-# IDE files (for example VS Code, PyCharm)
-.idea/
-.vscode/
+# Log files
+*.log
+/log/
+/logs/
 
-# Odoo Addons
-*.tar.gz
-*.zip
+# Temporary files
+*.tmp
+*.swp
+*~
+.*.swp
+.DS_Store
+.thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+
+# OS generated files
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Odoo addons paths (except your custom addons)
+/addons/
+/odoo/addons/
+/enterprise/
+
+# Development and testing
+/.cache/
+/.pytest_cache/
+/coverage.xml
+/.coverage
+/htmlcov/
+
+# Environment and virtual environment
+/.env
+/venv/
+/env/
+/.venv/
+/ENV/
+
+# Build and distribution
+/dist/
+/build/
+/eggs/
+/parts/
+/var/
+/sdist/
+/develop-eggs/
+/.installed.cfg
+/*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Translations
+*.mo
+*.pot
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+# Complexity
+output/*.html
+output/*/index.html
+
+# Sphinx
+docs/_build/
+
+# Node.js (if using Odoo with Node)
+node_modules/
+npm-debug.log
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Backup files from editors
+*~
+.*.swp
+*.swo
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+[Tt]humbs.db
+*.stackdump
+
+# Linux
+*~
+
+# Odoo specific development
+/translations/
+
+# Database connection strings and secrets
+secrets.ini
+config.ini
+local.ini
+*.sh

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_project_financial_statistics" model="res.groups">
+        <field name="name">Project Financial Statistics</field>
+        <field name="category_id" ref="base.module_category_project"/>
+        <field name="comment">Users in this group can view financial statistics (budget, spent, remaining, utilization) in project forms.</field>
+    </record>
+</odoo>
+

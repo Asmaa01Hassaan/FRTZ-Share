@@ -32,23 +32,7 @@
             <xpath expr="//group[.//field[@name='partner_id']]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <!--            <xpath expr="//field[@name='partner_id']" position="after">-->
-            <!--                <field name="analytic_account_id"-->
-            <!--                       context="{'default_project_id': id}"-->
-            <!--                       options="{'no_create': True}"/>-->
-            <!--            </xpath>-->
-            <!--            <xpath expr="//field[@name='partner_id']" position="after">-->
-            <!--                <field name="auto_account_id"-->
-            <!--                       context="{'default_project_id': id}"-->
-            <!--                       options="{'no_create': True}"/>-->
-            <!--            </xpath>-->
-            <!--             <xpath expr="//sheet" position="before">-->
-            <!--                <div class="oe_button_box" name="button_box">-->
-            <!--                    <button name="action_create_analytic_account" type="object"-->
-            <!--                            string="Create Analytic Account" class="btn-primary"-->
-            <!--                            />-->
-            <!--                </div>-->
-            <!--            </xpath>-->
+
             <xpath expr="//div[hasclass('oe_title')]" position="after">
                 <div style="display: none;">
                     <field name="allow_timesheets"/>
@@ -189,7 +173,7 @@
                 </div>
 
                 <!-- 💰 الإحصائيات المالية - مصغرة -->
-                <div style="margin-bottom: 20px;">
+                <div style="margin-bottom: 20px;" groups="crm_task_link.group_project_financial_statistics">
                     <div style="font-size: 14px; font-weight: 600; color: #2c3e50; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid #dee2e6;">
                         💰 الإحصائيات المالية
                     </div>
@@ -281,15 +265,16 @@
                 <!--                </page>-->
                 <page string="المصاريف التشغيلية" style="direction: ltr;">
                     <group>
-                        <field name="expense_ids" context="{'show_sum': True}">
-                            <!--                            editable="bottom"-->
-                            <list>
+                        <field name="expense_ids" 
+                               context="{'show_sum': True, 'default_project_id': id, 'default_analytic_distribution': default_expense_analytic_distribution, 'active_model': 'project.project', 'active_id': id, 'active_ids': [id]}">
+                            <list editable="bottom">
                                 <field name="name" string="الوصف"/>
                                 <field name="product_id" string="الفئة" domain="[('can_be_expensed', '=', True)]"/>
                                 <field name="total_amount" string="المبلغ" sum="Total"/>
                                 <field name="currency_id"/>
                                 <field name="date" string="تاريخ الصرف"/>
-                                <field name="analytic_distribution" string="المشروع"/>
+                                <field name="analytic_distribution" string="المشروع" widget="analytic_distribution" 
+                                       options="{'product_field': 'product_id', 'account_field': 'account_id', 'business_domain': 'expense'}"/>
                                 <field name="state" string="الحالة"/>
                             </list>
                         </field>
@@ -299,39 +284,44 @@
                                options="{'currency_field': 'company_currency'}"/>
                     </group>
                 </page>
+                <page string="ميثاق المشروع" >
+                    <group>
+                        <group>
+                            <field name="project_charter_sequence" readonly="1" string="رقم الميثاق"/>
+                        </group>
+                        <group>
+                            <div class="alert alert-info" role="alert" invisible="project_charter_url">
+                                <strong>ملاحظة:</strong> سيتم إنشاء رقم الميثاق تلقائياً عند عرض التقرير.
+                            </div>
+                            <div class="alert alert-success" role="alert" invisible="not project_charter_url">
+                                <strong>رابط ميثاق المشروع:</strong>
+                                <br/>
+                                <field name="project_charter_url" readonly="1" widget="url" nolabel="1" 
+                                       options="{'is_button': False}"/>
+                            </div>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="project_objective" options="{'resizable': false}" string="أهداف المشروع / Project Objective"
+                               placeholder="أدخل أهداف المشروع / Enter project objectives" style="direction: rtl;"/>
+                    </group>
+                    <group>
+                        <field name="project_scope" options="{'resizable': false}" string="نطاق المشروع / Project Scope"
+                               placeholder="أدخل نطاق المشروع / Enter project scope" style="direction: rtl;"/>
+                    </group>
+                    <div style="margin-top: 20px;">
+                        <button name="action_view_project_charter"
+                                type="object"
+                                string="عرض/تحميل ميثاق المشروع (PDF)"
+                                class="btn-primary"
+                                icon="fa-file-pdf-o"/>
+                    </div>
+                </page>
             </xpath>
-            <!--            <xpath expr="//notebook" position="inside">-->
-            <!--                <page string="Project Expenses">-->
-            <!--                    <field name="expense_ids">-->
-            <!--                        <tree editable="bottom">-->
-            <!--                            <field name="name" string="Description"/>-->
-            <!--                            <field name="product_id" string="Category"/>-->
-            <!--                            <field name="total_amount" string="Total"/>-->
-            <!--                            <field name="date" string="Expense Date"/>-->
-            <!--                            <field name="analytic_distribution"/>-->
-            <!--                            <field name="state"/>-->
-            <!--                        </tree>-->
-            <!--                    </field>-->
-            <!--                </page>-->
-            <!--            </xpath>-->
 
 
         </field>
     </record>
-    <!--    <record id="action_view_expenses_by_project" model="ir.actions.act_window">-->
-    <!--        <field name="name">Project Expenses</field>-->
-    <!--        <field name="res_model">hr.expense</field>-->
-    <!--        <field name="view_mode">list,form</field>-->
-    <!--        <field name="domain">[('project_id', '=', active_id)]</field>-->
-    <!--        <field name="context">{'default_project_id': active_id}</field>-->
-    <!--    </record>-->
-    <!--    <record id="action_view_customer_invoices_by_project" model="ir.actions.act_window">-->
-    <!--        <field name="name">Customer Invoices</field>-->
-    <!--        <field name="res_model">account.move</field>-->
-    <!--        <field name="view_mode">list,form</field>-->
-    <!--        <field name="domain">[('move_type','=','out_invoice'), ('project_id', '=', active_id)]</field>-->
-    <!--        <field name="context">{'default_project_id': active_id,'default_move_type': 'out_invoice'}</field>-->
-    <!--    </record>-->
 
     <record id="view_project_form_inherit_vendor_bills" model="ir.ui.view">
         <field name="name">project.project.form.vendor.bills</field>
@@ -395,16 +385,7 @@
                     </div>
 
                 </button>
-                <!--                <button name="action_view_purchase_orders"-->
-                <!--                        type="object"-->
-                <!--                        class="oe_stat_button"-->
-                <!--                        icon="fa-shopping-cart"-->
-                <!--                        style="padding:6px 12px; margin:2px;">-->
-                <!--                    <div class="o_stat_info">-->
-                <!--                        <span class="o_stat_text">طلبات الشراء</span>-->
-                <!--                        <field name="purchase_order_count" widget="statinfo"/>-->
-                <!--                    </div>-->
-                <!--                </button>-->
+
             </xpath>
         </field>
     </record>

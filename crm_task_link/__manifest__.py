@@ -11,7 +11,11 @@
     'depends': ['base', 'crm', 'project', 'hr_expense', 'account', 'sale', 'purchase','account_budget', 'laft_document_management'],
 
     'data': [
+        'data/project_charter_sequence.xml',
+        'security/groups.xml',
         'security/ir.model.access.csv',
+
+        'report/project_charter_report.xml',
 
         'views/crm_lead_redesign_view.xml',
         'views/operational_expense_views.xml',
