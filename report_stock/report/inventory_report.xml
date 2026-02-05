@@ -1,0 +1,372 @@
+<odoo>
+    <template id="report_delivery_document_inherit" inherit_id="stock.report_delivery_document">
+
+
+        <xpath expr="//t[@t-set='address']" position="before">
+            <div t-if="o.picking_type_id" class="row"
+                 t-attf-style="direction: {{ 'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr' }}; text-align: {{ 'center' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'left' }};">
+                <div class="col-8">
+                    <span t-field="o.picking_type_id"/>
+                </div>
+            </div>
+        </xpath>
+
+        <xpath expr="//t[@t-set='address']" position="after">
+            <h1 style="padding:30px 0 15px; 0"></h1>
+            <div class="container-fluid mb-4"
+                 t-attf-style="direction: {{ 'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr' }}; text-align: {{ 'right' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'left' }};">
+
+                <div class="row">
+                    <div class="col-6">
+                        <strong>
+                            <t t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">تاريخ التوصيل الفعلي:</t>
+                            <t t-else="">Shipping Date:</t>
+                        </strong>
+                        <span t-field="o.date_done" t-options='{"widget": "date"}' class="ms-2"/>
+                    </div>
+                    <div class="col-6">
+                        <strong>
+                            <t t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">تاريخ التوصيل المجدول:</t>
+                            <t t-else="">Scheduled Date:</t>
+                        </strong>
+                        <span t-field="o.scheduled_date" t-options='{"widget": "date"}' class="ms-2"/>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-6" t-if="o.origin">
+                        <strong>
+                            <t t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">أمر الطلب:</t>
+                            <t t-else="">Order:</t>
+                        </strong>
+                        <span t-field="o.origin" class="ms-2"/>
+                    </div>
+                    <div class="col-6" t-if="o.location_id">
+                        <strong>
+                            <t t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">الموقع:</t>
+                            <t t-else="">Location:</t>
+                        </strong>
+                        <span t-field="o.location_id.display_name" class="ms-2"/>
+                    </div>
+                </div>
+
+                <div class="row mt-2" t-if="o.partner_id">
+                    <div class="col-12">
+                        <strong>
+                            <t t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">جهة الاتصال:</t>
+                            <t t-else="">Contact:</t>
+                        </strong>
+                        <span t-field="o.partner_id" class="ms-2"/>
+                    </div>
+                </div>
+            </div>
+
+        </xpath>
+
+        <xpath expr="//div[@id='informations']" position="attributes">
+            <attribute name="style">display: none !important;</attribute>
+            <attribute name="class">d-none</attribute>
+        </xpath>
+
+        <xpath expr="//h2" position="replace">
+            <h2 style="text-align:center;">
+                <span t-field="o.name">WH/OUT/0001</span>
+            </h2>
+        </xpath>
+
+        <xpath expr="//div[@name='div_outgoing_address']" position="attributes">
+            <attribute name="style">display: none !important;</attribute>
+            <attribute name="class">d-none</attribute>
+        </xpath>
+
+        <xpath expr="//table[@name='stock_move_table']" position="attributes">
+            <attribute name="t-att-dir">'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr'
+            </attribute>
+            <attribute name="t-attf-style">width: 100% !important; border-collapse: collapse !important; border: 1px
+                solid black !important; {{ 'direction: rtl; text-align: center;' if not o.partner_id or
+                o.partner_id.lang
+                == 'ar_001' else 'direction: ltr; text-align: center;' }}
+            </attribute>
+        </xpath>
+
+        <xpath expr="//table[@name='stock_move_table']/thead/tr/th" position="attributes">
+            <attribute name="style">
+                border: 1px solid black !important;
+                text-align: center !important;
+                padding: 10px;
+                background-color: transparent !important;
+            </attribute>
+        </xpath>
+
+        <xpath expr="//table[@name='stock_move_table']/thead/tr/th[@name='th_sm_product']" position="attributes">
+            <attribute name="style">
+                border: 1px solid black !important;
+                text-align: center !important;
+                vertical-align: middle !important;
+                padding: 8px;
+            </attribute>
+        </xpath>
+
+        <xpath expr="//table[@name='stock_move_table']/tbody/tr/td" position="attributes">
+            <attribute name="style">
+                border: 1px solid black !important;
+                text-align: center !important;
+                vertical-align: middle !important;
+                padding: 8px;
+            </attribute>
+        </xpath>
+
+        <xpath expr="//table[@name='stock_move_line_table']" position="attributes">
+            <attribute name="t-att-dir">'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr'
+            </attribute>
+            <attribute name="t-attf-style">width: 100% !important; border-collapse: collapse !important; border: 1px
+                solid black !important; {{ 'direction: rtl; text-align: right;' if not o.partner_id or o.partner_id.lang
+                == 'ar_001' else 'direction: ltr; text-align: left;' }}
+            </attribute>
+        </xpath>
+
+        <xpath expr="//table[@name='stock_move_line_table']/thead/tr/th" position="attributes">
+            <attribute name="style">border: 1px solid black !important; padding: 10px; background-color: transparent
+                !important;
+            </attribute>
+        </xpath>
+        <xpath expr="//table[@name='stock_move_line_table']/tbody" position="attributes">
+            <attribute name="style">border: 1px solid black !important; padding: 8px; vertical-align: middle;
+            </attribute>
+        </xpath>
+
+
+        <xpath expr="//table[@name='stock_backorder_table']" position="attributes">
+            <attribute name="t-att-dir">'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr'
+            </attribute>
+            <attribute name="t-attf-style">width: 100% !important; border-collapse: collapse !important; border: 1px
+                solid black !important; {{ 'direction: rtl; text-align: right;' if not o.partner_id or o.partner_id.lang
+                == 'ar_001' else 'direction: ltr; text-align: left;' }}
+            </attribute>
+        </xpath>
+
+        <xpath expr="//table[@name='stock_backorder_table']/thead/tr/th" position="attributes">
+            <attribute name="style">border: 1px solid black !important; padding: 10px; background-color: transparent
+                !important;
+            </attribute>
+        </xpath>
+        <xpath expr="//table[@name='stock_backorder_table']/tbody" position="attributes">
+            <attribute name="style">border: 1px solid black !important; padding: 8px; vertical-align: middle;
+            </attribute>
+        </xpath>
+
+        <xpath expr="//t[@t-set='information_block']" position="attributes">
+            <attribute name="t-value">null</attribute>
+        </xpath>
+        <xpath expr="//t[@t-set='address']" position="replace">
+            <t t-set="address" t-value="False"/>
+        </xpath>
+
+
+    </template>
+
+
+    <!--    <template id="report_delivery_document_inherit" inherit_id="stock.report_delivery_document">-->
+
+    <!--&lt;!&ndash;        <xpath expr="//t[@t-set='address']" position="before">&ndash;&gt;-->
+    <!--&lt;!&ndash;            <div t-if="o.state" class="col-3 mb-2" name="div_sched_date">&ndash;&gt;-->
+    <!--&lt;!&ndash;                <strong>&ndash;&gt;-->
+    <!--&lt;!&ndash;                    <t t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">تاريخ التوصيل الفعلي :</t>&ndash;&gt;-->
+    <!--&lt;!&ndash;                    <t t-else="">Shipping Date</t>&ndash;&gt;-->
+    <!--&lt;!&ndash;                </strong>&ndash;&gt;-->
+    <!--&lt;!&ndash;                <div t-if="o.state == 'done'" t-field="o.date_done" class="m-0"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;                <div t-else="" t-field="o.scheduled_date" class="m-0"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </div>&ndash;&gt;-->
+    <!--&lt;!&ndash;        </xpath>&ndash;&gt;-->
+
+    <!--        <xpath expr="//t[@t-set='address']" position="replace">-->
+    <!--            <t t-set="address">-->
+    <!--                <div name="div_outgoing_address"-->
+    <!--                     t-attf-style="direction: {{ 'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr' }}; text-align: {{ 'right' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'left' }};">-->
+
+    <!--                    <div name="outgoing_delivery_address" t-if="o.should_print_delivery_address()">-->
+    <!--                        <span>-->
+    <!--                            <strong>-->
+    <!--                                <t t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">عنوان التوصيل:</t>-->
+    <!--                                <t t-else="">Delivery Address:</t>-->
+    <!--                            </strong>-->
+    <!--                        </span>-->
+    <!--                        <div t-out="o.move_ids[0].partner_id or o.partner_id"-->
+    <!--                             t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>-->
+    <!--                    </div>-->
+
+    <!--                    <div name="outgoing_warehouse_address"-->
+    <!--                         t-elif="o.picking_type_id.code != 'internal' and o.picking_type_id.warehouse_id.partner_id">-->
+    <!--                        <strong>-->
+    <!--                            <t t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">عنوان المستودع:</t>-->
+    <!--                            <t t-else="">Warehouse Address</t>-->
+    <!--                        </strong>-->
+    <!--                        <div t-field="o.picking_type_id.warehouse_id.partner_id"-->
+    <!--                             t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </t>-->
+    <!--        </xpath>-->
+
+    <!--        <xpath expr="//t[@t-set='information_block']" position="replace">-->
+    <!--            <t t-set="information_block">-->
+    <!--                <div class="row"-->
+    <!--                     t-attf-style="direction: {{ 'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr' }};">-->
+    <!--                    <div class="col-7" name="div_incoming_address"-->
+    <!--                         t-attf-style="text-align: {{ 'right' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'left' }};">-->
+
+    <!--                        <t t-set="show_partner" t-value="False"/>-->
+
+    <!--                        <div name="vendor_address" t-if="o.picking_type_id.code=='incoming' and partner">-->
+    <!--                            <strong>-->
+    <!--                                <t t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">عنوان المورد :</t>-->
+    <!--                                <t t-else="">Vendor Address</t>-->
+    <!--                            </strong>-->
+    <!--                            <t t-set="show_partner" t-value="True"/>-->
+    <!--                        </div>-->
+
+    <!--                        <div name="customer_address"-->
+    <!--                             t-if="o.picking_type_id.code=='outgoing' and partner and partner != partner.commercial_partner_id">-->
+    <!--                            <strong>-->
+    <!--                                <t t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">عنوان العميل :</t>-->
+    <!--                                <t t-else="">Customer Address</t>-->
+    <!--                            </strong>-->
+    <!--                            <t t-set="show_partner" t-value="True"/>-->
+    <!--                        </div>-->
+
+    <!--                        <div t-if="show_partner" name="partner_header">-->
+    <!--                            <div t-field="partner.commercial_partner_id"-->
+    <!--                                 t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </t>-->
+    <!--        </xpath>-->
+
+    <!--        <xpath expr="//h2" position="replace">-->
+    <!--            <h2 t-attf-style="margin-top: 20px; {{ 'text-align: right; direction: rtl;' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'text-align: left; direction: ltr;' }}">-->
+    <!--                <span t-field="o.name">WH/OUT/0001</span>-->
+    <!--            </h2>-->
+    <!--        </xpath>-->
+
+    <!--        <xpath expr="//div[@id='informations']" position="replace">-->
+    <!--            <div id="informations" class="row mb-4"-->
+    <!--                 t-attf-style="direction: {{ 'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr' }}; text-align: {{ 'right' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'left' }};">-->
+
+    <!--                <div t-if="o.origin" class="col-3 mb-2" name="div_origin">-->
+    <!--                    <strong>-->
+    <!--                        <t t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">المستند المصدر :</t>-->
+    <!--                        <t t-else="">Order</t>-->
+    <!--                    </strong>-->
+    <!--                    <div t-field="o.origin" class="m-0"/>-->
+    <!--                </div>-->
+
+    <!--                <div t-if="o.state" class="col-3 mb-2" name="div_sched_date">-->
+    <!--                    <strong>-->
+    <!--                        <t t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">تاريخ التوصيل الفعلي :</t>-->
+    <!--                        <t t-else="">Shipping Date</t>-->
+    <!--                    </strong>-->
+    <!--                    <div t-if="o.state == 'done'" t-field="o.date_done" class="m-0"/>-->
+    <!--                    <div t-else="" t-field="o.scheduled_date" class="m-0"/>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div t-if="o.partner_id" class="row"-->
+    <!--                 t-attf-style=" direction: {{ 'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr' }}; text-align: {{ 'right' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'left' }};">-->
+    <!--                <div class="col-4">-->
+    <!--                    <strong>-->
+    <!--                        <span t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">جهة الاتصال:</span>-->
+    <!--                        <span t-else="">Contact:</span>-->
+    <!--                    </strong>-->
+    <!--                </div>-->
+    <!--                <div class="col-8">-->
+    <!--                    <span t-field="o.partner_id"/>-->
+    <!--                </div>-->
+    <!--            </div>-->
+
+    <!--            <div t-if="o.picking_type_id" class="row"-->
+    <!--                 t-attf-style="direction: {{ 'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr' }}; text-align: {{ 'right' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'left' }};">-->
+    <!--                <div class="col-4">-->
+    <!--                    <strong>-->
+    <!--                        <span t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">نوع العملية:</span>-->
+    <!--                        <span t-else="">Operation Type:</span>-->
+    <!--                    </strong>-->
+    <!--                </div>-->
+    <!--                <div class="col-8">-->
+    <!--                    <span t-field="o.picking_type_id"/>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--&lt;!&ndash;            <div t-if="o.location_id" class="row"&ndash;&gt;-->
+    <!--&lt;!&ndash;                 t-attf-style="direction: {{ 'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr' }}; text-align: {{ 'right' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'left' }};">&ndash;&gt;-->
+    <!--&lt;!&ndash;                <div class="col-4">&ndash;&gt;-->
+    <!--&lt;!&ndash;                    <strong>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <span t-if="not o.partner_id or o.partner_id.lang == 'ar_001'">الموقع :</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <span t-else="">Location:</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;                    </strong>&ndash;&gt;-->
+    <!--&lt;!&ndash;                </div>&ndash;&gt;-->
+    <!--&lt;!&ndash;                <div class="col-8">&ndash;&gt;-->
+    <!--&lt;!&ndash;                    <span t-field="o.location_id"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;                </div>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </div>&ndash;&gt;-->
+    <!--        </xpath>-->
+
+    <!--        <xpath expr="//table[@name='stock_move_table']" position="attributes">-->
+    <!--            <attribute name="t-att-dir">'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr'-->
+    <!--            </attribute>-->
+    <!--            <attribute name="t-attf-style">width: 100% !important; border-collapse: collapse !important; border: 1px-->
+    <!--                solid black !important; {{ 'direction: rtl; text-align: right;' if not o.partner_id or o.partner_id.lang-->
+    <!--                == 'ar_001' else 'direction: ltr; text-align: left;' }}-->
+    <!--            </attribute>-->
+    <!--        </xpath>-->
+
+    <!--        <xpath expr="//table[@name='stock_move_table']/thead/tr/th" position="attributes">-->
+    <!--            <attribute name="style">border: 1px solid black !important; padding: 10px; background-color: transparent-->
+    <!--                !important;-->
+    <!--            </attribute>-->
+    <!--        </xpath>-->
+    <!--        <xpath expr="//table[@name='stock_move_table']/tbody/tr/td" position="attributes">-->
+    <!--            <attribute name="style">border: 1px solid black !important; padding: 8px; vertical-align: middle;-->
+    <!--            </attribute>-->
+    <!--        </xpath>-->
+
+    <!--        <xpath expr="//table[@name='stock_move_line_table']" position="attributes">-->
+    <!--            <attribute name="t-att-dir">'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr'-->
+    <!--            </attribute>-->
+    <!--            <attribute name="t-attf-style">width: 100% !important; border-collapse: collapse !important; border: 1px-->
+    <!--                solid black !important; {{ 'direction: rtl; text-align: right;' if not o.partner_id or o.partner_id.lang-->
+    <!--                == 'ar_001' else 'direction: ltr; text-align: left;' }}-->
+    <!--            </attribute>-->
+    <!--        </xpath>-->
+
+    <!--        <xpath expr="//table[@name='stock_move_line_table']/thead/tr/th" position="attributes">-->
+    <!--            <attribute name="style">border: 1px solid black !important; padding: 10px; background-color: transparent-->
+    <!--                !important;-->
+    <!--            </attribute>-->
+    <!--        </xpath>-->
+    <!--        <xpath expr="//table[@name='stock_move_line_table']/tbody" position="attributes">-->
+    <!--            <attribute name="style">border: 1px solid black !important; padding: 8px; vertical-align: middle;-->
+    <!--            </attribute>-->
+    <!--        </xpath>-->
+
+
+    <!--        <xpath expr="//table[@name='stock_backorder_table']" position="attributes">-->
+    <!--            <attribute name="t-att-dir">'rtl' if not o.partner_id or o.partner_id.lang == 'ar_001' else 'ltr'-->
+    <!--            </attribute>-->
+    <!--            <attribute name="t-attf-style">width: 100% !important; border-collapse: collapse !important; border: 1px-->
+    <!--                solid black !important; {{ 'direction: rtl; text-align: right;' if not o.partner_id or o.partner_id.lang-->
+    <!--                == 'ar_001' else 'direction: ltr; text-align: left;' }}-->
+    <!--            </attribute>-->
+    <!--        </xpath>-->
+
+    <!--        <xpath expr="//table[@name='stock_backorder_table']/thead/tr/th" position="attributes">-->
+    <!--            <attribute name="style">border: 1px solid black !important; padding: 10px; background-color: transparent-->
+    <!--                !important;-->
+    <!--            </attribute>-->
+    <!--        </xpath>-->
+    <!--        <xpath expr="//table[@name='stock_backorder_table']/tbody" position="attributes">-->
+    <!--            <attribute name="style">border: 1px solid black !important; padding: 8px; vertical-align: middle;-->
+    <!--            </attribute>-->
+    <!--        </xpath>-->
+    <!--        -->
+
+    <!--    </template>-->
+</odoo>
