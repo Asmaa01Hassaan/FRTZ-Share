@@ -54,11 +54,6 @@
                                 text-align: center;
                                 border: 1px solid black;
                                 }
-                                .no-break {
-                                page-break-inside: avoid !important;
-                                break-inside: avoid !important;
-                                display: block; /* لضمان عمل الخاصية على بعض المتصفحات */
-                                }
                                 .project-table th {
                                 background-color: #f8f9fa; /* اللون الرمادي اللي في الصورة */
                                 border: 1px solid black;
@@ -161,25 +156,23 @@
                             </table>
                             <br/>
                             <br/>
-                            <div class="no-break">
-                                <table class="project-table">
+                            <table class="project-table">
 
-                                    <tr class="header-bg">
-                                        <td style="width: 50%;">Project Scope</td>
-                                        <td style="width: 50%;">نطاق المشروع</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"
-                                            style="direction: rtl; text-align: center; height: 150px; vertical-align: top; padding: 15px;">
+                                <tr class="header-bg">
+                                    <td style="width: 50%;">Project Scope</td>
+                                    <td style="width: 50%;">نطاق المشروع</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"
+                                        style="direction: rtl; text-align: center; height: 150px; vertical-align: top; padding: 15px;">
 
-                                            <t t-if="doc.project_scope" t-out="doc.project_scope"/>
-                                            <t t-else="">لا يوجد وصف / No scope available</t>
+                                        <t t-if="doc.project_scope" t-out="doc.project_scope"/>
+                                        <t t-else="">لا يوجد وصف / No scope available</t>
 
 
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                                    </td>
+                                </tr>
+                            </table>
                             <br/>
 
                         </div>
