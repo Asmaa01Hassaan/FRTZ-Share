@@ -1,0 +1,141 @@
+<odoo>
+    <template id="template_project_view">
+        <t t-call="website.layout">
+            <div class="container py-4">
+
+                <div class="container mt-4">
+
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex flex-column">
+                            <h3 class="fw-bold mb-0">
+                                <i class="bx bx-show me-2 text-primary"></i>
+                                View Project
+                            </h3>
+                            رؤية تفاصيل المشروع
+                        </div>
+
+                        <div class="d-flex gap-1">
+                            <a t-attf-href="/my/invoice/create?project_id=#{project.id}"
+                               class="btn btn-outline-secondary"
+                               style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 90px; height: 45px; padding: 2px; border-color: #dee2e6; color: #4c4c4c; transition: all 0.2s;">
+
+                                <div style="font-size: 0.75rem; line-height: 1; margin-bottom: 2px;">
+                                    <i class="bx bx-receipt" style="font-size: 0.8rem;"></i>
+                                    Invoices
+                                </div>
+
+                                <div style="font-weight: bold; font-size: 0.9rem; color: #714B67;">
+                                    <t t-esc="request.env['account.move'].sudo().search_count([('move_type', '=', 'out_invoice'), ('invoice_origin', '=', project.name)])"/>
+                                </div>
+                            </a>
+
+                            <a t-attf-href="/my/sale_order/create?project_id=#{project.id}"
+                               class="btn btn-outline-secondary"
+                               style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 90px; height: 45px; padding: 2px; border-color: #dee2e6; color: #4c4c4c; transition: all 0.2s;">
+
+                                <div style="font-size: 0.75rem; line-height: 1; margin-bottom: 2px;">
+                                    <i class="bx bx-cart" style="font-size: 0.8rem;"></i>
+                                    Sales
+                                </div>
+
+                                <div style="font-weight: bold; font-size: 0.9rem; color: #714B67;">
+                                    <t t-esc="request.env['sale.order'].sudo().search_count([('origin', '=', project.name)])"/>
+                                </div>
+                            </a>
+                        </div>
+
+                        <a href="/my/portal-dashboard/project_hub"
+                           class="btn btn-outline-secondary btn-sm">
+                            <i class="bx bx-arrow-back me-1"></i>
+                            Back / العودة
+                        </a>
+                    </div>
+
+                    <!-- Main Card -->
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+
+                            <!-- Project Main Info -->
+                            <div class="row g-3 mb-4">
+
+                                <div class="col-md-6">
+                                    <div class="border rounded-3 p-3 h-100">
+                                        <small class="text-muted">Project Name :</small>
+                                        <div class="fw-semibold fs-6">
+                                            <t t-esc="project.name"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="border rounded-3 p-3 h-100">
+                                        <small class="text-muted">Project Code :</small>
+                                        <div class="fw-semibold fs-6 text-primary">
+                                            <t t-esc="project.label_tasks or '-'"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="border rounded-3 p-3 h-100">
+                                        <small class="text-muted">Customer :</small>
+                                        <div class="fw-semibold fs-6">
+                                            <t t-esc="project.partner_id.name or '-'"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="border rounded-3 p-3 h-100">
+                                        <small class="text-muted">Project Manager :</small>
+                                        <div class="fw-semibold fs-6">
+                                            <t t-esc="project.user_id.name or '-'"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="border rounded-3 p-3 h-100">
+                                        <small class="text-muted">Start Date :</small>
+                                        <div class="fw-semibold fs-6">
+                                            <t t-esc="project.date_start or '-'"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="border rounded-3 p-3 h-100">
+                                        <small class="text-muted">End Date :</small>
+                                        <div class="fw-semibold fs-6">
+                                            <t t-esc="project.date or '-'"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Tags -->
+                            <div>
+                                <small class="text-muted d-block mb-1">Tags :</small>
+                                <div>
+                                    <t t-foreach="project.tag_ids" t-as="tag">
+                                        <span class="badge rounded-pill bg-primary-subtle text-primary border me-1 mb-1 px-3 py-1">
+                                            <t t-esc="tag.name"/>
+                                        </span>
+                                    </t>
+                                    <t t-if="not project.tag_ids">
+                                        <span class="text-muted">No tags :</span>
+                                    </t>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </t>
+    </template>
+</odoo>

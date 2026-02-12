@@ -1,0 +1,175 @@
+<odoo>
+    <template id="template_invoice_create" name="Portal Create Invoice">
+        <t t-call="website.layout">
+            <div class="container my-5">
+
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h3 class="fw-bold mb-0">
+                            <i class="bx bx-receipt me-2 text-primary"></i>
+                            Create Invoice
+                        </h3>
+                        <small class="text-muted">إنشاء فاتورة جديدة</small>
+                    </div>
+
+                    <a t-attf-href="/my/project/view/#{project.id}"
+                       class="btn btn-outline-secondary btn-sm">
+                        <i class="bx bx-arrow-back me-1"></i>
+                        Back to Project
+                    </a>
+                </div>
+
+                <!-- Card -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+
+                        <form action="/my/invoice/create/save" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="project_id" t-att-value="project.id"/>
+
+                            <!-- Project Info -->
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Project</label>
+                                    <input type="text" class="form-control" t-att-value="project.name" readonly="1"/>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Customer</label>
+                                    <input type="text" class="form-control" t-att-value="partner.name" readonly="1"/>
+                                </div>
+                            </div>
+
+                            <!-- Invoice Info -->
+                            <div class="row mb-4">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Invoice Date</label>
+                                    <input type="date" name="invoice_date" class="form-control" required="1"/>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Due Date</label>
+                                    <input type="date" name="invoice_date_due" class="form-control"/>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Reference</label>
+                                    <input type="text" name="ref" class="form-control"
+                                           t-att-value="project.label_tasks"/>
+                                </div>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Invoice Description</label>
+                                <textarea name="narration" class="form-control" rows="4"
+                                          placeholder="Write invoice description..."></textarea>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="d-flex justify-content-end gap-2">
+                                <a t-attf-href="/my/project/view/#{project.id}"
+                                   class="btn btn-outline-secondary">
+                                    Cancel
+                                </a>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bx bx-check me-1"></i>
+                                    Create Invoice
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+
+    <template id="template_sale_order_create" name="Portal Create Sale Order">
+        <t t-call="website.layout">
+            <div class="container my-5">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h3 class="fw-bold mb-0">
+                            <i class="bx bx-cart me-2 text-info"></i>
+                            Create Sale Order
+                        </h3>
+                        <small class="text-muted">إنشاء أمر بيع جديد</small>
+                    </div>
+
+                    <a t-attf-href="/my/project/view/#{project.id}"
+                       class="btn btn-outline-secondary btn-sm">
+                        <i class="bx bx-arrow-back me-1"></i>
+                        Back to Project
+                    </a>
+                </div>
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+
+                        <form action="/my/sale_order/create/save" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="project_id" t-att-value="project.id"/>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Project</label>
+                                    <input type="text" class="form-control" t-att-value="project.name" readonly="1"/>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Customer</label>
+                                    <input type="text" class="form-control" t-att-value="partner.name" readonly="1"/>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Amount (Unit Price)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" name="amount" class="form-control" step="0.01" required="1"
+                                               placeholder="0.00"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Customer Reference</label>
+                                    <input type="text" name="ref" class="form-control" placeholder="e.g. PO-12345"/>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Sale Description (Item Name)</label>
+                                <input type="text" name="description" class="form-control"
+                                       placeholder="Describe what you are selling..."/>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Internal Notes</label>
+                                <textarea name="note" class="form-control" rows="3"
+                                          placeholder="Any additional notes..."></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2">
+                                <a t-attf-href="/my/project/view/#{project.id}"
+                                   class="btn btn-outline-secondary">
+                                    Cancel
+                                </a>
+                                <button type="submit" class="btn btn-info text-white px-4">
+                                    <i class="bx bx-check me-1"></i>
+                                    Create Quotation
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

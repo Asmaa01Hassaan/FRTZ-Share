@@ -175,6 +175,27 @@
                             </table>
                             <br/>
 
+                             <table class="main-table">
+                        <tr class="header-bg">
+                            <td colspan="2">Project Organization</td>
+                            <td colspan="2">هيكلة وتنظيم المشروع</td>
+                        </tr>
+                        <tr class="header-bg">
+                            <td>Role</td>
+                            <td>الدور</td>
+                            <td>Name</td>
+                            <td>الإسم</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">thiiiode</td>
+                            <td colspan="2">edmmkedme</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">enedommew</td>
+                            <td colspan="2">nenewne</td>
+                        </tr>
+                    </table>
+
                         </div>
 
                         <!-- Financial Information Section -->
