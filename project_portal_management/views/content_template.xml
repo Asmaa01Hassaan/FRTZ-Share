@@ -1,0 +1,463 @@
+<odoo>
+    <template id="template_project_hub_content" name="Content Dashboard">
+        <style>
+            @media (min-width: 992px) {
+            .modal-lg-custom {
+            max-width: 90% !important;
+            }
+            }
+            .modal-content {
+            border-radius: 15px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+            border: none !important;
+            }
+            .form-label {
+            font-size: 0.95rem;
+            color: #566a7f;
+            margin-bottom: 0.5rem;
+            }
+            .modal-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ebf0f3;
+            border-radius: 15px 15px 0 0 !important;
+            }
+        </style>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="fw-bold mb-0">Executive Project Hub</h3>
+                <p class="text-muted">Manage your projects and track progress at a glance.</p>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-primary shadow-sm" data-bs-toggle="modal"
+                        data-bs-target="#modalAddProject">
+                    <i class="bx bx-plus-circle me-1"></i>
+                    New Project
+                </button>
+                <button type="button" class="btn btn-outline-primary shadow-sm" data-bs-toggle="modal"
+                        data-bs-target="#modalAddTask">
+                    <i class="bx bx-task me-1"></i>
+                    Add Task
+                </button>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm bg-primary text-black">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="d-block mb-1 text-black-50">Total Projects</small>
+                                <h4 class="mb-0 text-black fw-bold">
+                                    <t t-esc="len(projects)"/>
+                                </h4>
+                            </div>
+                            <i class="bx bx-briefcase" style="font-size: 2.5rem; opacity: 0.3;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <t t-foreach="projects" t-as="project">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm hover-shadow transition-all">
+                        <div class="card-body">
+                            <div class="dropdown float-end">
+                                <button class="btn p-0 text-muted" type="button" data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item btn-edit-project" href="#"
+                                       t-att-data-id="project.id"
+                                       t-att-data-name="project.name"
+                                       t-att-data-partner="project.partner_id.id if project.partner_id else ''"
+                                       t-att-data-user="project.user_id.id if project.user_id else ''"
+                                       t-att-data-start="project.date_start or ''"
+                                       t-att-data-end="project.date or ''"
+                                       t-att-data-tags="','.join(map(str, project.tag_ids.ids))"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#modalEditProject">
+                                        <i class="bx bx-edit-alt me-1"></i>
+                                        Edit
+                                    </a>
+
+                                    <a class="dropdown-item text-info"
+                                       t-att-href="'/my/project/view/%s' % project.id">
+                                        <i class="bx bx-show me-1"></i>
+                                        View Project
+                                    </a>
+
+                                    <a class="dropdown-item text-danger"
+                                       href="#"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#modalDeleteProject"
+                                       t-att-data-id="project.id"
+                                       t-att-data-name="project.name">
+                                        <i class="bx bx-trash me-1"></i>
+                                        Delete
+                                    </a>
+
+                                </div>
+                            </div>
+                            <h5 class="card-title fw-bold text-primary mb-3">
+                                <t t-esc="project.name"/>
+                            </h5>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1 small">
+                                    <span>Progress</span>
+                                    <span class="fw-bold"><t t-esc="int(project.rating_percentage_satisfaction)"/>%
+                                    </span>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-success" role="progressbar"
+                                         t-attf-style="width: #{project.rating_percentage_satisfaction}%"></div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center small text-muted">
+                                <span>
+                                    <i class="bx bx-user me-1"></i>
+                                    <t t-esc="project.user_id.name"/>
+                                </span>
+                                <span>
+                                    <i class="bx bx-calendar me-1"></i>
+                                    <t t-esc="project.date_start or 'N/A'"/>
+                                </span>
+                            </div>
+                            <a t-attf-href="/my/project/#{project.id}" class="btn btn-sm btn-light border w-100 mt-3">
+                                View Tasks (<t t-esc="project.task_count"/>)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+
+        <!--Delete-->
+
+        <div class="modal fade" id="modalDeleteProject" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <form action="/my/project/delete" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                        <input type="hidden" name="project_id" id="delete_project_id_input"/>
+
+                        <div class="modal-body text-center p-4">
+                            <p>Delete <strong id="delete_project_name" class="text-primary"></strong>?
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!--Edit Form-->
+        <div class="modal fade" id="modalEditProject" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg-custom modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold text-primary"><i class="bx bx-edit me-2"></i>Edit Project / تعديل
+                            المشروع
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form action="/my/project/update/save" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="project_id" id="edit_project_id"/>
+
+                        <div class="modal-body p-4">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Project Name</label>
+                                        <input type="text" name="name" id="edit_name"
+                                               class="form-control form-control-lg" required="required"/>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Customer</label>
+                                            <select name="partner_id" id="edit_partner_id" class="form-select">
+                                                <option value="">-- Select Customer --</option>
+                                                <t t-foreach="request.env['res.partner'].search([])" t-as="partner">
+                                                    <option t-att-value="partner.id">
+                                                        <t t-esc="partner.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Project Manager</label>
+                                            <select name="user_id" id="edit_user_id" class="form-select">
+                                                <t t-foreach="request.env['res.users'].search([])" t-as="user">
+                                                    <option t-att-value="user.id">
+                                                        <t t-esc="user.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Start Date</label>
+                                            <input type="date" name="date_start" id="edit_start" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">End Date</label>
+                                            <input type="date" name="date" id="edit_end" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Label Tasks</label>
+                                        <input type="text" name="project_code" id="edit_project_code"
+                                               class="form-control form-control-lg" required="required"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 border-start">
+                                    <label class="form-label fw-bold">Project Tags</label>
+                                    <div class="border rounded p-3 bg-light" style="height: 200px; overflow-y: auto;">
+                                        <t t-foreach="request.env['project.tags'].search([])" t-as="tag">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input edit-tag-checkbox" type="checkbox"
+                                                       name="tag_ids"
+                                                       t-att-value="tag.id" t-att-id="'edit_tag_' + str(tag.id)"/>
+                                                <label class="form-check-label" t-att-for="'edit_tag_' + str(tag.id)">
+                                                    <t t-esc="tag.name"/>
+                                                </label>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer shadow-sm">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalAddProject" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg-custom modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold"><i class="bx bx-folder-plus text-primary me-2"></i>Create New
+                            Project
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/my/project/create/save" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="modal-body p-4">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Project Name</label>
+                                        <input type="text" name="name" class="form-control form-control-lg"
+                                               placeholder="e.g. Website Redesign" required="required"/>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Customer</label>
+                                            <select name="partner_id" class="form-select">
+                                                <option value="">-- Select Customer --</option>
+                                                <t t-foreach="request.env['res.partner'].search([])" t-as="partner">
+                                                    <option t-att-value="partner.id">
+                                                        <t t-esc="partner.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Project Manager</label>
+                                            <select name="user_id" class="form-select">
+                                                <t t-foreach="request.env['res.users'].search([])" t-as="user">
+                                                    <option t-att-value="user.id"
+                                                            t-att-selected="user.id == request.env.user.id">
+                                                        <t t-esc="user.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Start Date</label>
+                                            <input type="date" name="date_start" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">End Date</label>
+                                            <input type="date" name="date" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Label Tasks</label>
+                                        <input type="text" name="project_code" class="form-control"
+                                               placeholder="PRJ-001"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Project Tags</label>
+                                    <div class="border rounded p-3 bg-light" style="height: 280px; overflow-y: auto;">
+                                        <t t-foreach="request.env['project.tags'].search([])" t-as="tag">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" name="tag_ids"
+                                                       t-att-value="tag.id" t-att-id="'tag_' + str(tag.id)"/>
+                                                <label class="form-check-label" t-att-for="'tag_' + str(tag.id)">
+                                                    <t t-esc="tag.name"/>
+                                                </label>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary px-4">Create Project</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalAddTask" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg-custom modal-dialog-centered" role="document">
+                <div class="modal-content shadow-lg border-0">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold"><i class="bx bx-task text-success me-2"></i>Add New Task
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/my/task/create/save" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="modal-body p-4">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Task Title</label>
+                                <input type="text" name="name" class="form-control form-control-lg"
+                                       placeholder="What needs to be done?" required="required"/>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Project</label>
+                                    <select name="project_id" class="form-select" required="required">
+                                        <t t-foreach="projects" t-as="p">
+                                            <option t-att-value="p.id">
+                                                <t t-esc="p.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Priority</label>
+                                    <select name="priority" class="form-select">
+                                        <option value="0">Normal</option>
+                                        <option value="1">High Priority ⭐</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Deadline</label>
+                                    <input type="date" name="date_deadline" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Assignee</label>
+                                <select name="user_ids" class="form-select">
+                                    <t t-foreach="request.env['res.users'].search([])" t-as="user">
+                                        <option t-att-value="user.id" t-att-selected="user.id == request.env.user.id">
+                                            <t t-esc="user.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Description</label>
+                                <textarea name="description" class="form-control" rows="4"
+                                          placeholder="Add details..."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-4">Create Task</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+            // Delete Modal
+            const deleteModal = document.getElementById('modalDeleteProject');
+            if (deleteModal) {
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const idInput = document.getElementById('delete_project_id_input');
+            const nameSpan = document.getElementById('delete_project_name');
+            if (!button || !idInput || !nameSpan) return;
+
+            const projectId = button.getAttribute('data-id');
+            const projectName = button.getAttribute('data-name');
+
+            idInput.value = projectId || '';
+            nameSpan.innerText = projectName || '';
+            });
+            }
+
+            // Edit Modal
+            const editModal = document.getElementById('modalEditProject');
+            if (editModal) {
+            editModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            if (!button) return;
+
+            // Inputs
+            const idInput = document.getElementById('edit_project_id');
+            const nameInput = document.getElementById('edit_name');
+            const partnerSelect = document.getElementById('edit_partner_id');
+            const userSelect = document.getElementById('edit_user_id');
+            const startInput = document.getElementById('edit_start');
+            const endInput = document.getElementById('edit_end');
+            const tagCheckboxes = document.querySelectorAll('.edit-tag-checkbox');
+
+            if (!idInput || !nameInput || !partnerSelect || !userSelect || !startInput || !endInput) return;
+
+            // Set values
+            idInput.value = button.getAttribute('data-id') || '';
+            nameInput.value = button.getAttribute('data-name') || '';
+            partnerSelect.value = button.getAttribute('data-partner') || '';
+            userSelect.value = button.getAttribute('data-user') || '';
+            startInput.value = button.getAttribute('data-start') || '';
+            endInput.value = button.getAttribute('data-end') || '';
+
+            // Reset tags
+            tagCheckboxes.forEach(cb => cb.checked = false);
+
+            // Check tags
+            const tags = button.getAttribute('data-tags');
+            if (tags) {
+            tags.split(',').forEach(tagId => {
+            const el = document.getElementById('edit_tag_' + tagId);
+            if (el) el.checked = true;
+            });
+            }
+            });
+            }
+
+            });
+        </script>
+
+    </template>
+</odoo>
