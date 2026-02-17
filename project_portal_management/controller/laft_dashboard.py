@@ -172,8 +172,16 @@ class PortalDashboard(http.Controller):
     def portal_sale_order_create_save(self, **post):
         project_id = int(post.get('project_id'))
         project = request.env['project.project'].browse(project_id)
-        product = request.env['product.product'].search([], limit=1)
+        if not project.partner_id:
 
+            return request.render('project_portal_management.template_sale_order_create', {
+                'project': project,
+                'partner': project.partner_id,
+                'error_message': 'لا يمكن الحفظ: المشروع غير مرتبط بعميل. يرجى مراجعة الإدارة.',
+                'post': post,
+            })
+
+        product = request.env['product.product'].search([], limit=1)
         sale_order = request.env['sale.order'].create({
             'partner_id': project.partner_id.id,
             'origin': project.name,
@@ -200,6 +208,8 @@ class PortalDashboard(http.Controller):
             ('origin', '=', project.name)
         ])
 
+        if not sale_orders:
+            return request.redirect('/my/sale_order/create?project_id=%s' % project.id)
         return request.render('project_portal_management.template_project_sale_orders', {
             'project': project,
             'sale_orders': sale_orders,

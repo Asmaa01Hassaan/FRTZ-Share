@@ -95,6 +95,13 @@
 
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
+                        <t t-if="error_message">
+                            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                <i class="fa fa-exclamation-circle me-2"></i>
+                                <t t-esc="error_message"/>
+                            </div>
+                        </t>
+
                         <form action="/my/sale_order/create/save" method="post">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <input type="hidden" name="project_id" t-att-value="project.id"/>
@@ -107,7 +114,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Customer</label>
-                                    <input type="text" class="form-control bg-light" t-att-value="partner.name"
+                                    <input type="text" class="form-control bg-light"
+                                           t-att-value="partner.name if partner else 'No Customer Assigned'"
                                            readonly="1"/>
                                 </div>
                             </div>
@@ -115,24 +123,30 @@
                             <div class="row mb-4">
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Amount</label>
-                                    <input type="number" name="amount" class="form-control" step="0.01" required="1"/>
+                                    <input type="number" name="amount" class="form-control" step="0.01" required="1"
+                                           t-att-value="post.get('amount') if post else ''"/>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Customer Reference</label>
-                                    <input type="text" name="ref" class="form-control"/>
+                                    <input type="text" name="ref" class="form-control"
+                                           t-att-value="post.get('ref') if post else ''"/>
                                 </div>
                             </div>
 
                             <div class="mb-4">
                                 <label class="form-label fw-bold">Description</label>
-                                <input type="text" name="description" class="form-control" required="1"/>
+                                <input type="text" name="description" class="form-control" required="1"
+                                       t-att-value="post.get('description') if post else ''"/>
                             </div>
 
                             <div class="d-flex justify-content-end gap-2">
-                                <a t-attf-href="/my/project/sale_orders?project_id=#{project.id}" class="btn btn-light">
+                                <a t-attf-href="/my/project/view/#{project.id}" class="btn btn-light">
                                     Cancel
                                 </a>
-                                <button type="submit" class="btn btn-info text-white px-4">Create Quotation</button>
+                                <button type="submit" class="btn btn-info text-white px-4">
+                                    <i class="fa fa-check me-1"></i>
+                                    Create Quotation
+                                </button>
                             </div>
                         </form>
                     </div>
