@@ -5,16 +5,22 @@ from odoo.http import request
 class PortalDashboard(http.Controller):
 
     @http.route(['/my/portal-dashboard', '/my/portal-dashboard/<string:page>'], type='http', auth='user', website=True)
-    def portal_dashboard(self, page='index', **kw):
+    def portal_dashboard(self, page='index', search=None, **kw):
         values = {
             'active_page': page,
+            'search': search,
         }
+
         if page == 'project_hub':
-            projects = request.env['project.project'].search([])
+            domain = [('user_id', '=', request.env.user.id)]
+            if search:
+                domain.append(('name', 'ilike', search))
+            projects = request.env['project.project'].search(domain)
             values.update({
                 'projects': projects,
             })
         return request.render('project_portal_management.my_custom_dashboard', values)
+
 
 
     @http.route('/my/project/create/save', type='http', auth='user', methods=['POST'], website=True)

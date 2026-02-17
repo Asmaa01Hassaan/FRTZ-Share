@@ -207,7 +207,7 @@
                                     />
                                 </span>
                             </div>
-                            <field name="purchase_price"/>
+<!--                            <field name="purchase_price"/>-->
                             <label
                                     for="standard_price"
                                     invisible="(id and product_variant_count != 1
