@@ -93,6 +93,11 @@ class ProjectProposal(models.Model):
             'res_model': 'purchase.order',
             'view_mode': 'list,form',
             'domain': [('proposal_id', '=', self.id)],
+            'context':{
+                'default_proposal_id': self.id,
+                'default_project_id': self.project_id.id,
+                'default_partner_id': self.partner_id.id,
+            }
         }
 
     def action_view_sales(self):
@@ -103,7 +108,8 @@ class ProjectProposal(models.Model):
             'res_model': 'sale.order',
             'view_mode': 'list,form',
             'domain': [('proposal_id', '=', self.id)],
-            'context': {'default_proposal_id': self.id},
+            'context': {'default_proposal_id': self.id ,
+                        'default_partner_id':self.partner_id.id},
         }
 
     def action_view_invoices(self):
@@ -117,6 +123,7 @@ class ProjectProposal(models.Model):
             'context': {
                 'default_proposal_id': self.id,
                 'default_move_type': 'out_invoice',
+                'default_partner_id': self.partner_id.id,
             },
         }
 
@@ -131,6 +138,7 @@ class ProjectProposal(models.Model):
             'context': {
                 'default_proposal_id': self.id,
                 'default_move_type': 'in_invoice',
+                'default_partner_id': self.partner_id.id
             },
         }
 
@@ -158,6 +166,7 @@ class ProjectProposal(models.Model):
             'domain': [('proposal_id', '=', self.id)],
             'context': {
                 'default_proposal_id': self.id,
+                'default_name':self.project_id.name,
             },
         }
 
