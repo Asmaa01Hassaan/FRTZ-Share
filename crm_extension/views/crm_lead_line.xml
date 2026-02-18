@@ -1,0 +1,32 @@
+<odoo>
+    <record id="crm_lead_view_form_inherit_products" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit.products</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Customer Interested Services" name="products_selection">
+                    <field name="product_line_ids">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="cost_price" widget="monetary"/>
+<!--                            <field name="list_price" widget="monetary"/>-->
+                            <field name="qty" optional="hide"/>
+<!--                            <field name="show_qty" invisible="1"/>-->
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="opportunity_type_id"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button
+                        string="Create Proposal"
+                        type="object"
+                        name="action_create_proposal"
+                        class="btn primary"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
