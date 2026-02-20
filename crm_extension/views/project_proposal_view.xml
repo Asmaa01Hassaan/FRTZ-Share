@@ -40,8 +40,12 @@
                     <button name="action_collection" string="Collection" type="object" class="oe_highlight"
                             invisible="state != 'won_done'"/>
 
-                    <button name="action_set_won" string="Won" type="object" class="btn-success"
-                            invisible="state in ['won', 'lost', 'draft']"/>
+                    <button name="action_set_won"
+                            string="Won"
+                            type="object"
+                            class="btn-success"
+                            invisible="state in ['won', 'lost']"
+                    />
 
                     <button name="action_set_lost" string="Lost" type="object" class="btn-danger"
                             invisible="state in ['won', 'lost']"/>
@@ -102,7 +106,7 @@
                                 <label for="proposal_type_id" string="type"
                                        style="font-size: 30px; font-weight: bold;"/>
                                 <field name="proposal_type_id" nolabel="1"/>
-                                <!--                                <field name="proposal_staging_id"/>-->
+                                <field name="tag_ids" widget="many2many_tags"/>
                                 <field name="proposal_date"/>
                                 <field name="proposal_submission_date"/>
                                 <field name="expected_closing_date"/>
@@ -252,53 +256,52 @@
         <field name="name">project.proposal.kanban</field>
         <field name="model">project.proposal</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage_id" class="o_kanban_small_column o_opportunity_kanban"
-                    on_create="quick_create" quick_create_view="project_proposal.quick_create_proposal_form">
+            <kanban highlight_color="color" default_group_by="stage_id"
+                    class="o_kanban_small_column o_opportunity_kanban" sample="1">
                 <field name="stage_id"/>
-                <field name="state"/>
-                <field name="lost_reason_id"/>
                 <field name="color"/>
-                <progressbar field="state" colors='{"done": "success", "lost": "danger", "draft": "warning"}' sum_field="expected_revenue"/>
-                <field name="name"/>
+                <field name="active"/>
+                <widget name="web_ribbon" title="Archived" bg_color="text-bg-secondary" invisible="active"/>
+                <field name="state"/>
+                <progressbar field="state" colors='{"done": "success", "draft": "warning", "lost": "danger"}'
+                             sum_field="expected_revenue"
+                             help="متابعة حالة العروض بناءً على الحالة الحالية"/>
+
                 <templates>
-                    <t t-name="kanban-box">
-                        <t t-set="color" t-value="record.color.raw_value || 0"/>
-                        <div t-attf-class="oe_kanban_color_#{color} oe_kanban_card oe_kanban_global_click">
-                            <div class="oe_kanban_content">
-                                <div class="o_kanban_record_top">
-                                    <div class="o_kanban_record_headings">
-                                        <strong class="o_kanban_record_title">
-                                            <field name="name"/>
-                                        </strong>
-                                    </div>
-                                    <t t-if="record.state.raw_value == 'lost'">
-                                        <div class="o_kanban_ribbon bg-danger">
-                                            <span>Lost</span>
-                                        </div>
-                                    </t>
-                                </div>
+                    <t t-name="menu">
+                        <t t-if="widget.editable">
+                            <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                        </t>
+                        <t t-if="widget.deletable">
+                            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                        </t>
+                        <field name="color" widget="kanban_color_picker"/>
+                    </t>
 
-                                <div class="o_kanban_record_body">
-                                    <div t-if="record.stage_id.raw_value" class="text-muted">
-                                        <i class="fa fa-map-marker mr-1" title="Stage"/>
-                                        <field name="stage_id"/>
-                                    </div>
-                                    <div t-if="record.state.raw_value == 'lost' and record.lost_reason_id.raw_value"
-                                         class="text-danger small">
-                                        <i class="fa fa-exclamation-circle mr-1"/>
-                                        <field name="lost_reason_id"/>
-                                    </div>
-                                </div>
+                    <t t-name="card">
+                        <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>
 
-                                <div class="o_kanban_record_bottom">
-                                    <div class="oe_kanban_bottom_left">
-                                    </div>
-                                    <div class="oe_kanban_bottom_right">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="clearfix"/>
+                        <widget name="web_ribbon" title="Won" bg_color="text-bg-success" invisible="state != 'won'"/>
+
+                        <field class="fw-bold fs-5" name="name"/>
+
+                        <div class="d-flex align-items-baseline">
+                            <field name="expected_revenue" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
                         </div>
+
+                        <field name="partner_id" class="text-truncate text-muted"/>
+
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+
+                        <footer class="pt-1">
+                            <div class="d-flex mt-auto align-items-center">
+                                <field name="priority" widget="priority" class="me-2"/>
+                                <field name="activity_ids" widget="kanban_activity"/>
+                            </div>
+                            <field name="sales_responsible_id" widget="many2one_avatar_user" class="ms-auto"/>
+                            <field name="finance_responsible_id" widget="many2one_avatar_user" class="ms-auto"/>
+                        </footer>
                     </t>
                 </templates>
             </kanban>

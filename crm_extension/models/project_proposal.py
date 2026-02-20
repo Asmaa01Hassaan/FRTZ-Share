@@ -33,6 +33,7 @@ class ProjectProposal(models.Model):
     finance_responsible_id = fields.Many2one('res.users', string="Finance Responsible")
 
     is_completed = fields.Boolean(string="Is Completed")
+    active = fields.Boolean(string="Active", default=True)
 
     proposal_date = fields.Date()
     proposal_submission_date = fields.Date()
@@ -85,6 +86,16 @@ class ProjectProposal(models.Model):
         ('won', 'Won'),
         ('lost', 'Lost'),
     ], string='Status', default='draft')
+
+    priority = fields.Selection([
+        ('0', 'Low'),
+        ('1', 'Medium'),
+        ('2', 'High'),
+        ('3', 'Very High'),
+    ], string='Priority', default='0')
+
+    tag_ids = fields.Many2many(
+        'crm.tag', string='Tags')
 
     @api.model
     def _read_group_stage_ids(self, stages, domain, order=None):  # لاحظ الـ None هنا
