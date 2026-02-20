@@ -15,6 +15,7 @@
             'views/proposal_stages_view.xml',
             'views/proposal_loss_reason_view.xml',
             'views/proposal_line_view.xml',
+            'wizard/lost_reason__wizard_view.xml',
             'data/ir_sequance.xml'
     ],
 

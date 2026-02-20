@@ -14,12 +14,19 @@ class ProjectProposal(models.Model):
     currency_id = fields.Many2one('res.currency')
     project_id = fields.Many2one('project.project')
     proposal_type_id = fields.Many2one('crm.extension', string='Type')
-    proposal_staging_id = fields.Many2one('proposal.stages', string='Proposal Stages')
+    # proposal_staging_id = fields.Many2one('proposal.stages', string='Proposal Stages')
     line_ids = fields.One2many(
         'project.proposal.line',
         'proposal_id',
         string='Proposal Lines'
     )
+    lost_reason_id = fields.Many2one('proposal.loss.reason', string='Proposal Lost')
+    stage_id = fields.Many2one(
+        'proposal.stages',
+        string="Stage",
+        group_expand='_read_group_stage_ids',
+        default=lambda self: self.env['proposal.stages'].search([], limit=1))
+    color = fields.Integer("Color")
 
     profitability_responsible_id = fields.Many2one('res.users', string="Profitability Responsible")
     sales_responsible_id = fields.Many2one('res.users', string="Sales Responsible")
@@ -53,6 +60,8 @@ class ProjectProposal(models.Model):
     financial_progress = fields.Integer()
     project_progress = fields.Integer()
 
+    lost_note = fields.Text("Lost Note")
+
     product = fields.Char(readonly='True')
     quantity = fields.Float(readonly='True')
     cost_price = fields.Float(readonly='True')
@@ -77,8 +86,9 @@ class ProjectProposal(models.Model):
         ('lost', 'Lost'),
     ], string='Status', default='draft')
 
-
-
+    @api.model
+    def _read_group_stage_ids(self, stages, domain, order=None):  # لاحظ الـ None هنا
+        return self.env['proposal.stages'].search([], order='sequence')
     def _compute_counts(self):
         for rec in self:
             rec.purchase_count = self.env['purchase.order'].search_count([('proposal_id', '=', rec.id)])
@@ -204,7 +214,15 @@ class ProjectProposal(models.Model):
         self.state = 'won'
 
     def action_set_lost(self):
-        self.state = 'lost'
+            """Open wizard popup to select lost reason and add note"""
+            return {
+                'name': _('Mark as Lost'),
+                'type': 'ir.actions.act_window',
+                'res_model': 'project.proposal.lost.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {'default_proposal_id': self.id},
+            }
 
     @api.model_create_multi
     def create(self, vals_list):

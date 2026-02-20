@@ -16,6 +16,9 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="sequence"/>
+                        <field name="fold"/>
+                        <field name="color"/>
                     </group>
                 </sheet>
             </form>
