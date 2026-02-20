@@ -1,0 +1,51 @@
+<odoo>
+    <record id="proposal_stages_list_view" model="ir.ui.view">
+        <field name="name">proposal.stages.list</field>
+        <field name="model">proposal.stages</field>
+        <field name="arch" type="xml">
+            <list string="Stages">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+    <record id="proposal_stages_form_view" model="ir.ui.view">
+        <field name="name">proposal.stages.form</field>
+        <field name="model">proposal.stages</field>
+        <field name="arch" type="xml">
+            <form string="Stages">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="proposal_stages_action_views" model="ir.actions.act_window">
+        <field name="name">proposal.stages.action.view</field>
+        <field name="res_model">proposal.stages</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                <!-- Add Text Here -->
+            </p>
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+    <menuitem
+            id="configuration_menu_root"
+            name="Configuration"
+            parent="menu_project_proposal_root"
+            sequence="90"
+    />
+    <menuitem
+            id="proposal_staging_menu"
+            name="Proposal Staging"
+            parent="configuration_menu_root"
+            action="proposal_stages_action_views"
+            sequence="10"
+    />
+</odoo>

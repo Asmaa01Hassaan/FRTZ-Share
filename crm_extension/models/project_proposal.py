@@ -14,6 +14,12 @@ class ProjectProposal(models.Model):
     currency_id = fields.Many2one('res.currency')
     project_id = fields.Many2one('project.project')
     proposal_type_id = fields.Many2one('crm.extension', string='Type')
+    proposal_staging_id = fields.Many2one('proposal.stages', string='Proposal Stages')
+    line_ids = fields.One2many(
+        'project.proposal.line',
+        'proposal_id',
+        string='Proposal Lines'
+    )
 
     profitability_responsible_id = fields.Many2one('res.users', string="Profitability Responsible")
     sales_responsible_id = fields.Many2one('res.users', string="Sales Responsible")

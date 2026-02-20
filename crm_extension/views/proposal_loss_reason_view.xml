@@ -1,0 +1,46 @@
+<odoo>
+    <record id="proposal_loss_reason_list_view" model="ir.ui.view">
+        <field name="name">proposal.loss.reason.list.view</field>
+        <field name="model">proposal.loss.reason</field>
+        <field name="arch" type="xml">
+            <list string="Loss Reason">
+                <field name="reason"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="proposal_loss_reason_form_view" model="ir.ui.view">
+        <field name="name">proposal.loss.reason.form.view</field>
+        <field name="model">proposal.loss.reason</field>
+        <field name="arch" type="xml">
+            <form string="Loss Reason">
+                <sheet>
+                    <group>
+                        <field name="reason"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="proposal_loss_reason_action_view" model="ir.actions.act_window">
+        <field name="name">proposal.loss.reason.action.view</field>
+        <field name="res_model">proposal.loss.reason</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            <!-- Add Text Here -->
+          </p><p>
+            <!-- More details about what a user can do with this object will be OK -->
+          </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="proposal_loss_reason_menu"
+            name="Proposal Loss Reason"
+            parent="configuration_menu_root"
+            action="proposal_loss_reason_action_view"
+            sequence="20"
+    />
+</odoo>

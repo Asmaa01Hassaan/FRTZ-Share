@@ -1,3 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_crm_extension,crm.extension,model_crm_extension,base.group_user,1,1,1,1
 access_project_proposal,project.proposal,model_project_proposal,base.group_user,1,1,1,1
+access_project_proposal_line,project.proposal.line,model_project_proposal_line,base.group_user,1,1,1,1
+access_proposal_stages,proposal.stages,model_proposal_stages,base.group_user,1,1,1,1
+access_proposal_loss_reason,proposal.loss.reason,model_proposal_loss_reason,base.group_user,1,1,1,1

@@ -101,7 +101,7 @@
                                 <label for="proposal_type_id" string="type"
                                        style="font-size: 30px; font-weight: bold;"/>
                                 <field name="proposal_type_id" nolabel="1"/>
-
+                                <field name="proposal_staging_id"/>
                                 <field name="proposal_date"/>
                                 <field name="proposal_submission_date"/>
                                 <field name="expected_closing_date"/>
@@ -173,17 +173,141 @@
                                 </div>
                             </div>
                         </page>
+                        <page string="Proposal Lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="category_id"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                    <field name="tax_ids" widget="many2many_tags"/>
+                                    <field name="subtotal"/>
+                                    <field name="total"/>
+                                </list>
+                            </field>
+                        </page>
+
                     </notebook>
                 </sheet>
                 <chatter/>
             </form>
         </field>
     </record>
+    <record id="view_proposal_pivot" model="ir.ui.view">
+        <field name="name">project.proposal.pivot</field>
+        <field name="model">project.proposal</field>
+        <field name="arch" type="xml">
+            <pivot string="Proposals Analysis" sample="1">
+                <field name="partner_id" type="row"/>
+                <field name="state" type="col"/>
+
+                <field name="expected_revenue" type="measure"/>
+                <field name="expected_cost" type="measure"/>
+                <field name="expected_margin" type="measure"/>
+
+                <field name="actual_revenue" type="measure"/>
+                <field name="contracted_revenue" type="measure"/>
+                <field name="project_progress" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="view_project_proposal_calendar" model="ir.ui.view">
+        <field name="name">project.proposal.calendar</field>
+        <field name="model">project.proposal</field>
+        <field name="arch" type="xml">
+            <calendar
+                    string="Project Proposals Calendar"
+                    date_start="project_start_date"
+                    date_stop="project_end_date"
+                    color="state"
+                    mode="month">
+
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+                <field name="sales_responsible_id"/>
+
+            </calendar>
+        </field>
+    </record>
+
+    <record id="project_proposal_activity_view" model="ir.ui.view">
+        <field name="name">project.proposal.activity</field>
+        <field name="model">project.proposal</field>
+        <field name="arch" type="xml">
+            <activity string="Project Proposals">
+                <field name="name"/>
+                <field name="partner_id" avatar_field="image_128"/>
+                <field name="expected_closing_date"/>
+                <field name="sales_responsible_id"/>
+                <field name="state"/>
+                <field name="proposal_type_id"/>
+                <field name="project_id"/>
+                <!--                <progressbar field="project_progress"/>-->
+            </activity>
+        </field>
+    </record>
+
+    <record id="project_proposal_kanban_view" model="ir.ui.view">
+        <field name="name">project.proposal.kanban</field>
+        <field name="model">project.proposal</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column" default_group_by="state">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="expected_closing_date"/>
+                <field name="sales_responsible_id"/>
+                <field name="state"/>
+                <field name="expected_revenue"/>
+                <field name="expected_margin_percentage"/>
+                <field name="project_progress"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_card">
+
+                            <div class="o_kanban_header">
+                                <strong>
+                                    <t t-esc="record.name.value"/>
+                                </strong>
+                            </div>
+                            <div class="o_kanban_content mt-1">
+                                <i class="fa fa-user me-1"/>
+                                <t t-esc="record.partner_id.value or ''"/>
+                            </div>
+                            <div class="o_kanban_content mt-1">
+                                <i class="fa fa-user-circle me-1"/>
+                                <t t-esc="record.sales_responsible_id.value or ''"/>
+                            </div>
+                            <div class="o_kanban_content mt-1">
+                                <i class="fa fa-calendar me-1"/>
+                                <t t-esc="record.expected_closing_date.value or ''"/>
+                            </div>
+                            <div class="o_kanban_content mt-1">
+                                <i class="fa fa-money me-1"/>
+                                <t t-esc="record.expected_revenue.value or 0"/>
+                            </div>
+                            <div class="o_kanban_content mt-1">
+                                <i class="fa fa-percent me-1"/>
+                                <t t-esc="record.expected_margin_percentage.value or 0"/>%
+                            </div>
+
+                            <div class="mt-2">
+                                <field name="project_progress" widget="progressbar"/>
+                            </div>
+
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
 
     <record id="action_project_proposal" model="ir.actions.act_window">
         <field name="name">Proposals</field>
         <field name="res_model">project.proposal</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,kanban,form,pivot,calendar,activity</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Create your first Proposal!</p>
         </field>
@@ -194,10 +318,17 @@
               sequence="10"
     />
 
-    <menuitem id="menu_project_proposal_main"
-              name="Proposals"
-              parent="menu_project_proposal_root"
+    <menuitem
+        id="menu_project_proposal_main"
+        name="Proposal"
+        parent="menu_project_proposal_root"
+        sequence="10"
+    />
+
+    <menuitem id="menu_project_proposal"
+              name="Proposal"
+              parent="menu_project_proposal_main"
               action="action_project_proposal"
-              sequence="10"
+              sequence="20"
     />
 </odoo>
