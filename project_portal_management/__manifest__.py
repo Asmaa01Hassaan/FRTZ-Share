@@ -12,6 +12,7 @@
         'views/portal_project_view.xml',
         'views/invoice_template.xml',
         'views/sale_template.xml',
+        'views/website_layout.xml',
     ],
 
     'assets': {

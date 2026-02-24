@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="template_header_sidebar_rtl" inherit_id="website.layout">
+        <xpath expr="//header[@id='top']" position="attributes">
+            <attribute name="t-attf-style">
+                #{'left: auto !important; right: 0 !important; border-left: 1px solid #ddd; border-right: none;' if request.env.lang.startswith('ar') else ''}
+            </attribute>
+        </xpath>
+
+        <xpath expr="//div[@id='wrapwrap']" position="attributes">
+            <attribute name="t-attf-style">
+                #{'padding-left: 0 !important; padding-right: 300px !important;' if request.env.lang.startswith('ar') else ''}
+            </attribute>
+        </xpath>
+    </template>
+</odoo>
