@@ -1,0 +1,76 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* x_inventory_report
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-07 15:40+0000\n"
+"PO-Revision-Date: 2026-02-07 15:40+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: x_inventory_report
+#: model:ir.actions.report,print_report_name:x_inventory_report.action_x_inventory_report
+msgid "'Report - %s' % (object.name)"
+msgstr ""
+
+#. module: x_inventory_report
+#: model_terms:ir.ui.view,arch_db:x_inventory_report.report_stock_picking_x_custom
+msgid "<strong>Contact :</strong>"
+msgstr "الاستلام من : "
+
+#. module: x_inventory_report
+#: model_terms:ir.ui.view,arch_db:x_inventory_report.report_stock_picking_x_custom
+msgid "<strong>Delivered</strong>"
+msgstr "تم توصيله "
+
+#. module: x_inventory_report
+#: model_terms:ir.ui.view,arch_db:x_inventory_report.report_stock_picking_x_custom
+msgid "<strong>Destination Location:</strong>"
+msgstr "الموقع : "
+
+#. module: x_inventory_report
+#: model_terms:ir.ui.view,arch_db:x_inventory_report.report_stock_picking_x_custom
+msgid "<strong>Effective Date :</strong>"
+msgstr "تاريخ التوصيل : "
+
+#. module: x_inventory_report
+#: model_terms:ir.ui.view,arch_db:x_inventory_report.report_stock_picking_x_custom
+msgid "<strong>Ordered</strong>"
+msgstr "تم طلبه "
+
+#. module: x_inventory_report
+#: model_terms:ir.ui.view,arch_db:x_inventory_report.report_stock_picking_x_custom
+msgid "<strong>Product</strong>"
+msgstr "المنتج"
+
+#. module: x_inventory_report
+#: model_terms:ir.ui.view,arch_db:x_inventory_report.report_stock_picking_x_custom
+msgid "<strong>Reference:</strong>"
+msgstr "رقم المستند :"
+
+#. module: x_inventory_report
+#: model_terms:ir.ui.view,arch_db:x_inventory_report.report_stock_picking_x_custom
+msgid "<strong>Scheduled Date :</strong>"
+msgstr "التاريخ المجدول : "
+
+#. module: x_inventory_report
+#: model_terms:ir.ui.view,arch_db:x_inventory_report.report_stock_picking_x_custom
+msgid "<strong>Source Document :</strong>"
+msgstr "المستند المصدر : "
+
+#. module: x_inventory_report
+#: model_terms:ir.ui.view,arch_db:x_inventory_report.report_stock_picking_x_custom
+msgid "<strong>UOM</strong>"
+msgstr "الوحدة"
+
+#. module: x_inventory_report
+#: model:ir.actions.report,name:x_inventory_report.action_x_inventory_report
+msgid "Rest Report"
+msgstr ""
