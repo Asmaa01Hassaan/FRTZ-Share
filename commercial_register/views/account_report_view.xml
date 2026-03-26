@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <template id="report_invoice_inherit_cr" inherit_id="account.report_invoice_document">
+
+            <xpath expr="//div[@name='address_not_same_as_shipping']//t[@t-set='address']" position="before">
+                <div t-if="o.partner_id.commercial_registration_number">
+                    <strong>Commercial Registration : </strong>
+                    <span t-field="o.partner_id.commercial_registration_number"/>
+                </div>
+            </xpath>
+
+            <xpath expr="//div[@name='address_same_as_shipping']//t[@t-set='address']" position="inside">
+                <div t-if="o.partner_id.commercial_registration_number">
+                    <strong>Commercial Registration : </strong>
+                    <span t-field="o.partner_id.commercial_registration_number"/>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>
