@@ -4,4 +4,4 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
 
-    commercial_registration_number = fields.Char(string="Commercial Registration")
+    commercial_registration_number = fields.Char(string="CR NO")
