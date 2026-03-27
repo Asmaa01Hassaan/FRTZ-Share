@@ -1,0 +1,40 @@
+<!-- views/menu_views.xml -->
+<odoo>
+    <!-- Main Sales Menu -->
+    <menuitem id="menu_sales_root" name="FRTZ" sequence="10"
+              web_icon="account_invoice_installments,static/description/icon.png"/>
+
+    <!-- Standard Sales Submenu -->
+    <!--    <menuitem id="menu_standard_sales" name="Orders" parent="menu_sales_root" sequence="10"/>-->
+    <!--    <menuitem id="menu_standard_sales2" name="Payments" parent="menu_sales_root" sequence="10"/>-->
+    <menuitem id="menu_standard_orders" name="Standard Sale Order" parent="menu_sales_root" action="action_standard_orders"
+              sequence="10"/>
+    <menuitem id="menu_custom_orders" name="Warehouse Sale Order" parent="menu_sales_root" action="action_custom_orders"
+              sequence="20"/>
+    <menuitem id="menu_wholesale_orders" name="External Sales Order" parent="menu_sales_root" action="action_wholesale_orders"
+              sequence="30"/>
+    <menuitem id="menu_subscription_orders" name="Service Sales Order" parent="menu_sales_root"
+              action="action_subscription_orders" sequence="40"/>
+    <!-- Payment Request Parent Menu -->
+    <menuitem id="menu_standard_orders2" name="Payment Request" parent="menu_sales_root" sequence="50"/>
+    
+    <!-- Payment Request Sub-Menus -->
+    <menuitem id="menu_payment_term" name="Payment Term" parent="menu_standard_orders2" action="account.action_payment_term_form" sequence="10"/>
+    
+    <!-- Product Parent Menu -->
+    <menuitem id="menu_product_parent" name="Product" parent="menu_sales_root" sequence="60"/>
+    
+    <!-- Product Sub-Menus -->
+    <menuitem id="menu_products" name="Products" parent="menu_product_parent" action="product.product_template_action_all" sequence="10"/>
+    <menuitem id="menu_product_variants" name="Product Variants" parent="menu_product_parent" action="product.product_variant_action" sequence="20"/>
+    <menuitem id="menu_pricelist" name="Price List" parent="menu_product_parent" action="product.product_pricelist_action2" sequence="30"/>
+    
+    <!-- Partners Parent Menu -->
+    <menuitem id="menu_partner_parent" name="Partners" parent="menu_sales_root" sequence="70"/>
+    
+    <!-- Partners Sub-Menus -->
+    <menuitem id="menu_customers" name="Customers" parent="menu_partner_parent" action="account.res_partner_action_customer" sequence="10"/>
+    <menuitem id="menu_companies" name="Companies" parent="menu_partner_parent" action="account.res_partner_action_supplier" sequence="20"/>
+
+
+</odoo>

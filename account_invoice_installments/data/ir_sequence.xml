@@ -1,0 +1,59 @@
+<!--<odoo>-->
+<!--    &lt;!&ndash; Sequence for First Model &ndash;&gt;-->
+<!--    <record id="seq_first_order" model="ir.sequence">-->
+<!--        <field name="name">First Order Sequence</field>-->
+<!--        <field name="code">first.order</field>-->
+<!--        <field name="prefix">SOS/</field>-->
+<!--        <field name="padding">5</field>-->
+<!--    </record>-->
+
+<!--    &lt;!&ndash; Sequence for Second Model &ndash;&gt;-->
+<!--    <record id="seq_second_order" model="ir.sequence">-->
+<!--        <field name="name">Second Order Sequence</field>-->
+<!--        <field name="code">second.order</field>-->
+<!--        <field name="prefix">SOI/</field>-->
+<!--        <field name="padding">5</field>-->
+<!--    </record>-->
+<!--    &lt;!&ndash; Sequence for third Model &ndash;&gt;-->
+<!--    <record id="seq_third_order" model="ir.sequence">-->
+<!--        <field name="name">Third Order Sequence</field>-->
+<!--        <field name="code">third.order</field>-->
+<!--        <field name="prefix">SOG/</field>-->
+<!--        <field name="padding">5</field>-->
+<!--    </record>-->
+<!--</odoo>-->
+<!-- data/sequence_data.xml -->
+<odoo>
+    <data noupdate="1">
+         <!-- Updated Standard Sale Sequence (Changed prefix from SO/ to ST/) -->
+        <record id="seq_sale_order_updated" model="ir.sequence">
+            <field name="name">Sale Order</field>
+            <field name="code">sale.order</field>
+            <field name="prefix">SOS/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+        <!-- Custom Sale Sequence -->
+        <record id="seq_custom_sale_order" model="ir.sequence">
+            <field name="name">Custom Sale Order</field>
+            <field name="code">custom.sale.order</field>
+            <field name="prefix">SOI/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
+        <!-- Wholesale Sale Sequence -->
+        <record id="seq_wholesale_sale_order" model="ir.sequence">
+            <field name="name">Wholesale Sale Order</field>
+            <field name="code">wholesale.sale.order</field>
+            <field name="prefix">SOG/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
+        <!-- Subscription Sale Sequence -->
+        <record id="seq_subscription_sale_order" model="ir.sequence">
+            <field name="name">Subscription Sale Order</field>
+            <field name="code">subscription.sale.order</field>
+            <field name="prefix">SOS/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+</odoo>
