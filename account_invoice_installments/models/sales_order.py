@@ -6,19 +6,19 @@ from odoo.exceptions import ValidationError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     vendor_name_id = fields.Many2one('res.partner', string=_('Vendor Name'))
-    payment_type = fields.Selection(
-        [
-            ('immediate', _('Immediate Payment')),
-            ('regular', _('Regular Installments')),
-            ('irregular', _('Irregular Installments')),
-        ],
-        string=_("Payment plan"),
-        default="immediate",
-        tracking=True,
-        copy=False,
-        help=_("Select the payment plan for this order")
-    )
-    # name = fields.Char('Plan Name', required=True, translate=True)
+    # payment_type = fields.Selection(
+    #     [
+    #         ('immediate', _('Immediate Payment')),
+    #         ('regular', _('Regular Installments')),
+    #         ('irregular', _('Irregular Installments')),
+    #     ],
+    #     string=_("Payment plan"),
+    #     default="immediate",
+    #     tracking=True,
+    #     copy=False,
+    #     help=_("Select the payment plan for this order")
+    # )
+    name = fields.Char('Plan Name', required=True, translate=True)
 
     # Order Type Classification
     order_type = fields.Selection([

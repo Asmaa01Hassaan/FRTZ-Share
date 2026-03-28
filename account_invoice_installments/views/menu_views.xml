@@ -16,10 +16,10 @@
     <menuitem id="menu_subscription_orders" name="Service Sales Order" parent="menu_sales_root"
               action="action_subscription_orders" sequence="40"/>
     <!-- Payment Request Parent Menu -->
-    <menuitem id="menu_standard_orders2" name="Payment Request" parent="menu_sales_root" sequence="50"/>
-    
-    <!-- Payment Request Sub-Menus -->
-    <menuitem id="menu_payment_term" name="Payment Term" parent="menu_standard_orders2" action="account.action_payment_term_form" sequence="10"/>
+<!--    <menuitem id="menu_standard_orders2" name="Payment Request" parent="menu_sales_root" sequence="50"/>-->
+<!--    -->
+<!--    &lt;!&ndash; Payment Request Sub-Menus &ndash;&gt;-->
+<!--    <menuitem id="menu_payment_term" name="Payment Term" parent="menu_standard_orders2" action="account.action_payment_term_form" sequence="10"/>-->
     
     <!-- Product Parent Menu -->
     <menuitem id="menu_product_parent" name="Product" parent="menu_sales_root" sequence="60"/>
