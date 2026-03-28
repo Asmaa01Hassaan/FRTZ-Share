@@ -40,9 +40,6 @@
 <!--                <attribute name="invisible">payment_type in ['immediate', 'regular']</attribute>-->
 <!--            </xpath>-->
 
-            <xpath expr="//field[@name='payment_term_id']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="vendor_name_id"  string="Vendor Name" invisible="order_type != 'wholesale'"/>
             </xpath>
