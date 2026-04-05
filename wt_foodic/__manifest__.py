@@ -19,6 +19,7 @@
         "views/categories_view.xml",
         "views/pos_orders_view.xml",
         "views/purchase_order_views.xml",
+        "views/sync_log_views.xml",
         "wizard/foodic_operation_views.xml"
     ],
     "application": True,

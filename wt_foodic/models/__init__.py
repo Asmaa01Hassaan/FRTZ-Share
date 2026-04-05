@@ -8,3 +8,4 @@ from . import products
 from . import pos_orders
 from . import res_partner
 from . import purchase_order
+from . import sync_log

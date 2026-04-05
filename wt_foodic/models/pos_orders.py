@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import fields, models, _
 from datetime import datetime, date, timedelta
-from dateutil import parser
 from odoo.tools import float_is_zero
 import logging
 
@@ -65,7 +64,7 @@ class PosOrder(models.Model):
     discounted_order = fields.Boolean(default=False)
     charged_order = fields.Boolean(default=False)
 
-    def set_orders_to_odoo(self, res, timestamp=False):
+    def set_orders_to_odoo(self, res, timestamp=False, from_dt=None, to_dt=None):
         PosConfig = self.env['pos.config']
         ResPartner = self.env['res.partner']
         PosOrder = self.env['pos.order']
@@ -76,24 +75,25 @@ class PosOrder(models.Model):
         AccountTax = self.env['account.tax']
         if res:
             count = 1
+            processed_count = 0
             for order in res.get('data'):
-                # if not order.get('combos'):
-                #     continue
-                
-                # if order.get('reference') in [317230, 317290, 315846]:
-                #     import pdb;pdb.set_trace()
-                # else:
-                #     print(">>>>>>>>>>>>", order.get('reference'))
-                #     continue
 
                 is_refund = False
                 if order.get('status') == 5:
                     is_refund = True
 
-                date_order = order.get('business_date')
-                if timestamp and datetime.strptime(date_order, '%Y-%m-%d') > datetime.strptime(timestamp, '%Y-%m-%d') - timedelta(days=1):
-                    continue
-
+                # Do not skip by timestamp here; API already filters by business_date range
+                # Shift window filter: compare using the same datetime we assign into pos.order date_order
+                opened_at_str = order.get('opened_at')
+                if from_dt and to_dt:
+                    if not opened_at_str:
+                        continue
+                    try:
+                        date_order_dt = datetime.strptime(opened_at_str, '%Y-%m-%d %H:%M:%S')
+                    except Exception:
+                        continue
+                    if not (from_dt <= date_order_dt < to_dt):
+                        continue
                 customer = ''
                 branch = PosConfig.search([('foodic_branch_id', '=', order.get('branch').get('id'))], limit=1)
                 if not branch:
@@ -110,6 +110,21 @@ class PosOrder(models.Model):
                 pos_order = PosOrder.search([('foodic_order_id', '=', order.get('id'))])
                 session = PosSession.search([('config_id', '=', branch.id), ('state', 'not in', ['closed', 'closing_control'])])
                 if not session:
+                    # Before creating a new session, make sure required payment methods from this order exist on the POS config
+                    required_methods = []
+                    for payment in order.get('payments') or []:
+                        pm = payment.get('payment_method')
+                        if not pm:
+                            continue
+                        pos_payment = PosPaymentmethod.sudo().search([('foodic_payment_method_id', '=', pm.get('id'))], limit=1)
+                        if not pos_payment:
+                            PosPaymentmethod.set_payment_methods_to_odoo({'data': [pm]})
+                            pos_payment = PosPaymentmethod.sudo().search([('foodic_payment_method_id', '=', pm.get('id'))], limit=1)
+                        if pos_payment:
+                            required_methods.append(pos_payment.id)
+                    if required_methods:
+                        # Safe to attach methods now (no open session yet)
+                        branch.write({'payment_method_ids': [(4, mid) for mid in required_methods if mid not in branch.payment_method_ids.ids]})
                     session = session.create({'config_id': branch.id, 'user_id': self.env.uid})
 
                 pos_order_line = []
@@ -122,6 +137,8 @@ class PosOrder(models.Model):
                 skip_order = False
                 if not pos_order:
                     tax_exclusive = False
+                    # Only count as processed when we're going to create a new order
+                    processed_count += 1
                     for foodic_prdt in order.get('products'):
                         if foodic_prdt.get('status') == 5:
                             continue
@@ -155,12 +172,9 @@ class PosOrder(models.Model):
                                             'is_moved': moved_product
                                             }))
                             prdt = ProductProduct.search([('foodic_product_id', '=', foodic_prdt.get('product').get('id')), ('active', 'in', [True, False])],limit=1)
-                            # prdt = FoodicProduct.search([('foodic_product_id', '=', foodic_prdt.get('product').get('id'))],limit=1)
                             if not prdt:
                                 ProductProduct.set_products_to_odoo({'data': [foodic_prdt.get('product')]})
                                 prdt = ProductProduct.search([('foodic_product_id', '=', foodic_prdt.get('product').get('id')), ('active', 'in', [True, False])], limit=1)
-                                # FoodicProduct.set_products_to_odoo({'data': [foodic_prdt.get('product')]})
-                                # prdt = FoodicProduct.search([('foodic_product_id', '=', foodic_prdt.get('product').get('id'))], limit=1)
 
                             tax_ids = []
                             amount_tax = 0
@@ -173,22 +187,11 @@ class PosOrder(models.Model):
                                 if not foodic_tax:
                                     foodic_tax = AccountTax.create({'name': "VAT {}%".format(tax.get('rate')), 'amount': tax.get('rate'), 'amount_type': 'percent', 'country_id': self.env.company.country_id.id, 'tax_group_id': tax_group_id.id})
                                     # foodic_tax = AccountTax.create({'name': "VAT {}%".format(tax.get('pivot').get('rate')), 'amount': tax.get('pivot').get('rate'), 'amount_type': 'percent'})
-                                # amount_tax = amount_tax + amount
-                                # taxes = foodic_tax.compute_all(price_unit=price_unit, currency=None, quantity=foodic_prdt.get('quantity'), product=None, partner=None)
-                                # price_tax = sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
-                                # if int(price_tax) != int(amount):
-                                #     foodic_tax = AccountTax.search([('name', '=', 'VAT {}%'.format(amount)), ('amount', '=', amount), ('amount_type', '=', 'fixed')], limit=1) 
-                                #     if not foodic_tax:
-                                #         foodic_tax = AccountTax.create({'name': "VAT {}%".format(amount), 'amount': amount, 'amount_type': 'fixed'})
-                                #     fixed_tax = True
                                 tax_ids.append(foodic_tax.id)
 
 
                             is_returned = False
                             total_price = foodic_prdt.get('total_price')
-                            # if foodic_prdt.get('status') == 6:
-                            #     is_returned = True
-                            #     total_price = -foodic_prdt.get('total_price')
 
                             is_void = True
                             foodic_discount =  foodic_prdt.get('discount_amount')
@@ -206,21 +209,12 @@ class PosOrder(models.Model):
                             else:
                                 line_discount += foodic_prdt.get('discount_amount')
 
-                            # if price_unit == foodic_prdt.get('unit_price'):
-                            #     line_discount += foodic_prdt.get('discount_amount')
-                            # else:
-                            #     tax_exclusive = True
-                            #     line_discount += foodic_prdt.get('tax_exclusive_discount_amount')
-
-                            
                             if not foodic_prdt.get('taxes') and foodic_prdt.get('tax_exclusive_total_price') != foodic_prdt.get('total_price'):
                                 price_unit = foodic_prdt.get('unit_price')
                             
                             if total_price == 0:
-                                # price_subtotal = foodic_prdt.get('tax_exclusive_unit_price') * foodic_prdt.get('quantity')
                                 price_unit = price_subtotal = 0
                             else:
-                                # total_tax = total_tax + (total_price - price_subtotal)
                                 total_tax = total_tax + amount_tax
                             
                             if fixed_tax and foodic_prdt.get('quantity') > 1:
@@ -231,17 +225,10 @@ class PosOrder(models.Model):
 
                             pos_order_line.append((0 ,0 ,{'name': prdt.name,
                                 'name': prdt.name,
-                                # 'full_product_name': prdt.name,
                                 'full_product_name': prdt.name,
                                 'qty': -qty if is_refund else qty,
-                                # 'product_id': prdt.id,
                                 'product_id': prdt.id,
                                 'price_unit': 0 if moved_product or declined_product else price_unit,
-                                # 'discount': line_discount,
-                                # 'price_unit': foodic_prdt.get('unit_price'),
-                                # 'price_subtotal': -price_subtotal if is_refund else price_subtotal,
-                                # 'price_subtotal': -total_price if is_refund else total_price,
-                                # 'price_subtotal_incl': -total_price if is_refund else total_price,
                                 'price_subtotal': 0,
                                 'price_subtotal_incl': 0,
                                 'tax_ids': [(6, 0, tax_ids)] if tax_ids else [],
@@ -256,11 +243,6 @@ class PosOrder(models.Model):
                     # add line for charges
                     charge_applied = False
                     for charge in order.get('charges'):
-                        # charge_product = FoodicProduct.search([('foodic_product_id', '=', charge.get('charge', {}).get('id'))], limit=1)
-                        # if not charge_product:
-                        #     FoodicProduct.set_products_to_odoo({'data': [order.get('charges')]})
-                        #     charge_product = FoodicProduct.search([('foodic_product_id', '=', charge.get('charge', {}).get('id'))], limit=1)
-
                         charge_product = ProductProduct.search([('foodic_product_id', '=', charge.get('charge', {}).get('id'))], limit=1)
                         if not charge_product:
                             charge_product = ProductProduct.create({'foodic_product_id': charge.get('charge', {}).get('id'),
@@ -279,15 +261,10 @@ class PosOrder(models.Model):
                         # if charge_product.odoo_product_id:
                         charge_applied = True
                         pos_order_line.append((0, 0, {'name': charge_product.name,
-                            # 'name': charge_product.name,
                             'full_product_name': charge_product.name,
                             'qty': -1 if is_refund else 1,
                             'product_id': charge_product.id,
-                            # 'price_unit': charge.get('unit_price'),
                             'price_unit': charge.get('tax_exclusive_amount'),
-                            # 'price_subtotal': charge.get('tax_exclusive_amount'),
-                            # 'price_subtotal': charge.get('amount'),
-                            # 'price_subtotal_incl': charge.get('amount'),
                             'price_subtotal': 0, 
                             'price_subtotal_incl': 0,
                             'tax_ids': [(6, 0, tax_ids)] if tax_ids else [],
@@ -331,15 +308,11 @@ class PosOrder(models.Model):
                             if combo_product.get('options'):
                                 for options in combo_product.get('options'):
                                     if options.get('modifier_option'):
-                                        # prdt = FoodicProduct.search([('foodic_product_id', '=', options.get('modifier_option').get('id'))], limit=1)
                                         prdt = ProductProduct.search([('foodic_product_id', '=', options.get('modifier_option').get('id')), ('active', 'in', [True, False])], limit=1)
                                         if not prdt:
-                                            # FoodicProduct.with_context({'is_modifier': True}).set_products_to_odoo({'data': [options.get('modifier_option')]})
-                                            # prdt = FoodicProduct.search([('foodic_product_id', '=', options.get('modifier_option').get('id'))], limit=1)
                                             ProductProduct.with_context({'is_modifier': True}).set_products_to_odoo({'data': [options.get('modifier_option')]})
                                             prdt = ProductProduct.search([('foodic_product_id', '=', options.get('modifier_option').get('id')), ('active', 'in', [True, False])], limit=1)
                                         pos_order_line.append((0, 0, {'name': prdt.id,
-                                            # 'name': prdt.name,
                                             'full_product_name': prdt.name,
                                             'product_id': prdt.id,
                                             'qty': -combo_product.get('quantity') if is_refund else combo_product.get('quantity'),
@@ -350,17 +323,10 @@ class PosOrder(models.Model):
                                             'is_combo': True
                                             }))
 
-                            # prdt = FoodicProduct.search([('foodic_product_id', '=', combo_product.get('product').get('id')), ('active', 'in', [True, False])], limit=1)
                             prdt = ProductProduct.search([('foodic_product_id', '=', combo_product.get('product').get('id')), ('active', 'in', [True, False])],limit=1)
                             if not prdt:
-                                # FoodicProduct.set_products_to_odoo({'data': [combo_product.get('product')]})
-                                # prdt = FoodicProduct.search([('foodic_product_id', '=', combo_product.get('product').get('id')), ('active', 'in', [True, False])], limit=1)
                                 ProductProduct.set_products_to_odoo({'data': [combo_product.get('product')]})
                                 prdt = ProductProduct.search([('foodic_product_id', '=', combo_product.get('product').get('id')), ('active', 'in', [True, False])], limit=1)
-
-                            # modifier_total = 0
-                            # for modifier in combo_product.get('options'):
-                            #     modifier_total += modifier.get('unit_price') * modifier.get('quantity')
 
                             tax_ids = []
                             for tax in combo_product.get('taxes'):
@@ -464,7 +430,12 @@ class PosOrder(models.Model):
                 context_make_payment = {"active_id": pos_order.id}
                 if pos_order.amount_total == 0 and pos_order.state != 'paid':
                     payment_date = date.today().strftime('%Y-%m-%d')
-                    pos_payment = pos_order.config_id.payment_method_ids[0]
+                    # Use an already allowed payment method on the POS config to avoid config mutation while session is open
+                    pos_payment = pos_order.config_id.payment_method_ids and pos_order.config_id.payment_method_ids[0] or False
+                    if not pos_payment:
+                        # As a last resort, skip payment creation to avoid validation error and continue
+                        _logger.warning("No payment methods available on POS config %s; skipping zero-amount payment for order %s", branch.display_name, pos_order.display_name)
+                        continue
                     make_payment = self.env['pos.make.payment'].with_context(context_make_payment).create({
                         'payment_date': payment_date,
                         'payment_method_id': pos_payment.id,
@@ -492,6 +463,15 @@ class PosOrder(models.Model):
                     if not pos_payment:
                         PosPaymentmethod.set_payment_methods_to_odoo({'data': [payment.get('payment_method')]})
                         pos_payment = PosPaymentmethod.sudo().search([('foodic_payment_method_id', '=', payment.get('payment_method').get('id'))])
+                    # If session is already open and method isn't allowed on config, fallback to an allowed method to avoid invalid operation
+                    if pos_payment and pos_payment.id not in branch.payment_method_ids.ids:
+                        fallback_pm = branch.payment_method_ids[:1]
+                        if fallback_pm:
+                            _logger.warning("Payment method %s not allowed on POS config %s; using fallback %s for order %s", pos_payment.display_name, branch.display_name, fallback_pm.display_name, pos_order.display_name)
+                            pos_payment = fallback_pm
+                        else:
+                            _logger.warning("No allowed payment methods on POS config %s; skipping payment creation for order %s", branch.display_name, pos_order.display_name)
+                            continue
                     # if len(order.get('payments')) == 1:
                     #     amount_paid = pos_order.amount_total
                     # else
@@ -516,5 +496,5 @@ class PosOrder(models.Model):
                 pos_order._onchange_amount_all()
                 self._cr.commit()
                 count += 1
-        return False
+        return processed_count
         

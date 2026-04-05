@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_foodics_sync_log_tree" model="ir.ui.view">
+		<field name="name">foodics.sync.log.tree</field>
+		<field name="model">foodics.sync.log</field>
+		<field name="arch" type="xml">
+			<tree string="Foodics Sync Logs">
+				<field name="create_date"/>
+				<field name="job_type"/>
+				<field name="status"/>
+				<field name="connector_id" optional="hide"/>
+				<field name="total_expected"/>
+				<field name="items_processed" optional="hide"/>
+				<field name="items_received"/>
+				<field name="remaining_count"/>
+				<field name="from_date"/>
+				<field name="to_date" optional="hide"/>
+<!--				<field name="query_url"/>-->
+				<field name="page_current" optional="hide"/>
+				<field name="page_total" optional="hide"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="view_foodics_sync_log_form" model="ir.ui.view">
+		<field name="name">foodics.sync.log.form</field>
+		<field name="model">foodics.sync.log</field>
+		<field name="arch" type="xml">
+			<form string="Foodics Sync Log">
+				<sheet>
+					<group>
+						<group>
+							<field name="job_type"/>
+							<field name="status"/>
+							<field name="connector_id"/>
+							<field name="items_processed"/>
+							<field name="items_received"/>
+							<field name="total_expected"/>
+							<field name="remaining_count"/>
+						</group>
+						<group>
+							<field name="start_time"/>
+							<field name="end_time"/>
+							<field name="page_current"/>
+							<field name="page_total"/>
+						</group>
+					</group>
+					<group>
+						<field name="from_date"/>
+						<field name="to_date"/>
+<!--						<field name="query_url"/>-->
+					</group>
+					<notebook>
+						<page string="Error">
+							<field name="error_message" nolabel="1"/>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_foodics_sync_log" model="ir.actions.act_window">
+		<field name="name">Foodics Sync Logs</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">foodics.sync.log</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem id="menu_foodics_sync_logs"
+		name="Sync Logs"
+		parent="wt_foodic.foodics_connector_menu_root"
+		action="action_foodics_sync_log"
+		sequence="99"/>
+</odoo>
+

@@ -38,7 +38,8 @@ class FoodicOperation(models.TransientModel):
         elif self.operation == 'sync_products':
             foodic.with_context({'is_modifier': False}).get_products_methods()
         elif self.operation == 'sync_orders':
-            foodic.get_orders_methods(self.from_date)
+            # Temporarily ignore shift: run by date only, with internal cap and page reset
+            foodic.with_context(from_wizard=True).get_orders_methods(self.from_date, None, None)
         elif self.operation == 'sync_inventory_items':
             foodic.get_inventory_items()
         elif self.operation == 'sync_modifier_products':
