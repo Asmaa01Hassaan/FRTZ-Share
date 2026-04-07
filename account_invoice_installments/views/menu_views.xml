@@ -4,17 +4,13 @@
     <menuitem id="menu_sales_root" name="FRTZ" sequence="10"
               web_icon="account_invoice_installments,static/description/icon.png"/>
 
-    <!-- Standard Sales Submenu -->
-    <!--    <menuitem id="menu_standard_sales" name="Orders" parent="menu_sales_root" sequence="10"/>-->
-    <!--    <menuitem id="menu_standard_sales2" name="Payments" parent="menu_sales_root" sequence="10"/>-->
-    <menuitem id="menu_standard_orders" name="Standard Sale Order" parent="menu_sales_root" action="action_standard_orders"
-              sequence="10"/>
-    <menuitem id="menu_custom_orders" name="Warehouse Sale Order" parent="menu_sales_root" action="action_custom_orders"
-              sequence="20"/>
-    <menuitem id="menu_wholesale_orders" name="External Sales Order" parent="menu_sales_root" action="action_wholesale_orders"
-              sequence="30"/>
-    <menuitem id="menu_subscription_orders" name="Service Sales Order" parent="menu_sales_root"
-              action="action_subscription_orders" sequence="40"/>
+    <menuitem id="menu_frtz_root_sales" parent="menu_sales_root" name="FRTZ"/>
+
+    <!-- Sale order list menus are created dynamically from Configuration > Sale Order Type -->
+
+    <menuitem id="menu_frtz_sales_configuration" name="Configuration" parent="menu_frtz_root_sales" sequence="90"/>
+    <menuitem id="menu_sale_order_type" name="Sale Order Type" parent="menu_frtz_sales_configuration"
+              action="action_sale_order_type" sequence="10"/>
     <!-- Payment Request Parent Menu -->
 <!--    <menuitem id="menu_standard_orders2" name="Payment Request" parent="menu_sales_root" sequence="50"/>-->
 <!--    -->

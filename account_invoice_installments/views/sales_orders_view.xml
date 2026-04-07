@@ -1,4 +1,16 @@
 <odoo>
+    <!-- Overrides older arch that referenced removed fields; keeps same xml id for DB upgrades -->
+    <record id="sale_order_form_type_product_domain" model="ir.ui.view">
+        <field name="name">sale.order.form.type.product.domain</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']//field[@name='product_id']" position="attributes">
+                <attribute name="domain">[('sale_ok', '=', True)]</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <!-- Add order_type to tree view -->
     <record id="view_order_list_custom" model="ir.ui.view">
         <field name="name">sale.order.list.custom</field>
@@ -6,7 +18,8 @@
         <field name="inherit_id" ref="sale.view_order_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='date_order']" position="after">
-                <field name="order_type"/>
+                <field name="sale_order_type_id"/>
+                <field name="order_type" optional="hide"/>
             </xpath>
         </field>
     </record>
@@ -17,9 +30,9 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-
-            <xpath expr="//field[@name='client_order_ref']" position="after">
-                <field name="order_type"/>
+            <!-- One match only: sale form has several date_order fields; duplicate xpath would duplicate Order Type -->
+            <xpath expr="//group[@name='order_details']/field[@name='date_order'][1]" position="before">
+                <field name="sale_order_type_id" string="Order Type" options="{'no_create_edit': True}"/>
             </xpath>
         </field>
     </record>
@@ -28,20 +41,17 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <!-- Insert before payment_term_id wherever it appears (usually Other Info/Invoicing) -->
-<!--            <xpath expr="//sheet//field[@name='date_order']" position="before">-->
-<!--                <field name="order_type"/>-->
-<!--            </xpath>-->
-
-<!--            <xpath expr="//sheet//field[@name='payment_term_id']" position="before">-->
-<!--                <field name="payment_type" string="Payment plan"/>-->
-<!--            </xpath>-->
-<!--            <xpath expr="//sheet//field[@name='payment_term_id']" position="attributes">-->
-<!--                <attribute name="invisible">payment_type in ['immediate', 'regular']</attribute>-->
-<!--            </xpath>-->
+            <xpath expr="//sheet//field[@name='payment_term_id']" position="before">
+                <field name="payment_type" string="Payment plan"/>
+            </xpath>
+            <xpath expr="//sheet//field[@name='payment_term_id']" position="attributes">
+                <attribute name="invisible">payment_type in ['immediate', 'regular']</attribute>
+            </xpath>
 
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="vendor_name_id"  string="Vendor Name" invisible="order_type != 'wholesale'"/>
+                <field name="sale_order_type_name" invisible="1"/>
+                <field name="vendor_name_id" string="Vendor Name"
+                       invisible="not sale_order_type_name or 'wholesale' not in (sale_order_type_name or '').lower()"/>
             </xpath>
 
         </field>
@@ -53,21 +63,15 @@
         <field name="inherit_id" ref="sale.view_sales_order_filter"/>
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
-                <!-- Default filters for each type -->
-                <filter string="Standard Sale Order" name="standard_orders" domain="[('order_type','=','standard')]"/>
-                <filter string="Warehouse Sale Order" name="custom_orders" domain="[('order_type','=','custom')]"/>
-                <filter string="External Sales Order" name="wholesale_orders"
-                        domain="[('order_type','=','wholesale')]"/>
-                <filter string="Service Sales Order" name="subscription_orders"
-                        domain="[('order_type','=','subscription')]"/>
-
                 <!-- Group by Order Type -->
                 <filter string="Order Type" name="order_type" context="{'group_by': 'order_type'}"/>
+                <filter string="Sale Order Type" name="sale_order_type" context="{'group_by': 'sale_order_type_id'}"/>
             </xpath>
 
             <!-- Add order_type field to search view -->
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="order_type" filter_domain="[('order_type','ilike',self)]"/>
+                <field name="sale_order_type_id"/>
             </xpath>
         </field>
     </record>
@@ -89,57 +93,17 @@
     <!--            </xpath>-->
     <!--        </field>-->
     <!--    </record>-->
-    <!-- Standard Sales Action -->
-    <record id="action_standard_orders" model="ir.actions.act_window">
-        <field name="name">Standard Sale Order</field>
-        <field name="res_model">sale.order</field>
-        <field name="view_mode">list,form,kanban,calendar,pivot,graph</field>
-        <field name="context">{'search_default_standard_orders': 1, 'default_order_type': 'standard'}</field>
-        <field name="domain">[('order_type', '=', 'standard')]</field>
-        <!--        <field name="search_view_id" ref="sale.view_sales_order_filter"/>-->
-    </record>
-
-    <!-- Custom Sales Action -->
-    <record id="action_custom_orders" model="ir.actions.act_window">
-        <field name="name">Warehouse Sale Order</field>
-        <field name="res_model">sale.order</field>
-        <field name="view_mode">list,form,kanban,calendar,pivot,graph</field>
-        <field name="context">{'search_default_custom_orders': 1, 'default_order_type': 'custom'}</field>
-        <field name="domain">[('order_type', '=', 'custom')]</field>
-        <field name="search_view_id" ref="sale.view_sales_order_filter"/>
-    </record>
-
-    <!-- Wholesale Sales Action -->
-    <record id="action_wholesale_orders" model="ir.actions.act_window">
-        <field name="name">External Sales Order</field>
-        <field name="res_model">sale.order</field>
-        <field name="view_mode">list,form,kanban,calendar,pivot,graph</field>
-        <field name="context">{'search_default_wholesale_orders': 1, 'default_order_type': 'wholesale'}</field>
-        <field name="domain">[('order_type', '=', 'wholesale')]</field>
-        <field name="search_view_id" ref="sale.view_sales_order_filter"/>
-    </record>
-    <!-- Subscription Sales Action -->
-    <record id="action_subscription_orders" model="ir.actions.act_window">
-        <field name="name">Service Sales Order</field>
-        <field name="res_model">sale.order</field>
-        <field name="view_mode">list,form,kanban,calendar,pivot,graph</field>
-        <field name="context">{'search_default_subscription_orders': 1, 'default_order_type': 'subscription'}</field>
-        <field name="domain">[('order_type', '=', 'subscription')]</field>
-        <field name="search_view_id" ref="sale.view_sales_order_filter"/>
-    </record>
-
-
-    <!-- Hide Purchase page in product form -->
-    <record id="view_product_template_form_hide_purchase" model="ir.ui.view">
-        <field name="name">product.template.form.hide.purchase</field>
-        <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_form_view"/>
-        <field name="arch" type="xml">
-            <xpath expr="//page/field[@name='seller_ids']" position="attributes">
-                <attribute name="invisible">True</attribute>
-            </xpath>
-        </field>
-    </record>
+<!--    &lt;!&ndash; Hide Purchase page in product form &ndash;&gt;-->
+<!--    <record id="view_product_template_form_hide_purchase" model="ir.ui.view">-->
+<!--        <field name="name">product.template.form.hide.purchase</field>-->
+<!--        <field name="model">product.template</field>-->
+<!--        <field name="inherit_id" ref="product.product_template_form_view"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//page/field[@name='seller_ids']" position="attributes">-->
+<!--                <attribute name="invisible">True</attribute>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
 
 
     <!-- views/sale_order_views.xml -->

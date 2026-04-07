@@ -1,6 +1,6 @@
 {
     "name": "Invoice Installments",
-    "version": "18.0.1.0.0",
+    "version": "18.0.1.0.1",
     "summary": "Enhanced sale orders with payment plans and order types",
     "description": """
         This module enhances sale orders with:
@@ -12,8 +12,10 @@
     "author": "Your Company",
     "depends": ['sale', 'product'],
     "data": [
+        "security/ir.model.access.csv",
         "data/ir_sequence.xml",
         "views/sales_orders_view.xml",
+        "views/sale_order_type_views.xml",
         "views/product_attribute_views.xml",
         "views/menu_views.xml",
     ],

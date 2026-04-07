@@ -1,8 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 
-#access_first_order,access.first.order,model_first_order,base.group_user,1,1,1,1
-#access_second_order,access.second.order,model_second_order,base.group_user,1,1,1,1
-#account_invoice_installments.access_third_order,access_third_order,account_invoice_installments.model_third_order,base.group_user,1,1,1,1
-account_invoice_installments.access_first_order,access_first_order,account_invoice_installments.model_first_order,base.group_user,1,1,1,1
-
+account_invoice_installments.access_sale_order_type,access_sale_order_type,account_invoice_installments.model_sale_order_type,base.group_user,1,1,1,1
 
