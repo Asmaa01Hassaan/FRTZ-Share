@@ -1,5 +1,4 @@
-# models/sale_order.py
-from odoo import models, fields, api, _
+from odoo import api, fields, models, _
 
 
 class SaleOrder(models.Model):
@@ -53,6 +52,24 @@ class SaleOrder(models.Model):
             res["sale_order_type_id"] = tid
         return res
 
+    @api.onchange("sale_order_type_id")
+    def _onchange_sale_order_type_id_clear_mismatching_products(self):
+        """When the order type (and thus product type) changes, drop line products that no longer match."""
+        pt = self.sale_order_type_id.product_type if self.sale_order_type_id else False
+        if not pt:
+            return
+        for line in self.order_line:
+            if line.display_type:
+                continue
+            mismatch = False
+            if line.product_id and line.product_id.type != pt:
+                mismatch = True
+            elif line.product_template_id and line.product_template_id.type != pt:
+                mismatch = True
+            if mismatch:
+                line.product_id = False
+                line.product_template_id = False
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -79,43 +96,3 @@ class SaleOrder(models.Model):
                 except Exception:
                     vals['name'] = self.env['ir.sequence'].next_by_code('sale.order') or _('New')
         return super().create(vals_list)
-
-    def action_create_standard(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('New Standard Sale Order'),
-            'res_model': 'sale.order',
-            'view_mode': 'form',
-            'target': 'current',
-            'context': {},
-        }
-
-    def action_create_custom(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('New Custom Sale Order'),
-            'res_model': 'sale.order',
-            'view_mode': 'form',
-            'target': 'current',
-            'context': {},
-        }
-
-    def action_create_wholesale(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('New Wholesale Order'),
-            'res_model': 'sale.order',
-            'view_mode': 'form',
-            'target': 'current',
-            'context': {},
-        }
-
-    def action_create_subscription(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('New Subscription Order'),
-            'res_model': 'sale.order',
-            'view_mode': 'form',
-            'target': 'current',
-            'context': {},
-        }

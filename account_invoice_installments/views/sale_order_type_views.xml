@@ -5,6 +5,7 @@
         <field name="arch" type="xml">
             <list string="Sale Order Types">
                 <field name="name"/>
+                <field name="product_type"/>
                 <field name="sequence_id" optional="show" options="{'no_open': True}" readonly="1"/>
             </list>
         </field>
@@ -22,6 +23,7 @@
                     <field name="menu_id" invisible="1"/>
                     <group>
                         <field name="name"/>
+                        <field name="product_type"/>
                         <field name="sequence_id" readonly="1" options="{'no_open': True}"/>
                     </group>
                 </sheet>

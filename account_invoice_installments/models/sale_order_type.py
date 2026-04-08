@@ -10,6 +10,18 @@ class SaleOrderType(models.Model):
 
     name = fields.Char(required=True, translate=True)
 
+    product_type = fields.Selection(
+        [
+            ("consu", _("Goods")),
+            ("service", _("Service")),
+            ("combo", _("Combo")),
+        ],
+        string=_("Product Type"),
+        default="consu",
+        required=True,
+        help=_("Same categories as on products: goods, service, or combo."),
+    )
+
     active = fields.Boolean(default=True)
 
     sequence_auto = fields.Boolean(

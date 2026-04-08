@@ -1,17 +1,53 @@
 <odoo>
-    <!-- Overrides older arch that referenced removed fields; keeps same xml id for DB upgrades -->
     <record id="sale_order_form_type_product_domain" model="ir.ui.view">
         <field name="name">sale.order.form.type.product.domain</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='order_line']//field[@name='product_id']" position="attributes">
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_id']" position="attributes">
                 <attribute name="domain">[('sale_ok', '=', True)]</attribute>
+                <attribute name="context">{
+                    'partner_id': parent.partner_id,
+                    'quantity': product_uom_qty,
+                    'pricelist': parent.pricelist_id,
+                    'uom':product_uom,
+                    'company_id': parent.company_id,
+                    'default_lst_price': price_unit,
+                    'default_uom_id': product_uom,
+                    'order_id': parent.id,
+                    'sale_order_type_id': parent.sale_order_type_id,
+                }</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_template_id']" position="attributes">
+                <attribute name="domain">[('sale_ok', '=', True)]</attribute>
+                <attribute name="context">{
+                    'partner_id': parent.partner_id,
+                    'quantity': product_uom_qty,
+                    'pricelist': parent.pricelist_id,
+                    'uom':product_uom,
+                    'company_id': parent.company_id,
+                    'default_list_price': price_unit,
+                    'default_uom_id': product_uom,
+                    'order_id': parent.id,
+                    'sale_order_type_id': parent.sale_order_type_id,
+                }</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//form//field[@name='product_id']" position="attributes">
+                <attribute name="domain">[('sale_ok', '=', True)]</attribute>
+                <attribute name="context">{
+                    'partner_id': parent.partner_id,
+                    'quantity': product_uom_qty,
+                    'pricelist': parent.pricelist_id,
+                    'uom': product_uom,
+                    'company_id': parent.company_id,
+                    'default_uom_id': product_uom,
+                    'order_id': parent.id,
+                    'sale_order_type_id': parent.sale_order_type_id,
+                }</attribute>
             </xpath>
         </field>
     </record>
 
-    <!-- Add order_type to tree view -->
     <record id="view_order_list_custom" model="ir.ui.view">
         <field name="name">sale.order.list.custom</field>
         <field name="model">sale.order</field>
@@ -24,13 +60,11 @@
         </field>
     </record>
 
-    <!-- Add order_type to form view -->
     <record id="view_order_form_custom" model="ir.ui.view">
         <field name="name">sale.order.form.custom</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <!-- One match only: sale form has several date_order fields; duplicate xpath would duplicate Order Type -->
             <xpath expr="//group[@name='order_details']/field[@name='date_order'][1]" position="before">
                 <field name="sale_order_type_id" string="Order Type" options="{'no_create_edit': True}"/>
             </xpath>
@@ -63,49 +97,15 @@
         <field name="inherit_id" ref="sale.view_sales_order_filter"/>
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
-                <!-- Group by Order Type -->
                 <filter string="Order Type" name="order_type" context="{'group_by': 'order_type'}"/>
                 <filter string="Sale Order Type" name="sale_order_type" context="{'group_by': 'sale_order_type_id'}"/>
             </xpath>
 
-            <!-- Add order_type field to search view -->
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="order_type" filter_domain="[('order_type','ilike',self)]"/>
                 <field name="sale_order_type_id"/>
             </xpath>
         </field>
     </record>
-    <!-- Add quick creation buttons to dashboard -->
-    <!--    <record id="view_sale_order_kanban_custom" model="ir.ui.view">-->
-    <!--        <field name="name">sale.order.kanban.custom</field>-->
-    <!--        <field name="model">sale.order</field>-->
-    <!--        <field name="inherit_id" ref="sale.view_order_kanban"/>-->
-    <!--        <field name="arch" type="xml">-->
-    <!--            <xpath expr="//div[hasclass('o_kanban_quick_create')]" position="inside">-->
-    <!--                <div class="d-flex justify-content-around mt-2">-->
-    <!--                    <button name="action_create_standard" type="object" string="Standard Order"-->
-    <!--                            class="btn-primary" context="{'default_order_type': 'standard'}"/>-->
-    <!--                    <button name="action_create_custom" type="object" string="Custom Order"-->
-    <!--                            class="btn-secondary" context="{'default_order_type': 'custom'}"/>-->
-    <!--                    <button name="action_create_wholesale" type="object" string="Wholesale Order"-->
-    <!--                            class="btn-info" context="{'default_order_type': 'wholesale'}"/>-->
-    <!--                </div>-->
-    <!--            </xpath>-->
-    <!--        </field>-->
-    <!--    </record>-->
-<!--    &lt;!&ndash; Hide Purchase page in product form &ndash;&gt;-->
-<!--    <record id="view_product_template_form_hide_purchase" model="ir.ui.view">-->
-<!--        <field name="name">product.template.form.hide.purchase</field>-->
-<!--        <field name="model">product.template</field>-->
-<!--        <field name="inherit_id" ref="product.product_template_form_view"/>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <xpath expr="//page/field[@name='seller_ids']" position="attributes">-->
-<!--                <attribute name="invisible">True</attribute>-->
-<!--            </xpath>-->
-<!--        </field>-->
-<!--    </record>-->
-
-
-    <!-- views/sale_order_views.xml -->
 
 </odoo>
