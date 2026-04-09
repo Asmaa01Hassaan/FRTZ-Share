@@ -24,6 +24,18 @@ class SaleOrderType(models.Model):
 
     active = fields.Boolean(default=True)
 
+    company_id = fields.Many2one(
+        "res.company",
+        string=_("Company"),
+        default=lambda self: self.env.company,
+        index=True,
+    )
+    currency_id = fields.Many2one(
+        "res.currency",
+        string=_("Currency"),
+        default=lambda self: self.env.company.currency_id,
+    )
+
     sequence_auto = fields.Boolean(
         string=_("Auto-generated sequence"),
         default=False,
@@ -65,6 +77,7 @@ class SaleOrderType(models.Model):
                     {
                         "name": rec.name,
                         "prefix": self._sequence_prefix_from_name(rec.name),
+                        "company_id": rec.company_id.id if rec.company_id else False,
                     }
                 )
                 continue
@@ -80,7 +93,7 @@ class SaleOrderType(models.Model):
                     "padding": 5,
                     "number_next": 1,
                     "implementation": "standard",
-                    "company_id": False,
+                    "company_id": rec.company_id.id if rec.company_id else False,
                 }
             )
             rec.write({"sequence_id": seq.id, "sequence_auto": True})
@@ -170,7 +183,7 @@ class SaleOrderType(models.Model):
 
     def write(self, vals):
         res = super().write(vals)
-        if any(k in vals for k in ("name", "active")):
+        if any(k in vals for k in ("name", "active", "company_id")):
             self._ensure_sequence()
             self._ensure_dynamic_menu_and_action()
         return res
