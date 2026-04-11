@@ -78,3 +78,21 @@ class AccountMove(models.Model):
         if vals.get("payment_type") is not None and vals.get("payment_type") != "irregular":
             vals["invoice_payment_term_id"] = False
         return super().write(vals)
+
+    def action_open_invoice_payment_term(self):
+        """Open payment term form (lines / preview) when plan is irregular (custom installments)."""
+        self.ensure_one()
+        if self.payment_type != "irregular":
+            return False
+        if self.invoice_payment_term_id:
+            action = self.invoice_payment_term_id.get_formview_action()
+            action["target"] = "new"
+            return action
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Payment Terms"),
+            "res_model": "account.payment.term",
+            "view_mode": "form",
+            "target": "new",
+            "context": {"default_company_id": self.company_id.id},
+        }
