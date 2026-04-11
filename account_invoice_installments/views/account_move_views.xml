@@ -1,0 +1,35 @@
+<odoo>
+    <record id="account_move_form_invoice_installments" model="ir.ui.view">
+        <field name="name">account.move.form.invoice.installments</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='due_date']" position="before">
+                <field name="payment_type"
+                       invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')"/>
+                <label for="first_payment_type"
+                       invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt') or payment_type != 'regular'"/>
+                <div name="first_payment_row" class="o_row"
+                     invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt') or payment_type != 'regular'">
+                    <field name="first_payment_type" nolabel="1"/>
+                    <field name="first_payment_value" nolabel="1"
+                           invisible="first_payment_type != 'fixed'"/>
+                    <field name="first_payment_percent" nolabel="1"
+                           invisible="first_payment_type != 'percent'"/>
+                    <span class="align-self-center text-muted"
+                          invisible="first_payment_type != 'percent'">%</span>
+                </div>
+                <field name="installment_count"
+                       invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt') or payment_type != 'regular'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_payment_term_id']" position="attributes">
+                <attribute name="invisible">payment_type != 'irregular'</attribute>
+            </xpath>
+
+            <xpath expr="//div[@name='due_date']/span[@class='o_form_label mx-3 oe_edit_only text-center']" position="attributes">
+                <attribute name="invisible">state != 'draft' or invoice_payment_term_id or payment_type != 'irregular'</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
