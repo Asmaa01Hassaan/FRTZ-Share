@@ -4,7 +4,8 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@class='o_td_label']" position="before">
+            <!-- Custom fields above payment terms block (anchor: o_td_label before due_date in base view) -->
+            <xpath expr="//div[@name='due_date']/preceding-sibling::div[@class='o_td_label'][1]" position="before">
                 <field name="payment_type"
                        invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')"/>
                 <label for="first_payment_type"
@@ -23,21 +24,18 @@
                        invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt') or payment_type != 'regular'"/>
             </xpath>
 
-            <!-- Payment terms label first (matches field order: term, then due date) -->
+            <!-- Same grid as Invoice Date: label + value row (button beside payment term only) -->
             <xpath expr="//div[@name='due_date']/preceding-sibling::div[@class='o_td_label'][1]" position="replace">
-                <div class="o_td_label" invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')">
-                    <label for="invoice_payment_term_id" string="Payment terms"
-                           invisible="not invoice_payment_term_id"/>
-                    <label for="invoice_date_due" string="Due Date"
-                           invisible="invoice_payment_term_id"/>
-                </div>
+                <label for="invoice_payment_term_id" string="Payment terms"
+                       invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')"/>
             </xpath>
 
-            <!-- o_row: Odoo standard horizontal row (field + button + field) -->
             <xpath expr="//div[@name='due_date']" position="replace">
-                <div class="o_row" name="due_date"
-                     invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')">
-                    <field name="invoice_payment_term_id"
+                <!-- o_row + oe_inline: keep external-link button on same line as many2one (no wrap) -->
+                <div class="o_row align-items-center o_invoice_payment_term_row"
+                     invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')"
+                     name="due_date">
+                    <field name="invoice_payment_term_id" nolabel="1" class="oe_inline"
                            context="{'example_date': invoice_date, 'example_amount': tax_totals['total_amount_currency']}"
                            placeholder="Payment Terms"
                            options="{'no_quick_create':True}" readonly="state in ['cancel', 'posted']"/>
@@ -46,14 +44,10 @@
                             icon="fa-external-link"
                             title="Open payment terms"
                             invisible="payment_type != 'irregular'"/>
-                    <field name="invoice_date_due" force_save="1"
-                           placeholder="Date"
-                           invisible="invoice_payment_term_id"/>
                 </div>
-            </xpath>
-
-            <xpath expr="//field[@name='invoice_payment_term_id']" position="attributes">
-                <attribute name="invisible">payment_type != 'irregular'</attribute>
+                <label for="invoice_date_due" string="Due Date"
+                       invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')"/>
+                <field name="invoice_date_due" nolabel="1" force_save="1" placeholder="Date"/>
             </xpath>
         </field>
     </record>
