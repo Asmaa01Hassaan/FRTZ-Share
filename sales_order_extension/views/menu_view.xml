@@ -1,7 +1,32 @@
+<!-- views/menu_views.xml -->
 <odoo>
+    <!-- Main Sales Menu -->
+    <menuitem id="menu_sales_root" name="FRTZ" sequence="10"
+              web_icon="sales_order_extension,static/description/icon.png"/>
 
-    <menuitem id="menu_frtz_root_sales" parent="sale.sale_menu_root" name="FRTZ"/>
+    <menuitem id="menu_frtz_root_sales" parent="menu_sales_root" name="FRTZ"/>
 
-    <menuitem id="menu_sale_order_type" name="Sale Order Type" parent="sale.menu_sale_config"
+    <!-- Sale order list menus are created dynamically from Configuration > Sale Order Type -->
+
+    <menuitem id="menu_frtz_sales_configuration" name="Configuration" parent="menu_sales_root" sequence="90"/>
+    <menuitem id="menu_sale_order_type" name="Sale Order Type" parent="menu_frtz_sales_configuration"
               action="action_sale_order_type" sequence="10"/>
+
+
+    <!-- Product Parent Menu -->
+    <menuitem id="menu_product_parent" name="Product" parent="menu_sales_root" sequence="60"/>
+
+    <!-- Product Sub-Menus -->
+    <menuitem id="menu_products" name="Products" parent="menu_product_parent" action="product.product_template_action_all" sequence="10"/>
+    <menuitem id="menu_product_variants" name="Product Variants" parent="menu_product_parent" action="product.product_variant_action" sequence="20"/>
+    <menuitem id="menu_pricelist" name="Price List" parent="menu_product_parent" action="product.product_pricelist_action2" sequence="30"/>
+
+    <!-- Partners Parent Menu -->
+    <menuitem id="menu_partner_parent" name="Partners" parent="menu_sales_root" sequence="70"/>
+
+    <!-- Partners Sub-Menus -->
+    <menuitem id="menu_customers" name="Customers" parent="menu_partner_parent" action="account.res_partner_action_customer" sequence="10"/>
+    <menuitem id="menu_companies" name="Companies" parent="menu_partner_parent" action="account.res_partner_action_supplier" sequence="20"/>
+
+
 </odoo>

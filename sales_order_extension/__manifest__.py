@@ -8,9 +8,7 @@
     "author": "Your Company",
     "depends": ['sale_management','product'],
     "data": [
-        # "security/ir.model.access.csv",
-        # "data/ir_sequence.xml",
-        # "views/account_move_views.xml",
+        "security/ir.model.access.csv",
         "views/sales_orders_view.xml",
         "views/product_template_views.xml",
         "views/sale_order_type_views.xml",
@@ -22,7 +20,7 @@
     #     "i18n/account_invoice_installments.pot",
     # ],
     "license": "LGPL-3",
-    "application": False,
+    "application": True,
     "installable": True,
     "auto_install": False,
 

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+sales_order_extension.access_sale_order_type,access_sale_order_type,sales_order_extension.model_sale_order_type,base.group_user,1,1,1,1
+
