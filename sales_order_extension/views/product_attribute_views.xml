@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 
+    To allow users to enter free text for product attributes:
+    
+    1. Create or edit a product attribute
+    2. Add attribute values as needed
+    3. For the value that should allow free text, check the "Free text" (is_custom) checkbox
+    4. When customers configure products, they will be able to enter custom text for that value
+    
+    See FREE_TEXT_GUIDE.md for detailed documentation.
+    -->
+</odoo>
+
