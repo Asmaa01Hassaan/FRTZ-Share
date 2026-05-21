@@ -52,9 +52,9 @@
                 </div>
             </xpath>
 
-            <xpath expr="//field[@name='invoice_payment_term_id']" position="attributes">
-                <attribute name="invisible">payment_type != 'irregular'</attribute>
-            </xpath>
+<!--            <xpath expr="//field[@name='invoice_payment_term_id']" position="attributes">-->
+<!--                <attribute name="invisible">payment_type != 'irregular'</attribute>-->
+<!--            </xpath>-->
         </field>
     </record>
 </odoo>
