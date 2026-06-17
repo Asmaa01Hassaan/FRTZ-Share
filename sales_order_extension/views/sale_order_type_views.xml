@@ -6,9 +6,14 @@
             <list string="Sale Order Types">
                 <field name="company_id" optional="show"/>
                 <field name="currency_id" optional="show"/>
+                <field name="journal_id" optional="show"/>
+                <field name="product_category_ids" widget="many2many_tags" optional="hide"/>
+                <field name="sale_order_template_id" optional="show" groups="sale_management.group_sale_order_template"/>
                 <field name="name"/>
                 <field name="product_type"/>
-                <field name="sequence_id" optional="show" options="{'no_open': True}" readonly="1"/>
+                <field name="sequence_prefix"/>
+                <field name="sequence_code" optional="hide"/>
+                <field name="sequence_id" optional="show"/>
             </list>
         </field>
     </record>
@@ -24,12 +29,29 @@
                     <field name="action_id" invisible="1"/>
                     <field name="menu_id" invisible="1"/>
                     <group>
-                        <field name="company_id"/>
-                        <field name="currency_id"/>
-                        <field name="name"/>
-                        <field name="product_type"/>
-                        <field name="sequence_id" readonly="1" options="{'no_open': True}"/>
+                        <group string="General">
+                            <field name="company_id"/>
+                            <field name="currency_id"/>
+                            <field name="journal_id"
+                                   domain="[('type', 'in', ('sale', 'general')), '|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
+                            <field name="journal_incactive_validation"
+                                   groups="payment_term_installment_extension.group_technical_installments_setting"/>
+                            <field name="sale_order_template_id" groups="sale_management.group_sale_order_template"/>
+                            <field name="name"/>
+                            <field name="product_type"/>
+                            <field name="product_category_ids" widget="many2many_tags"/>
+                        </group>
+                        <group string="Numbering">
+                            <field name="sequence_prefix" placeholder="e.g. SOI/%%(year)s/"/>
+                            <field name="sequence_code" placeholder="e.g. custom.sale.order"/>
+                            <field name="sequence_padding"/>
+                            <field name="sequence_id"/>
+                        </group>
                     </group>
+                    <div class="text-muted" role="alert">
+                        Use placeholders in the prefix: %%(year)s, %%(month)s, %%(day)s.
+                        Example: SOI/%%(year)s/ produces SOI/2026/00001.
+                    </div>
                 </sheet>
             </form>
         </field>

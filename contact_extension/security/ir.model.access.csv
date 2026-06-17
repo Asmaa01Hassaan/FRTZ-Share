@@ -3,4 +3,8 @@ access_contact_addresses_user,contact.addresses.user,model_contact_addresses,bas
 access_contact_attachment_user,contact.attachment.user,model_contact_attachment,base.group_user,1,1,1,1
 access_contact_division_user,contact.division.user,model_contact_division,base.group_user,1,1,1,1
 access_contact_channels_user,contact.channels.user,model_contact_channels,base.group_user,1,1,1,1
+access_customer_guarantees_user,customer.guarantees.user,model_customer_guarantees,base.group_user,1,1,1,1
+access_customer_guarantees_account_user,customer.guarantees.account.user,model_customer_guarantees,account.group_account_invoice,1,1,1,1
+access_customer_guarantees_sale_user,customer.guarantees.sale.user,model_customer_guarantees,sales_team.group_sale_salesman,1,1,1,1
+access_customer_guarantees_sale_manager,customer.guarantees.sale.manager,model_customer_guarantees,sales_team.group_sale_manager,1,1,1,1
 

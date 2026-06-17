@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Reschedule Wizard Form -->
+    <record id="view_installment_reschedule_wizard_form" model="ir.ui.view">
+        <field name="name">installment.reschedule.wizard.form</field>
+        <field name="model">installment.reschedule.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reschedule Installments">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="move_id" readonly="1"/>
+                            <field name="partner_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Installments" name="installments">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="installment_id" readonly="1"/>
+                                    <field name="display_reference" readonly="1"/>
+                                    <field name="current_date_due" readonly="1"/>
+                                    <field name="new_date_due"/>
+                                    <field name="current_amount" readonly="1" sum="Current Total"/>
+                                    <field name="new_amount" sum="New Total"/>
+                                    <field name="amount_paid" readonly="1" sum="Paid"/>
+                                    <field name="amount_residual" readonly="1" sum="Remaining"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group>
+                        <field name="reason" placeholder="Enter the reason for rescheduling..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_apply_reschedule" type="object"
+                            string="Apply Reschedule" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Reschedule Wizard Action -->
+    <record id="action_installment_reschedule_wizard" model="ir.actions.act_window">
+        <field name="name">Reschedule Installments</field>
+        <field name="res_model">installment.reschedule.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

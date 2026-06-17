@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Root Menu under Sales -->
+    <menuitem id="menu_installment_management_pro_root"
+              name="Installments Pro"
+              parent="sale.sale_menu_root"
+              sequence="36"/>
+
+    <!-- Overdue Dashboard -->
+    <menuitem id="menu_overdue_installments"
+              name="Overdue Installments"
+              parent="menu_installment_management_pro_root"
+              action="action_overdue_installments_dashboard"
+              sequence="10"/>
+
+    <!-- All Installments -->
+    <menuitem id="menu_all_installments"
+              name="All Installments"
+              parent="menu_installment_management_pro_root"
+              action="action_all_installments"
+              sequence="20"/>
+
+    <!-- Schedule Installments -->
+    <menuitem id="menu_schedule_installments"
+              name="Schedule Installments"
+              parent="menu_installment_management_pro_root"
+              action="action_installment_schedule_wizard"
+              sequence="25"/>
+
+    <!-- History submenu -->
+    <menuitem id="menu_installment_history"
+              name="History"
+              parent="menu_installment_management_pro_root"
+              sequence="30"/>
+
+    <menuitem id="menu_payment_logs"
+              name="Payment Logs"
+              parent="menu_installment_history"
+              action="action_installment_payment_log"
+              sequence="10"/>
+
+    <menuitem id="menu_reschedule_logs"
+              name="Reschedule History"
+              parent="menu_installment_history"
+              action="action_installment_reschedule_log"
+              sequence="20"/>
+
+</odoo>

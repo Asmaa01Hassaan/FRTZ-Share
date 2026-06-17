@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add Apply Payment Term Per Line field to Invoice Form View -->
+    <record id="view_move_form_payment_term_per_line" model="ir.ui.view">
+        <field name="name">account.move.form.payment_term_per_line</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Add Apply Payment Term Per Line field near invoice_payment_term_id -->
+            <!--            //group[.//field[@name='company_id']]-->
+            <xpath expr="//group[.//field[@name='invoice_date']]" position="inside">
+                <group>
+                    <!--                     invisible="not invoice_payment_term_id or not invoice_payment_term_id.is_installment_term"-->
+                    <field name="apply_payment_term_per_line"
+                           invisible="1"/>
+
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add Payment Term field to Invoice Lines -->
+    <record id="view_move_form_line_payment_term" model="ir.ui.view">
+        <field name="name">account.move.form.line.payment_term</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']//list//field[@name='quantity']" position="after">
+                <field name="line_installment_count"
+                       invisible="not parent.apply_payment_term_per_line"
+                       optional="hide"/>
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_line_ids']//list//field[@name='price_total']" position="before">
+                <field name="line_first_payment_percentage"
+                       invisible="not parent.apply_payment_term_per_line"
+                       readonly="parent.pay_type == 'spot'"
+                       optional="hide"/>
+                <field name="line_first_payment_type"
+                       invisible="not parent.apply_payment_term_per_line"
+                       optional="hide"/>
+                <field name="line_due_amount"
+                       invisible="not parent.apply_payment_term_per_line"
+                       optional="hide"/>
+                <field name="line_sal_no"
+                       invisible="not parent.apply_payment_term_per_line"
+                       optional="hide"/>
+                <field name="line_installment_amount"
+                       invisible="not parent.apply_payment_term_per_line"
+                       optional="hide"/>
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_line_ids']//list//field[@name='price_subtotal']" position="after">
+                <field name="payment_term_id"
+                       invisible="not parent.apply_payment_term_per_line"
+                       optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add Installments Tab to Invoice Form View -->
+    <record id="view_move_form_installments" model="ir.ui.view">
+        <field name="name">account.move.form.installments</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Add Installments Tab -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Installments" name="installments"
+                      invisible="not apply_payment_term_per_line and (not invoice_payment_term_id or not invoice_payment_term_id.is_installment_term)">
+                    <field name="has_installments" invisible="1"/>
+
+
+
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_account_move_installment)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-list"
+                                context="{'search_default_move_id': id, 'default_move_id': id}">
+                            <field name="total_installment_count" widget="statinfo" string="Installments"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="installment_ids" nolabel="1" readonly="state == 'posted'">
+                            <list string="Installments"
+                                  decoration-info="state == 'due'"
+                                  decoration-warning="state == 'partial'"
+                                  decoration-danger="state == 'overdue'"
+                                  decoration-success="state == 'paid'"
+                                  create="0"
+                                  delete="0">
+                                <field name="sequence" optional="hide"/>
+                                <field name="name" optional="hide"/>
+                                <field name="product_id"/>
+                                <field name="invoice_line_id" optional="show"/>
+                                <field name="date_due"/>
+                                <field name="currency_id" column_invisible="True"/>
+                                <field name="amount_total" sum="Total"/>
+                                <field name="amount_paid" sum="Paid" optional="hide"/>
+                                <field name="amount_residual" sum="Residual"/>
+                                <field name="paid_date" optional="hide" />
+                                <field name="payment_reference" optional="hide"/>
+                                <field name="state" widget="badge"
+                                       decoration-info="state == 'due'"
+                                       decoration-warning="state == 'partial'"
+                                       decoration-danger="state == 'overdue'"
+                                       decoration-success="state == 'paid'"/>
+                            </list>
+                        </field>
+                    </group>
+                      <group>
+                        <group>
+                            <field name="total_installment_count" invisible="0"/>
+                            <field name="paid_installment_count" invisible="0"/>
+                            <field name="pending_installment_count" invisible="0"/>
+                            <field name="overdue_installment_count" invisible="0"/>
+                        </group>
+                        <group>
+                            <field name="total_paid_amount" invisible="0"/>
+                            <field name="total_remaining_amount" invisible="0"/>
+                            <field name="nearest_due_installment_amount" invisible="0"/>
+                            <field name="nearest_due_installment_date" invisible="0"/>
+                            <field name="due_date_filter" invisible="0"/>
+                            <field name="due_amount" invisible="0"/>
+                            <field name="to_pay_amount" invisible="0"/>
+                            <field name="invoice_payment_term_id" invisible="pay_type == 'fixed'"/>
+                        </group>
+                    </group>
+                    <group invisible="not has_installments or not due_date_filter">
+                        <button name="action_pay_installments"
+                                string="Pay Installment"
+                                type="object"
+                                class="oe_highlight"
+                                icon="fa-money"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add Installments Button to Invoice Tree View -->
+    <record id="view_invoice_tree_installments" model="ir.ui.view">
+        <field name="name">account.invoice.tree.installments</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='status_in_payment']" position="after">
+                <field name="total_installment_count" widget="statinfo" string="Installments" optional="hide"/>
+
+
+            </xpath>
+
+
+        </field>
+    </record>
+</odoo>
+

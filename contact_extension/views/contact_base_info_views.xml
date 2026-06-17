@@ -13,6 +13,11 @@
                 <attribute name="readonly">use_name_parts</attribute>
             </xpath>
 
+            <xpath expr="//field[@name='company_type']" position="attributes">
+                <attribute name="readonly">company_type_locked == True</attribute>
+            </xpath>
+
+
             <!-- Add flex class to h1 for proper layout -->
             <xpath expr="//div[hasclass('oe_title')]//h1" position="attributes">
                 <attribute name="class">d-flex align-items-center gap-3</attribute>
@@ -40,6 +45,36 @@
             <xpath expr="//page[@name='contact_addresses']" position="attributes">
                 <attribute name="invisible">not is_company</attribute>
                 <attribute name="string">Contacts</attribute>
+            </xpath>
+
+            <!-- Change child_ids from kanban to list view in contact_addresses page -->
+            <xpath expr="//page[@name='contact_addresses']//field[@name='child_ids']" position="replace">
+                <field name="child_ids" nolabel="1" context="{'default_parent_id': id, 'default_is_company': False}">
+                    <list string="Contacts" editable="bottom">
+                        <field name="name" required="1"/>
+                        <field name="function" string="Job Position"/>
+                        <field name="phone" widget="phone"/>
+                        <field name="mobile" widget="phone"/>
+                        <field name="email" widget="email"/>
+                        <field name="type" options="{'no_open': True}"/>
+                    </list>
+                    <form>
+                        <sheet>
+                            <group>
+                                <group>
+                                    <field name="name" required="1"/>
+                                    <field name="function" string="Job Position"/>
+                                    <field name="type" options="{'no_open': True}"/>
+                                </group>
+                                <group>
+                                    <field name="phone" widget="phone"/>
+                                    <field name="mobile" widget="phone"/>
+                                    <field name="email" widget="email"/>
+                                </group>
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
             </xpath>
 
 
@@ -102,30 +137,31 @@
                             <field name="division_ids" invisible="1"/>
                             <field name="uid" string="UID" invisible="is_company"/>
                             <field name="vat" string="Tax ID" placeholder="e.g. BE0477472701"/>
+                            <field name="company_registry" invisible="not is_company"/>
                             <field name="status" string="Status"/>
                             <field name="title" options="{&quot;no_open&quot;: True}" placeholder="e.g. Mister"
                                    invisible="is_company"/>
-                            <field name="function" placeholder="e.g. Sales Director" invisible="is_company"/>
-                            <field name="divisions" invisible="is_company" options="{'no_create': True}"/>
-                            <field name="birth_date" string="Birth Date" invisible="is_company"/>
-                            <field name="hiring_date" string="Hiring Date" invisible="is_company"/>
+<!--                            <field name="function" placeholder="e.g. Sales Director" invisible="is_company"/>-->
+<!--                            <field name="divisions" invisible="is_company" options="{'no_create': True}"/>-->
+<!--                            <field name="birth_date" string="Birth Date" invisible="is_company"/>-->
+<!--                            <field name="hiring_date" string="Hiring Date" invisible="is_company"/>-->
                         </group>
                         <group>
                             <field name="category_id" widget="many2many_tags" options="{'color_field': 'color'}"
                                    placeholder="e.g. &quot;B2B&quot;, &quot;VIP&quot;, &quot;Consulting&quot;, ..."/>
                             <field name="lang" invisible="active_lang_count &lt;= 1"/>
-                            <field name="phone" widget="phone" readonly="1"/>
-                            <field name="mobile" widget="phone" readonly="1"/>
+                            <field name="phone" widget="phone" readonly="1" invisible="1" />
+                            <field name="mobile" widget="phone" readonly="1" invisible="1" />
                             <field name="email" widget="email" context="{'gravatar_image': True}" required="user_ids"
-                                   readonly="1"/>
+                                   readonly="1" invisible="1" />
                             <field name="website" string="Website" widget="url"
-                                   placeholder="e.g. https://www.odoo.com" readonly="1"/>
-                            <span class="o_form_label o_td_label o_address_type" name="address_name">
+                                   placeholder="e.g. https://www.odoo.com" readonly="1" invisible="1" />
+                            <span class="o_form_label o_td_label o_address_type" name="address_name" invisible="1" >
                                 <field name="type" invisible="1" readonly="user_ids" required="not is_company"
                                        class="fw-bold"/>
                                 <span>Address</span>
                             </span>
-                            <div class="o_address_format">
+                            <div class="o_address_format" invisible="1" >
                                 <field name="street" placeholder="Street..." class="o_address_street"
                                        readonly="1"/>
                                 <field name="street2" placeholder="Street 2..." class="o_address_street"
@@ -144,6 +180,10 @@
                                            readonly="1"/>
                                 </div>
                             </div>
+                            <field name="function" placeholder="e.g. Sales Director" invisible="is_company"/>
+                            <field name="divisions" invisible="is_company" options="{'no_create': True}"/>
+                            <field name="birth_date" string="Birth Date" invisible="is_company"/>
+                            <field name="hiring_date" string="Hiring Date" invisible="is_company"/>
 
                         </group>
                     </group>
@@ -179,13 +219,13 @@
                         <list string="Addresses" editable="bottom">
                             <field name="name"/>
                             <field name="type" options="{'no_open': True}"/>
-                            <field name="street"/>
-                            <field name="street2"/>
-                            <field name="city"/>
+                            <field name="street" optional="hide"/>
+                            <field name="street2" optional="hide"/>
+                            <field name="city" optional="hide"/>
                             <field name="state_id" options="{'no_open': True, 'no_quick_create': True}"/>
-                            <field name="zip"/>
+                            <field name="zip" optional="hide"/>
                             <field name="country_id" options="{'no_open': True, 'no_create': True}"/>
-                            <field name="is_default"/>
+                            <field name="is_default" optional="hide"/>
                         </list>
                         <form>
                             <sheet>
@@ -219,11 +259,12 @@
                     </field>
                 </page>
                 <page name="attachments_page" string="Attachments">
-                    <field name="attachment_ids" nolabel="1">
-                        <list string="Attachments" editable="bottom">
+                    <field name="attachment_ids" nolabel="1" context="{'default_partner_id': id}">
+                        <list string="Attachments" editable="bottom" delete="0">
                             <field name="name" string="Name"/>
                             <field name="file_data" widget="binary" filename="file_display_name"
-                                   string="File" placeholder="Upload or download file"/>
+                                   string="File" placeholder="Upload or download file"
+                                   options="{'no_delete': True}"/>
                             <!--                            <field name="attachment_id" invisible="1"/>  &lt;!&ndash; For compute dependencies &ndash;&gt;-->
                             <!--                            <field name="file" invisible="1"/>  &lt;!&ndash; For inverse method &ndash;&gt;-->
                             <!--                            <field name="filename" invisible="1"/>  &lt;!&ndash; For inverse method &ndash;&gt;-->
@@ -263,11 +304,11 @@
                                         <div class="o_kanban_image text-center mb-2">
                                             <t t-if="record.mimetype.raw_value
                                                    and record.mimetype.raw_value.indexOf('pdf') >= 0">
-                                                <img src="/web/static/img/mimetypes/pdf.svg" class="img img-fluid"/>
+                                                <img src="/web/static/img/mimetypes/pdf.svg" class="img img-fluid" alt="PDF Document"/>
                                             </t>
                                             <t t-else="">
                                                 <img src="/web/static/img/mimetypes/image.svg"
-                                                     class="img img-fluid"/>
+                                                     class="img img-fluid" alt="Image Document"/>
                                             </t>
                                         </div>
 
@@ -292,4 +333,73 @@
 
         </field>
     </record>
+
+    <!-- Contact Attachment List View -->
+    <record id="view_contact_attachment_list" model="ir.ui.view">
+        <field name="name">contact.attachment.list</field>
+        <field name="model">contact.attachment</field>
+        <field name="arch" type="xml">
+            <list string="Attachments" editable="bottom">
+                <field name="name" string="Name"/>
+                <field name="file_data" widget="binary" filename="file_display_name"
+                       string="File" placeholder="Upload or download file"/>
+                <field name="file_size" string="Size"/>
+                <field name="mimetype" string="Type"/>
+                <field name="attachment_id" invisible="1"/>
+                <field name="file" invisible="1"/>
+                <field name="filename" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Contact Attachment Kanban View -->
+<!--    <record id="view_contact_attachment_kanban" model="ir.ui.view">-->
+<!--        <field name="name">contact.attachment.kanban</field>-->
+<!--        <field name="model">contact.attachment</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <kanban string="Attachments" class="o_kanban_mobile" default_order="id desc">-->
+<!--                <field name="name"/>-->
+<!--                <field name="file_display_name"/>-->
+<!--                <field name="file_size"/>-->
+<!--                <field name="mimetype"/>-->
+<!--                <field name="attachment_id" invisible="1"/>-->
+<!--                <field name="file" invisible="1"/>-->
+<!--                <field name="filename" invisible="1"/>-->
+<!--                <templates>-->
+<!--                    <t t-name="kanban-box">-->
+<!--                        <div class="oe_kanban_card oe_kanban_global_click">-->
+<!--                            <div class="o_kanban_record_top">-->
+<!--                                <div class="o_kanban_record_headings">-->
+<!--                                    <strong class="o_kanban_record_title">-->
+<!--                                        <field name="name"/>-->
+<!--                                    </strong>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="o_kanban_record_body">-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-12">-->
+<!--                                        <field name="file_data" widget="binary" filename="file_display_name"-->
+<!--                                               string="File" placeholder="Upload or download file"/>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="row mt-2" t-if="record.file_size.raw_value or record.mimetype.raw_value">-->
+<!--                                    <div class="col-12">-->
+<!--                                        <small class="text-muted">-->
+<!--                                            <span t-if="record.file_size.raw_value">-->
+<!--                                                <field name="file_size"/> bytes-->
+<!--                                            </span>-->
+<!--                                            <span t-if="record.file_size.raw_value and record.mimetype.raw_value"> • </span>-->
+<!--                                            <span t-if="record.mimetype.raw_value">-->
+<!--                                                <field name="mimetype"/>-->
+<!--                                            </span>-->
+<!--                                        </small>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </t>-->
+<!--                </templates>-->
+<!--            </kanban>-->
+<!--        </field>-->
+<!--    </record>-->
 </odoo>

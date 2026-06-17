@@ -1,0 +1,257 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-03 03:02+0000\n"
+"PO-Revision-Date: 2026-06-03 03:02+0000\n"
+"Last-Translator: FRTZ\n"
+"Language-Team: Arabic\n"
+"Language: ar_001\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. modules: installment_management_pro, invoice_installment_management
+#. odoo-python
+#: code:addons/invoice_installment_management/models/account_installment_payment_log.py:0
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_installment_payment_log__action_type
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_payment_log_search
+msgid "Action Type"
+msgstr "نوع الإجراء"
+
+#. module: invoice_installment_management
+#: model_terms:ir.ui.view,arch_db:invoice_installment_management.view_account_move_installment_form
+msgid "Add notes about this installment..."
+msgstr "أضف ملاحظات عن هذا القسط..."
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,help:invoice_installment_management.field_account_bank_statement_line__to_pay_amount
+#: model:ir.model.fields,help:invoice_installment_management.field_account_move__to_pay_amount
+msgid ""
+"Amount to distribute among installments due on or before the selected date"
+msgstr "المبلغ للتوزيع على الأقساط المستحقة في أو قبل التاريخ المحدد"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,help:invoice_installment_management.field_account_move_installment__paid_date
+msgid "Date of last payment applied to this installment"
+msgstr "تاريخ آخر دفع طُبِّق على هذا القسط"
+
+#. module: invoice_installment_management
+#. odoo-python
+#: code:addons/invoice_installment_management/wizard/account_payment_register.py:0
+#: model:ir.model.fields.selection,name:invoice_installment_management.selection__account_payment_register__payment_amount_mode__first_payment_per_lines
+msgid "First Payment (Per Lines)"
+msgstr "الدفعة الأولى (لكل سطر)"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_payment_register__line_first_payment_amount
+msgid "First Payment Total"
+msgstr "إجمالي الدفعة الأولى"
+
+#. module: invoice_installment_management
+#. odoo-python
+#: code:addons/invoice_installment_management/wizard/account_payment_register.py:0
+#: model:ir.model.fields.selection,name:invoice_installment_management.selection__account_payment_register__payment_amount_mode__full
+msgid "Full Amount"
+msgstr "المبلغ الكامل"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,help:invoice_installment_management.field_account_bank_statement_line__apply_payment_term_per_line
+#: model:ir.model.fields,help:invoice_installment_management.field_account_move__apply_payment_term_per_line
+msgid ""
+"If enabled, each invoice line can have its own payment term. Otherwise, the "
+"payment term applies to the entire invoice."
+msgstr ""
+"عند التفعيل، لكل بند فاتورة شرط دفع خاص. وإلا يُطبَّق على الفاتورة كاملة."
+
+#. module: invoice_installment_management
+#: model:ir.model,name:invoice_installment_management.model_account_installment_payment_log
+msgid "Installment Payment Log"
+msgstr "سجل دفع القسط"
+
+#. module: invoice_installment_management
+#: model_terms:ir.actions.act_window,help:invoice_installment_management.action_account_move_installment
+msgid ""
+"Installments are automatically created from payment terms when "
+"is_installment_term is enabled."
+msgstr "تُنشأ الأقساط تلقائياً من شروط الدفع عند تفعيل is_installment_term."
+
+#. module: invoice_installment_management
+#: model:ir.model,name:invoice_installment_management.model_account_move_installment
+msgid "Invoice Installment"
+msgstr "قسط الفاتورة"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,help:invoice_installment_management.field_account_move_installment__invoice_line_id
+msgid ""
+"Invoice line this installment belongs to (only when payment term is applied "
+"per line)"
+msgstr "بند الفاتورة الذي ينتمي إليه القسط (فقط عند تطبيق شرط الدفع لكل سطر)"
+
+#. modules: invoice_installment_management, product_extension
+#. odoo-python
+#: code:addons/invoice_installment_management/models/account_move.py:0
+#: model:ir.model.fields.selection,name:product_extension.selection__product_category__reference_type__manual
+msgid "Manual"
+msgstr "يدوي"
+
+#. module: invoice_installment_management
+#: model_terms:ir.actions.act_window,help:invoice_installment_management.action_account_move_installment
+msgid "No installments found"
+msgstr "لم يُعثر على أقساط"
+
+#. module: invoice_installment_management
+#. odoo-python
+#: code:addons/invoice_installment_management/models/account_move.py:0
+msgid "No installments found due on or before the selected date."
+msgstr "لا توجد أقساط مستحقة في أو قبل التاريخ المحدد."
+
+#. modules: installment_management_pro, invoice_installment_management
+#: model:ir.actions.act_window,name:installment_management_pro.action_overdue_installments_dashboard
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_bank_statement_line__overdue_installment_count
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move__overdue_installment_count
+#: model:ir.ui.menu,name:installment_management_pro.menu_overdue_installments
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_graph
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_list
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_pivot
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_search
+msgid "Overdue Installments"
+msgstr "الأقساط المتأخرة"
+
+#. module: invoice_installment_management
+#. odoo-python
+#: code:addons/invoice_installment_management/models/account_installment_payment_log.py:0
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_installment_payment_log__paid_amount
+msgid "Paid Amount"
+msgstr "المبلغ المسدد"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__paid_date
+msgid "Paid Date"
+msgstr "تاريخ السداد"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_bank_statement_line__paid_installment_count
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move__paid_installment_count
+msgid "Paid Installments"
+msgstr "الأقساط المسددة"
+
+#. module: invoice_installment_management
+#: model:ir.model,name:invoice_installment_management.model_account_payment_register
+msgid "Pay"
+msgstr "الدفع "
+
+#. module: invoice_installment_management
+#: model_terms:ir.ui.view,arch_db:invoice_installment_management.view_move_form_installments
+msgid "Pay Installment"
+msgstr "سداد قسط"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__payment_reference
+msgid "Payment Reference"
+msgstr "مرجع الدفع"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,help:invoice_installment_management.field_account_move_line__payment_term_id
+msgid ""
+"Payment term for this invoice line. Only used when \"Apply Payment Term Per "
+"Line\" is enabled on the invoice."
+msgstr ""
+"شرط الدفع لبند الفاتورة. يُستخدم فقط عند تفعيل «تطبيق شرط الدفع لكل سطر» على"
+" الفاتورة."
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_bank_statement_line__pending_installment_count
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move__pending_installment_count
+msgid "Pending Installments"
+msgstr "الأقساط المعلقة"
+
+#. module: invoice_installment_management
+#. odoo-python
+#: code:addons/invoice_installment_management/models/account_move.py:0
+msgid "Please enter a valid amount to pay."
+msgstr "يرجى إدخال مبلغ صالح للدفع."
+
+#. module: invoice_installment_management
+#. odoo-python
+#: code:addons/invoice_installment_management/models/account_move.py:0
+msgid "Please select a date for pay first."
+msgstr "يرجى اختيار تاريخ السداد أولاً."
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_bank_statement_line__product_filter_id
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move__product_filter_id
+msgid "Product Filter"
+msgstr "تصفية المنتج"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,help:invoice_installment_management.field_account_move_installment__payment_term_line_id
+msgid "Reference to the payment term line this installment is based on"
+msgstr "مرجع بند شرط الدفع الذي يستند إليه القسط"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,help:invoice_installment_management.field_account_move_installment__payment_reference
+msgid "Reference to the payment(s) that paid this installment"
+msgstr "مرجع الدفع/المدفوعات التي سددت هذا القسط"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__amount_residual
+msgid "Remaining amount"
+msgstr "المبلغ المتبقي"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_line__line_sal_no
+msgid "Sal No."
+msgstr "رقم الراتب"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,help:invoice_installment_management.field_account_move_line__line_sal_no
+msgid "Sale number entered by the user for this invoice line."
+msgstr "رقم البيع الذي أدخله المستخدم لبند الفاتورة."
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,help:invoice_installment_management.field_account_bank_statement_line__due_date_filter
+#: model:ir.model.fields,help:invoice_installment_management.field_account_move__due_date_filter
+msgid ""
+"Select a date to calculate due amount for installments due on or before this"
+" date"
+msgstr "اختر تاريخاً لحساب المستحق للأقساط المستحقة في أو قبله"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_payment_register__show_first_payment_per_lines_mode
+msgid "Show First Payment Per Lines Mode"
+msgstr "إظهار وضع الدفعة الأولى لكل سطر"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_bank_statement_line__total_paid_amount
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move__total_paid_amount
+msgid "Total Paid Amount"
+msgstr "إجمالي المبلغ المسدد"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_bank_statement_line__total_remaining_amount
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move__total_remaining_amount
+msgid "Total Remaining Amount"
+msgstr "إجمالي المبلغ المتبقي"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,help:invoice_installment_management.field_account_bank_statement_line__due_amount
+#: model:ir.model.fields,help:invoice_installment_management.field_account_move__due_amount
+msgid ""
+"Total remaining amount of installments due on or before the selected date"
+msgstr "إجمالي المتبقي للأقساط المستحقة في أو قبل التاريخ المحدد"
+
+#. module: invoice_installment_management
+#: model:ir.model.fields,help:invoice_installment_management.field_account_bank_statement_line__product_filter_id
+#: model:ir.model.fields,help:invoice_installment_management.field_account_move__product_filter_id
+msgid "When set, due_amount only considers installments for this product"
+msgstr "عند التعيين، يعتبر due_amount أقساط هذا المنتج فقط"
+
+#. module: invoice_installment_management
+#. odoo-python
+#: code:addons/invoice_installment_management/models/account_installment_payment_log.py:0
+#: model:ir.model.fields,help:invoice_installment_management.field_account_installment_payment_log__action_type
+msgid "e.g. action_pay_installments"
+msgstr "مثال: action_pay_installments"

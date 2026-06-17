@@ -1,91 +1,181 @@
 <odoo>
-    <record id="sale_order_form_type_product_domain" model="ir.ui.view">
-        <field name="name">sale.order.form.type.product.domain</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='order_line']//list//field[@name='product_id']" position="attributes">
-                <attribute name="domain">[('sale_ok', '=', True)]</attribute>
-                <attribute name="context">{
-                    'partner_id': parent.partner_id,
-                    'quantity': product_uom_qty,
-                    'pricelist': parent.pricelist_id,
-                    'uom':product_uom,
-                    'company_id': parent.company_id,
-                    'default_lst_price': price_unit,
-                    'default_uom_id': product_uom,
-                    'order_id': parent.id,
-                    'sale_order_type_id': parent.sale_order_type_id,
-                }</attribute>
-            </xpath>
-            <xpath expr="//field[@name='order_line']//list//field[@name='product_template_id']" position="attributes">
-                <attribute name="domain">[('sale_ok', '=', True)]</attribute>
-                <attribute name="context">{
-                    'partner_id': parent.partner_id,
-                    'quantity': product_uom_qty,
-                    'pricelist': parent.pricelist_id,
-                    'uom':product_uom,
-                    'company_id': parent.company_id,
-                    'default_list_price': price_unit,
-                    'default_uom_id': product_uom,
-                    'order_id': parent.id,
-                    'sale_order_type_id': parent.sale_order_type_id,
-                }</attribute>
-            </xpath>
-            <xpath expr="//field[@name='order_line']//form//field[@name='product_id']" position="attributes">
-                <attribute name="domain">[('sale_ok', '=', True)]</attribute>
-                <attribute name="context">{
-                    'partner_id': parent.partner_id,
-                    'quantity': product_uom_qty,
-                    'pricelist': parent.pricelist_id,
-                    'uom': product_uom,
-                    'company_id': parent.company_id,
-                    'default_uom_id': product_uom,
-                    'order_id': parent.id,
-                    'sale_order_type_id': parent.sale_order_type_id,
-                }</attribute>
-            </xpath>
-        </field>
-    </record>
+    <!-- Add order_type to tree view -->
+<!--    <record id="view_order_list_custom" model="ir.ui.view">-->
+<!--        <field name="name">sale.order.list.custom</field>-->
+<!--        <field name="model">sale.order</field>-->
+<!--        <field name="inherit_id" ref="sale.view_order_tree"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='date_order']" position="after">-->
+<!--                <field name="order_type"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
 
-    <record id="view_order_list_custom" model="ir.ui.view">
-        <field name="name">sale.order.list.custom</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_tree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='date_order']" position="after">
-                <field name="sale_order_type_id"/>
-                <field name="order_type" optional="hide"/>
-            </xpath>
-        </field>
-    </record>
+    <!-- Add order_type to form view -->
+<!--    <record id="view_order_form_custom" model="ir.ui.view">-->
+<!--        <field name="name">sale.order.form.custom</field>-->
+<!--        <field name="model">sale.order</field>-->
+<!--        <field name="inherit_id" ref="sale.view_order_form"/>-->
+<!--        <field name="arch" type="xml">-->
 
-    <record id="view_order_form_custom" model="ir.ui.view">
-        <field name="name">sale.order.form.custom</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//group[@name='order_details']/field[@name='date_order'][1]" position="before">
-                <field name="sale_order_type_id" string="Order Type" options="{'no_create_edit': True}"/>
-            </xpath>
-        </field>
-    </record>
+<!--            <xpath expr="//field[@name='client_order_ref']" position="after">-->
+<!--                <field name="order_type"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
     <record id="sale_order_form_installments" model="ir.ui.view">
         <field name="name">sale.order.form.installments</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+
+            <!-- Left column: align with invoice (partner → pricelist → baseline date) -->
+            <xpath expr="//sheet" position="inside">
+                <field name="show_installment_scope" invisible="1"/>
+                <field name="readonly_installment_scope" invisible="1"/>
+                <field name="show_installment_baseline_date" invisible="1"/>
+                <field name="readonly_installment_baseline_date" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//group[@name='partner_details']/field[@name='partner_shipping_id']" position="after">
+                <xpath expr="//group[@name='order_details']/field[@name='has_active_pricelist']" position="move"/>
+                <xpath expr="//group[@name='order_details']/field[@name='show_update_pricelist']" position="move"/>
+                <xpath expr="//group[@name='order_details']/label[@for='pricelist_id']" position="move"/>
+                <xpath expr="//group[@name='order_details']/div[hasclass('o_row')][.//field[@name='pricelist_id']]" position="move"/>
+                <xpath expr="//group[@name='order_details']/field[@name='pricelist_id'][@groups='!product.group_product_pricelist']" position="move"/>
+                <field name="baseline_date"
+                       invisible="not show_installment_baseline_date"
+                       readonly="readonly_installment_baseline_date"/>
+            </xpath>
+
+            <!-- Right column: same field order as invoice payment plan section -->
             <xpath expr="//sheet//field[@name='payment_term_id']" position="before">
+                <field name="apply_payment_term_per_line" invisible="1"/>
+                <field name="scope"
+                       invisible="not show_installment_scope"
+                       readonly="readonly_installment_scope"/>
                 <field name="payment_type" string="Payment plan"/>
+
+                <field name="pay_type" invisible="1"/>
+                <field name="installment_count" string="Installments Num."
+                       invisible="scope == 'per_lines' or payment_type != 'regular' or pay_type != 'fixed'"/>
+                <field name="installment_frequency"
+                       invisible="payment_type != 'regular' or pay_type != 'fixed'"/>
+                <field name="settlement_trigger"
+                       invisible="payment_type != 'immediate' and pay_type != 'spot'"/>
+                <label for="first_payment_percentage" string="First Payment"/>
+                <div class="o_row">
+                    <field name="first_payment_percentage" nolabel="1" readonly="pay_type == 'spot'"/>
+                    <field name="first_payment_type" nolabel="1" readonly="pay_type == 'spot'"/>
+                </div>
             </xpath>
             <xpath expr="//sheet//field[@name='payment_term_id']" position="attributes">
-                <attribute name="invisible">payment_type in ['immediate', 'regular']</attribute>
+                <attribute name="invisible">scope == 'per_lines' or payment_type in ['immediate', 'regular']</attribute>
+                <attribute name="domain">[('is_installment_term', '=', True)]</attribute>
+                <attribute name="context">{
+                    'default_company_id': company_id,
+                    'default_is_installment_term': True,
+                    'default_pay_type': 'custom',
+                    'default_scope': scope,
+                    'default_baseline_date': baseline_date,
+                    'default_first_payment_type': first_payment_type,
+                    'default_first_payment_percentage': first_payment_percentage
+                }</attribute>
+                <attribute name="options">{'no_create': False, 'no_create_edit': False}</attribute>
+            </xpath>
+
+            <xpath expr="//sheet//field[@name='payment_term_id']" position="after">
+                <button name="action_open_order_payment_term"
+                        string="Create/Edit Payment Term"
+                        type="object"
+                        class="btn-secondary"
+                        invisible="scope == 'per_lines' or payment_type != 'irregular'"/>
             </xpath>
 
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="sale_order_type_name" invisible="1"/>
-                <field name="vendor_name_id" string="Vendor Name"
-                       invisible="not sale_order_type_name or 'wholesale' not in (sale_order_type_name or '').lower()"/>
+                <field name="vendor_name_id"  string="Vendor Name" invisible="order_type != 'wholesale'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_uom_qty']" position="after">
+                <field name="line_installment_count"
+                       invisible="not parent.apply_payment_term_per_line"
+                       optional="hide"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_total']" position="before">
+                <field name="line_first_payment_percentage"
+                       invisible="not parent.apply_payment_term_per_line"
+                       readonly="parent.pay_type == 'spot'"
+                       optional="hide"/>
+                <field name="line_first_payment_type"
+                       invisible="not parent.apply_payment_term_per_line"
+                       optional="hide"/>
+                <field name="line_due_amount"
+                       invisible="not parent.apply_payment_term_per_line"
+                       optional="hide"/>
+                <field name="line_installment_amount"
+                       invisible="not parent.apply_payment_term_per_line"
+                       optional="hide"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_subtotal']" position="after">
+                <field name="payment_term_id"
+                       invisible="not parent.apply_payment_term_per_line"
+                       optional="hide"/>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Installments" name="installments"
+                      invisible="not apply_payment_term_per_line and (not payment_term_id or not payment_term_id.is_installment_term)">
+                    <field name="has_installments" invisible="1"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="generate_order_payment_term"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-refresh">
+                            <field name="total_installment_count" widget="statinfo" string="Installments"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="installment_preview_ids" nolabel="1" readonly="1">
+                            <list string="Installments"
+                                  decoration-info="state == 'due'"
+                                  decoration-warning="state == 'partial'"
+                                  decoration-danger="state == 'overdue'"
+                                  decoration-success="state == 'paid'"
+                                  create="0"
+                                  delete="0">
+                                <field name="sequence" optional="hide"/>
+                                <field name="name" optional="hide"/>
+                                <field name="product_id"/>
+                                <field name="sale_order_line_id" optional="show"/>
+                                <field name="date_due"/>
+                                <field name="currency_id" column_invisible="True"/>
+                                <field name="amount_total" sum="Total"/>
+                                <field name="amount_paid" sum="Paid" optional="hide"/>
+                                <field name="amount_residual" sum="Residual"/>
+                                <field name="state" widget="badge"
+                                       decoration-info="state == 'due'"
+                                       decoration-warning="state == 'partial'"
+                                       decoration-danger="state == 'overdue'"
+                                       decoration-success="state == 'paid'"/>
+                            </list>
+                        </field>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="total_installment_count"/>
+                            <field name="total_installment_amount"/>
+                        </group>
+                        <group>
+                            <field name="nearest_due_installment_amount"/>
+                            <field name="nearest_due_installment_date"/>
+                            <field name="payment_term_id"
+                                   readonly="payment_type in ['immediate', 'regular']"
+                                   invisible="scope == 'per_lines' or payment_type in ['immediate', 'regular']"/>
+                        </group>
+                    </group>
+                </page>
             </xpath>
 
         </field>
@@ -97,15 +187,95 @@
         <field name="inherit_id" ref="sale.view_sales_order_filter"/>
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
+                <!-- Default filters for each type -->
+                <filter string="Standard Sale Order" name="standard_orders" domain="[('order_type','=','standard')]"/>
+                <filter string="Warehouse Sale Order" name="custom_orders" domain="[('order_type','=','custom')]"/>
+                <filter string="External Sales Order" name="wholesale_orders"
+                        domain="[('order_type','=','wholesale')]"/>
+                <filter string="Service Sales Order" name="subscription_orders"
+                        domain="[('order_type','=','subscription')]"/>
+
+                <!-- Group by Order Type -->
                 <filter string="Order Type" name="order_type" context="{'group_by': 'order_type'}"/>
-                <filter string="Sale Order Type" name="sale_order_type" context="{'group_by': 'sale_order_type_id'}"/>
             </xpath>
 
+            <!-- Add order_type field to search view -->
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="order_type" filter_domain="[('order_type','ilike',self)]"/>
-                <field name="sale_order_type_id"/>
             </xpath>
         </field>
     </record>
+    <!-- Add quick creation buttons to dashboard -->
+    <!--    <record id="view_sale_order_kanban_custom" model="ir.ui.view">-->
+    <!--        <field name="name">sale.order.kanban.custom</field>-->
+    <!--        <field name="model">sale.order</field>-->
+    <!--        <field name="inherit_id" ref="sale.view_order_kanban"/>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <xpath expr="//div[hasclass('o_kanban_quick_create')]" position="inside">-->
+    <!--                <div class="d-flex justify-content-around mt-2">-->
+    <!--                    <button name="action_create_standard" type="object" string="Standard Order"-->
+    <!--                            class="btn-primary" context="{'default_order_type': 'standard'}"/>-->
+    <!--                    <button name="action_create_custom" type="object" string="Custom Order"-->
+    <!--                            class="btn-secondary" context="{'default_order_type': 'custom'}"/>-->
+    <!--                    <button name="action_create_wholesale" type="object" string="Wholesale Order"-->
+    <!--                            class="btn-info" context="{'default_order_type': 'wholesale'}"/>-->
+    <!--                </div>-->
+    <!--            </xpath>-->
+    <!--        </field>-->
+    <!--    </record>-->
+    <!-- Standard Sales Action -->
+<!--    <record id="action_standard_orders" model="ir.actions.act_window">-->
+<!--        <field name="name">Standard Sale Order</field>-->
+<!--        <field name="res_model">sale.order</field>-->
+<!--        <field name="view_mode">list,form,kanban,calendar,pivot,graph</field>-->
+<!--        <field name="context">{'search_default_standard_orders': 1, 'default_order_type': 'standard'}</field>-->
+<!--        <field name="domain">[('order_type', '=', 'standard')]</field>-->
+<!--        &lt;!&ndash;        <field name="search_view_id" ref="sale.view_sales_order_filter"/>&ndash;&gt;-->
+<!--    </record>-->
+
+<!--    &lt;!&ndash; Custom Sales Action &ndash;&gt;-->
+<!--    <record id="action_custom_orders" model="ir.actions.act_window">-->
+<!--        <field name="name">Warehouse Sale Order</field>-->
+<!--        <field name="res_model">sale.order</field>-->
+<!--        <field name="view_mode">list,form,kanban,calendar,pivot,graph</field>-->
+<!--        <field name="context">{'search_default_custom_orders': 1, 'default_order_type': 'custom'}</field>-->
+<!--        <field name="domain">[('order_type', '=', 'custom')]</field>-->
+<!--        <field name="search_view_id" ref="sale.view_sales_order_filter"/>-->
+<!--    </record>-->
+
+<!--    &lt;!&ndash; Wholesale Sales Action &ndash;&gt;-->
+<!--    <record id="action_wholesale_orders" model="ir.actions.act_window">-->
+<!--        <field name="name">External Sales Order</field>-->
+<!--        <field name="res_model">sale.order</field>-->
+<!--        <field name="view_mode">list,form,kanban,calendar,pivot,graph</field>-->
+<!--        <field name="context">{'search_default_wholesale_orders': 1, 'default_order_type': 'wholesale'}</field>-->
+<!--        <field name="domain">[('order_type', '=', 'wholesale')]</field>-->
+<!--        <field name="search_view_id" ref="sale.view_sales_order_filter"/>-->
+<!--    </record>-->
+<!--    &lt;!&ndash; Subscription Sales Action &ndash;&gt;-->
+<!--    <record id="action_subscription_orders" model="ir.actions.act_window">-->
+<!--        <field name="name">Service Sales Order</field>-->
+<!--        <field name="res_model">sale.order</field>-->
+<!--        <field name="view_mode">list,form,kanban,calendar,pivot,graph</field>-->
+<!--        <field name="context">{'search_default_subscription_orders': 1, 'default_order_type': 'subscription'}</field>-->
+<!--        <field name="domain">[('order_type', '=', 'subscription')]</field>-->
+<!--        <field name="search_view_id" ref="sale.view_sales_order_filter"/>-->
+<!--    </record>-->
+
+
+    <!-- Hide Purchase tab on product (seller_ids only exists if purchase is installed) -->
+    <record id="view_product_template_form_hide_purchase" model="ir.ui.view">
+        <field name="name">product.template.form.hide.purchase</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='purchase']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!-- views/sale_order_views.xml -->
 
 </odoo>

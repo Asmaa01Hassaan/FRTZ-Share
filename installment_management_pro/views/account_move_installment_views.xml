@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherit base list view to add display_reference -->
+    <record id="view_account_move_installment_tree_inherit_pro" model="ir.ui.view">
+        <field name="name">account.move.installment.list.inherit.pro</field>
+        <field name="model">account.move.installment</field>
+        <field name="inherit_id" ref="invoice_installment_management.view_account_move_installment_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="display_reference" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit base form view to add display_reference -->
+    <record id="view_account_move_installment_form_inherit_pro" model="ir.ui.view">
+        <field name="name">account.move.installment.form.inherit.pro</field>
+        <field name="model">account.move.installment</field>
+        <field name="inherit_id" ref="invoice_installment_management.view_account_move_installment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name'][1]" position="after">
+                <field name="display_reference" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Enhanced Installment List View (standalone) -->
+    <record id="view_account_move_installment_list_pro" model="ir.ui.view">
+        <field name="name">account.move.installment.list.pro</field>
+        <field name="model">account.move.installment</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <list string="Installments"
+                  decoration-danger="is_overdue and days_overdue > 30"
+                  decoration-warning="is_overdue and days_overdue &lt;= 30"
+                  decoration-muted="state == 'paid'">
+                <field name="display_reference" optional="show"/>
+                <field name="name" optional="hide"/>
+                <field name="partner_id"/>
+                <field name="move_id"/>
+                <field name="product_id" optional="show"/>
+                <field name="date_due"/>
+                <field name="original_date_due" optional="hide"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="amount_total" sum="Total"/>
+                <field name="amount_paid" sum="Paid"/>
+                <field name="amount_residual" sum="Remaining"/>
+                <field name="days_overdue" optional="show"/>
+                <field name="is_rescheduled" widget="boolean" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state in ('partial', 'due')"
+                       decoration-danger="state == 'overdue'"
+                       decoration-success="state == 'paid'"/>
+                <field name="payment_log_count" string="Payments" optional="show"/>
+                <field name="reschedule_log_count" string="Reschedules" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="is_overdue" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Enhanced Installment Form View -->
+    <record id="view_account_move_installment_form_pro" model="ir.ui.view">
+        <field name="name">account.move.installment.form.pro</field>
+        <field name="model">account.move.installment</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <form string="Installment">
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,due,partial,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_payment_logs" type="object"
+                                class="oe_stat_button" icon="fa-money">
+                            <div class="o_stat_info">
+                                <field name="payment_log_count" class="o_stat_value"/>
+                                <span class="o_stat_text">Payment Logs</span>
+                            </div>
+                        </button>
+                        <button name="action_view_reschedule_logs" type="object"
+                                class="oe_stat_button" icon="fa-history">
+                            <div class="o_stat_info">
+                                <field name="reschedule_log_count" class="o_stat_value"/>
+                                <span class="o_stat_text">Reschedules</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                        <h3><field name="display_reference" class="text-muted"/></h3>
+                    </div>
+                    <group>
+                        <group string="General">
+                            <field name="move_id"/>
+                            <field name="partner_id"/>
+                            <field name="product_id"/>
+                            <field name="invoice_line_id" groups="base.group_no_one"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group string="Amounts">
+                            <field name="amount_total"/>
+                            <field name="amount_paid"/>
+                            <field name="amount_residual"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Dates">
+                            <field name="date_due"/>
+                            <field name="original_date_due" invisible="not is_rescheduled"/>
+                            <field name="paid_date"/>
+                            <field name="date_invoice"/>
+                        </group>
+                        <group string="Payment Info">
+                            <field name="payment_reference"/>
+                            <field name="is_overdue"/>
+                            <field name="days_overdue" invisible="not is_overdue"/>
+                        </group>
+                    </group>
+                    <group string="Reschedule Info" invisible="not is_rescheduled">
+                        <group>
+                            <field name="is_rescheduled"/>
+                            <field name="reschedule_count"/>
+                            <field name="original_amount"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View for Installments -->
+    <record id="view_account_move_installment_search_pro" model="ir.ui.view">
+        <field name="name">account.move.installment.search.pro</field>
+        <field name="model">account.move.installment</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <search string="Installments">
+                <field name="name" />
+                <field name="partner_id"/>
+                <field name="move_id"/>
+                <field name="product_id"/>
+                <field name="display_reference"/>
+                <filter name="overdue_filter" string="Overdue" domain="[('is_overdue', '=', True)]"/>
+                <filter name="paid_filter" string="Paid" domain="[('state', '=', 'paid')]"/>
+                <filter name="partial_filter" string="Partially Paid" domain="[('state', '=', 'partial')]"/>
+                <filter name="due_filter" string="Due" domain="[('state', 'in', ('draft', 'due'))]"/>
+                <filter name="rescheduled_filter" string="Rescheduled" domain="[('is_rescheduled', '=', True)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="group_partner" string="Customer" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_invoice" string="Invoice" context="{'group_by': 'move_id'}"/>
+                    <filter name="group_product" string="Product" context="{'group_by': 'product_id'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_due_date" string="Due Date" context="{'group_by': 'date_due:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- All Installments Action -->
+    <record id="action_all_installments" model="ir.actions.act_window">
+        <field name="name">All Installments</field>
+        <field name="res_model">account.move.installment</field>
+        <field name="view_mode">list,form,pivot,graph</field>
+        <field name="search_view_id" ref="view_account_move_installment_search_pro"/>
+    </record>
+
+</odoo>

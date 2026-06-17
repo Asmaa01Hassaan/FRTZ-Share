@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Simple template to inject protection message -->
+        <template id="database_protection_message" name="Database Protection Message">
+            <div class="o_database_protection_active" style="background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 10px; border-radius: 5px; margin: 10px 0; display: block;">
+                🛡️ Database protection is active. Your database is protected from expiration.
+            </div>
+        </template>
+    </data>
+</odoo>

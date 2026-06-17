@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_database_expiration_remover,access_database_expiration_remover,model_database_expiration_remover,base.group_system,1,1,1,1
+access_database_maintenance,access_database_maintenance,model_database_maintenance,base.group_system,1,1,1,1
+access_database_expiration_core,access_database_expiration_core,model_database_expiration_core,base.group_system,1,1,1,1

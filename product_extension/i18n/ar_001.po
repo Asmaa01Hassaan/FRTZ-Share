@@ -1,0 +1,361 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-03 03:02+0000\n"
+"PO-Revision-Date: 2026-06-03 03:02+0000\n"
+"Last-Translator: FRTZ\n"
+"Language-Team: Arabic\n"
+"Language: ar_001\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: product_extension
+#: model:ir.model.fields,help:product_extension.field_product_category__allow_combo
+msgid "Allow 'Combo' product type in this category"
+msgstr "السماح بنوع منتج «مركب» في هذه الفئة"
+
+#. module: product_extension
+#: model:ir.model.fields,help:product_extension.field_product_category__allow_consu
+msgid "Allow 'Goods' product type in this category"
+msgstr "السماح بنوع منتج «بضاعة» في هذه الفئة"
+
+#. module: product_extension
+#: model:ir.model.fields,help:product_extension.field_product_category__allow_service
+msgid "Allow 'Service' product type in this category"
+msgstr "السماح بنوع منتج «خدمة» في هذه الفئة"
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_category__allow_combo
+msgid "Allow Combo"
+msgstr "السماح بالمركب"
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_category__allow_consu
+msgid "Allow Goods"
+msgstr "السماح بالبضائع"
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_category__allow_service
+msgid "Allow Service"
+msgstr "السماح بالخدمة"
+
+#. module: product_extension
+#: model:ir.model,name:product_extension.model_product_attribute_value
+msgid "Attribute Value"
+msgstr "قيمة الخاصية"
+
+#. module: product_extension
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_template_variants_page_name
+msgid "Attributes"
+msgstr "الخصائص"
+
+#. module: product_extension
+#: model:ir.model.fields.selection,name:product_extension.selection__product_category__reference_type__automatic
+msgid "Automatic"
+msgstr "تلقائي"
+
+#. module: product_extension
+#: model:ir.model.fields,help:product_extension.field_product_product__subscription_ok
+#: model:ir.model.fields,help:product_extension.field_product_template__subscription_ok
+msgid "Can be used in subscription orders"
+msgstr "يمكن استخدامه في أوامر الاشتراك"
+
+#. module: product_extension
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_template_form_code
+msgid "Category"
+msgstr "الفئة"
+
+#. module: product_extension
+#. odoo-python
+#: code:addons/product_extension/models/product_category.py:0
+msgid ""
+"Category code '%s' already exists in category '%s'. Please use a unique "
+"code."
+msgstr "رمز الفئة '%s' موجود بالفعل في الفئة '%s'. يرجى استخدام رمز فريد."
+
+#. module: product_extension
+#: model:ir.model.fields,help:product_extension.field_product_category__code
+msgid "Category code identifier (must be unique)"
+msgstr "رمز الفئة (يجب أن يكون فريداً)"
+
+#. module: product_extension
+#: model:ir.model.constraint,message:product_extension.constraint_product_category_unique_code
+msgid "Category code must be unique!"
+msgstr "يجب أن يكون رمز الفئة فريداً!"
+
+#. module: product_extension
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_category_form_code
+msgid ""
+"Character type allowed in internal references (only if Validate Type is "
+"checked)"
+msgstr ""
+"نوع الأحرف المسموح في المراجع الداخلية (فقط عند تفعيل التحقق من النوع)"
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_category__code
+#: model:ir.model.fields,field_description:product_extension.field_product_template__code
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_category_form_code
+msgid "Code"
+msgstr "الرمز"
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_template__cost_method
+msgid "Costing Method"
+msgstr "طريقة حساب التكاليف"
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_attribute__allow_free_text
+msgid "Display Type Test"
+msgstr "اختبار نوع العرض"
+
+#. module: product_extension
+#: model:ir.model.fields,help:product_extension.field_product_category__validate_type
+msgid "Enable character type validation for internal references"
+msgstr "تفعيل التحقق من نوع الأحرف للمراجع الداخلية"
+
+#. module: product_extension
+#: model:ir.model.fields,help:product_extension.field_product_category__validate_length
+msgid "Enable length validation for internal references"
+msgstr "تفعيل التحقق من طول المراجع الداخلية"
+
+#. module: product_extension
+#: model:ir.model.fields,help:product_extension.field_product_attribute__allow_free_text
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_attribute_form_free_text
+msgid ""
+"Enable this to allow users to enter custom text values for this attribute. "
+"This will automatically set Display Type to 'Pills', Variant Creation to "
+"'Never', and create a free text attribute value. The attribute will display "
+"as pills in the UI."
+msgstr ""
+"فعّل هذا للسماح بإدخال نصوص مخصصة لهذه الخاصية. سيُعيَّن نوع العرض تلقائياً "
+"إلى «حبوب» وإنشاء المتغير إلى «أبداً»."
+
+#. module: product_extension
+#: model:ir.model.fields,help:product_extension.field_product_attribute_value__name
+msgid "For free text attributes, a space is allowed as a valid value."
+msgstr "للخصائص النصية الحرة، يُسمح بالمسافة كقيمة صالحة."
+
+#. module: product_extension
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_template_form_code
+msgid "General Information"
+msgstr "معلومات عامة"
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_product__internal_reference_new
+#: model:ir.model.fields,field_description:product_extension.field_product_template__internal_reference_new
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_template_variants_page
+msgid "Internal Reference"
+msgstr "الرقم المرجعي"
+
+#. module: product_extension
+#. odoo-python
+#: code:addons/product_extension/models/product_template.py:0
+msgid "Internal Reference is required for category '%s'."
+msgstr "المرجع الداخلي مطلوب للفئة '%s'."
+
+#. module: product_extension
+#. odoo-python
+#: code:addons/product_extension/models/product_template.py:0
+msgid ""
+"Internal Reference must be exactly %(length)d characters for category "
+"'%(category)s'. Current length: %(current)d"
+msgstr ""
+"يجب أن يكون المرجع الداخلي %(length)d حرفاً بالضبط للفئة '%(category)s'. "
+"الطول الحالي: %(current)d"
+
+#. module: product_extension
+#. odoo-python
+#: code:addons/product_extension/models/product_template.py:0
+msgid ""
+"Internal Reference must contain both letters and numbers for category '%s'."
+msgstr "يجب أن يحتوي المرجع الداخلي على أحرف وأرقام للفئة '%s'."
+
+#. module: product_extension
+#. odoo-python
+#: code:addons/product_extension/models/product_template.py:0
+msgid "Internal Reference must contain numbers only for category '%s'."
+msgstr "يجب أن يحتوي المرجع الداخلي على أرقام فقط للفئة '%s'."
+
+#. module: product_extension
+#. odoo-python
+#: code:addons/product_extension/models/product_template.py:0
+msgid ""
+"Internal Reference should be automatically generated for category '%s'. "
+"Please save the product again or check the sequence configuration."
+msgstr ""
+"يُفترض أن يُولَّد المرجع الداخلي تلقائياً للفئة '%s'. احفظ المنتج مرة أخرى "
+"أو راجع إعداد التسلسل."
+
+#. module: product_extension
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_template_form_code
+msgid ""
+"Internal reference for the product. Automatically generated when category is"
+" set to 'Automatic'."
+msgstr ""
+"المرجع الداخلي للمنتج. يُولَّد تلقائياً عندما يكون نوع الفئة «تلقائي»."
+
+#. module: product_extension
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_template_move_tracking_to_inventory
+msgid "Inventory Tracking"
+msgstr "تتبع المخزون"
+
+#. module: product_extension
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_template_move_invoice_policy
+msgid "Invoicing"
+msgstr "الفوترة"
+
+#. module: product_extension
+#: model:ir.model.fields.selection,name:product_extension.selection__product_category__reference_char_type__mix
+msgid "Mixed"
+msgstr "مختلط"
+
+#. module: product_extension
+#: model:ir.model.fields.selection,name:product_extension.selection__product_category__reference_char_type__number
+msgid "Numbers Only"
+msgstr "أرقام فقط"
+
+#. module: product_extension
+#: model:ir.model,name:product_extension.model_product_attribute
+msgid "Product Attribute"
+msgstr "خاصية المنتج"
+
+#. module: product_extension
+#: model:ir.model,name:product_extension.model_product_category
+msgid "Product Category"
+msgstr "فئة المنتج"
+
+#. module: product_extension
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_category_form_code
+msgid "Product Type:"
+msgstr "نوع المنتجات"
+
+#. module: product_extension
+#: model:ir.model.fields,help:product_extension.field_product_template__code
+msgid "Product code identifier"
+msgstr "رمز تعريف المنتج"
+
+#. module: product_extension
+#. odoo-python
+#: code:addons/product_extension/models/product_template.py:0
+msgid ""
+"Product type '%(current)s' is not allowed in category '%(category)s'. "
+"Allowed types: %(allowed)s"
+msgstr ""
+"نوع المنتج '%(current)s' غير مسموح في الفئة '%(category)s'. الأنواع "
+"المسموحة: %(allowed)s"
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_product__purchase_price
+#: model:ir.model.fields,field_description:product_extension.field_product_template__purchase_price
+msgid "Purchase Price"
+msgstr "سعر الشراء"
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_category__reference_char_type
+msgid "Reference Char Type"
+msgstr "نوع أحرف المرجع"
+
+#. module: product_extension
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_category_form_code
+msgid "Reference Generation"
+msgstr "ترميز المنتجات"
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_category__reference_sequence_id
+msgid "Reference Sequence"
+msgstr "تسلسل المرجع"
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_category__reference_type
+msgid "Reference Type"
+msgstr "نوع المرجع"
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_category__reference_length
+msgid "Required Length"
+msgstr "الطول المطلوب"
+
+#. module: product_extension
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_category_form_code
+msgid ""
+"Required length for internal references (only if Validate Length is checked)"
+msgstr "الطول المطلوب للمراجع الداخلية (فقط عند تفعيل التحقق من الطول)"
+
+#. module: product_extension
+#: model:ir.model.fields,help:product_extension.field_product_category__reference_sequence_id
+msgid ""
+"Sequence to use for automatic reference generation. If not set, the default "
+"product reference sequence will be used."
+msgstr ""
+"التسلسل المستخدم لتوليد المرجع تلقائياً. إن لم يُحدَّد يُستخدم تسلسل المرجع "
+"الافتراضي."
+
+#. module: product_extension
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_category_form_code
+msgid ""
+"Sequence to use for automatic reference generation. If not set, the default "
+"sequence will be used."
+msgstr ""
+"التسلسل المستخدم لتوليد المرجع تلقائياً. إن لم يُحدَّد يُستخدم التسلسل "
+"الافتراضي."
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_category__show_validation_fields
+msgid "Show Validation Fields"
+msgstr "إظهار حقول التحقق"
+
+#. module: product_extension
+#: model:ir.model.fields,help:product_extension.field_product_template__cost_method
+msgid ""
+"Standard Price: The products are valued at their standard cost defined on the product.\n"
+"        Average Cost (AVCO): The products are valued at weighted average cost.\n"
+"        First In First Out (FIFO): The products are valued supposing those that enter the company first will also leave it first.\n"
+"        "
+msgstr ""
+"السعر القياسي: يتم تقييم المنتجات بتكاليفها القياسية المحددة في المنتج.\n"
+"        متوسط التكلفة (AVCO): يتم تقييم المنتجات حسب التكلفة المتوسطة الموزونة.\n"
+"        الوارد أولاً يخرج أولاً (FIFO): يتم تقييم المنتجات بافتراض أن المنتج الذي يدخل الشركة أولاً سيخرج منها أولاً.\n"
+"        "
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_product__subscription_ok
+#: model:ir.model.fields,field_description:product_extension.field_product_template__subscription_ok
+msgid "Subscription"
+msgstr "اشتراك"
+
+#. module: product_extension
+#. odoo-python
+#: code:addons/product_extension/models/product_attribute.py:0
+msgid "The attribute value name cannot be empty."
+msgstr "لا يمكن أن يكون اسم قيمة الخاصية فارغاً."
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_category__validate_length
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_category_form_code
+msgid "Validate Length"
+msgstr "التحقق من الطول"
+
+#. module: product_extension
+#: model:ir.model.fields,field_description:product_extension.field_product_category__validate_type
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_category_form_code
+msgid "Validate Type"
+msgstr "التحقق من النوع"
+
+#. module: product_extension
+#: model:ir.model.fields.selection,name:product_extension.selection__product_category__reference_type__validation
+msgid "Validation"
+msgstr "تحقق"
+
+#. module: product_extension
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_template_variants_page
+msgid "Varints"
+msgstr "المتغيرات"
+
+#. module: product_extension
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_template_form_code
+msgid "per"
+msgstr "لكل"

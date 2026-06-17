@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_payment_invoice_wizard_form" model="ir.ui.view">
+        <field name="name">payment.invoice.wizard.form</field>
+        <field name="model">payment.invoice.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Pay for Invoices">
+                <header>
+                    <button name="action_pay_all_invoices"
+                            string="Pay All Selected Invoices"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="total_to_pay &lt;= 0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="payment_id" invisible="1"/>
+                            <field name="partner_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="total_due_amount" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1"/>
+                            <field name="total_to_pay" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="invoice_ids" nolabel="1" context="{'default_wizard_id': id}">
+                            <list string="Invoices" editable="bottom">
+                                <field name="invoice_id" required="1" readonly="1" options="{'no_create': True, 'no_create_edit': True}"/>
+                                <field name="invoice_name" string="Transaction" readonly="1"/>
+                                <field name="invoice_date" string="Transaction Date" readonly="1"/>
+                                <field name="amount_total" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                <field name="due_amount" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                <field name="due_date_filter" string="Date for Pay" options="{'datepicker': {'min_date': False}}"/>
+                                <field name="to_pay" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="amount_to_pay" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1" string="Amount to Pay"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payment_invoice_wizard" model="ir.actions.act_window">
+        <field name="name">Pay for Invoices</field>
+        <field name="res_model">payment.invoice.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_payment_id': active_id}</field>
+    </record>
+</odoo>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_payment_plan" model="ir.ui.view">
+        <field name="name">account.move.form.payment.plan</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@id='header_left_group']/div[.//field[@name='partner_id']]" position="after">
+                <field name="suitable_journal_ids" invisible="1"/>
+                <label for="journal_id" groups="account.group_account_readonly"/>
+                <label for="currency_id" groups="!account.group_account_readonly,base.group_multi_currency"/>
+                <div name="journal_div" class="d-flex" groups="account.group_account_readonly,base.group_multi_currency">
+                    <field name="journal_id"
+                           groups="account.group_account_readonly"
+                           options="{'no_create': True, 'no_open': True}"
+                           readonly="posted_before and name not in (False, '', '/')"/>
+
+                    <span class="o_form_label mx-3 oe_edit_only"
+                          groups="account.group_account_readonly"
+                          invisible="move_type == 'entry'">
+                        <span groups="base.group_multi_currency">in </span>
+                    </span>
+                    <div name="currency_div"
+                         groups="base.group_multi_currency"
+                         class="w-100"
+                         style="white-space: pre;"
+                         invisible="move_type == 'entry'">
+                        <field name="currency_id"
+                               readonly="state != 'draft'"
+                               class="oe_inline"
+                               options="{'no_create': True}"
+                               context="{'search_default_active': 1, 'search_default_inactive': 1}"/>
+                        <div class="break"/>
+                        <div name="currency_conversion_div"
+                             class="d-flex text-muted float-start"
+                             invisible="currency_id == company_currency_id">
+                            <span>1 </span>
+                            <field name="company_currency_id" readonly="True" options="{'no_open': True}"/>
+                            <span> = </span>
+                            <field name="invoice_currency_rate" digits="[12,6]" readonly="True"/>
+                            <span> </span>
+                            <field name="currency_id" readonly="True" options="{'no_open': True}"/>
+                        </div>
+                    </div>
+                </div>
+                <field name="show_installment_scope" invisible="1"/>
+                <field name="readonly_installment_scope" invisible="1"/>
+                <field name="show_installment_baseline_date" invisible="1"/>
+                <field name="readonly_installment_baseline_date" invisible="1"/>
+                <field name="baseline_date"
+                       invisible="not show_installment_baseline_date"
+                       readonly="readonly_installment_baseline_date"/>
+            </xpath>
+            <xpath expr="//group[@id='header_right_group']/label[@for='journal_id'][@groups='account.group_account_readonly']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@id='header_right_group']/label[@for='currency_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@id='header_right_group']/div[@name='journal_div']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('o_td_label')]" position="before">
+                 <field name="scope"
+                        invisible="not show_installment_scope"
+                        readonly="readonly_installment_scope"/>
+<!--                invisible="scope == 'per_lines'"-->
+                <field name="payment_type" readonly="state != 'draft'"
+                       invisible="0"/>
+
+
+
+
+
+                <field name="pay_type"
+                       invisible="1"/>
+
+                <field name="installment_count" readonly="0" string="Installments Num."
+                       invisible="scope == 'per_lines' or move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt') or payment_type != 'regular' or pay_type != 'fixed'"/>
+                <field name="installment_frequency"
+                       invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt') or payment_type != 'regular' or pay_type != 'fixed'"/>
+                <field name="settlement_trigger"
+                       invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt') or payment_type != 'regular' or pay_type != 'spot'"/>
+                <label for="first_payment_percentage" string="First Payment"/>
+                <div class="o_row">
+                    <field name="first_payment_percentage" nolabel="1" readonly="pay_type == 'spot'"/>
+                    <field name="first_payment_type" nolabel="1" readonly="pay_type == 'spot'"/>
+                </div>
+                <button name="generate_regular_payment_term"
+                        type="object"
+                        string="Generate payment term"
+                        class="btn-secondary"
+                        invisible="1"/>
+<!--                <field name="invoice_payment_term_id"-->
+<!--                       context="{'example_date': invoice_date, 'example_amount': tax_totals['total_amount_currency']}"-->
+<!--                       placeholder="Payment Terms"-->
+<!--                       options="{'no_quick_create': True}"-->
+<!--                       readonly="state in ['cancel', 'posted']"-->
+<!--                       invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt') "/>-->
+            </xpath>
+            <xpath expr="//div[@name='due_date']" position="attributes">
+                <attribute name="invisible">pay_type == 'fixed'</attribute>
+            </xpath>
+            <xpath expr="//div[@name='due_date']/preceding-sibling::div[hasclass('o_td_label')][1]" position="attributes">
+                <attribute name="invisible">pay_type == 'fixed' or move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')</attribute>
+            </xpath>
+            <xpath expr="//div[@name='due_date']/field[@name='invoice_date_due']" position="attributes">
+                <attribute name="invisible">pay_type == 'fixed' or invoice_payment_term_id</attribute>
+            </xpath>
+            <xpath expr="//div[@name='due_date']/field[@name='invoice_payment_term_id']" position="attributes">
+                <attribute name="invisible">pay_type == 'fixed'</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

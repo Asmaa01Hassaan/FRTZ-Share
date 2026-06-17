@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from email.policy import default
+
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
@@ -30,6 +32,7 @@ class ProductTemplate(models.Model):
         related='categ_id.property_cost_method',
         readonly=True
     )
+    purchase_price = fields.Float(default='0.0', string='Purchase Price')
 
     def write(self, vals):
         """Override write to auto-generate reference when category changes to automatic"""
@@ -83,13 +86,10 @@ class ProductTemplate(models.Model):
         
         return generated_ref
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         """Override create to auto-generate internal reference when category is set to automatic"""
-        # Handle both single dict and list of dicts
-        if isinstance(vals_list, dict):
-            vals_list = [vals_list]
-        
+        # vals_list is always a list when using @api.model_create_multi
         for vals in vals_list:
             # Generate reference if category is set to automatic and reference is not provided
             if not vals.get('internal_reference_new'):

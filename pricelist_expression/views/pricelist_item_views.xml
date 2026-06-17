@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Pricelist item: add Expression option & field -->
+    <record id="view_product_pricelist_item_form_expression" model="ir.ui.view">
+        <field name="name">product.pricelist.item.form.expression</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='compute_price']" position="attributes">
+                <attribute name="widget">radio</attribute>
+            </xpath>
+
+            <!-- Add payment_type after Validity Period -->
+            <xpath expr="//field[@name='date_start']" position="after">
+                <field name="payment_type" string="Payment plan" placeholder="All payment plans"/>
+            </xpath>
+
+            <xpath expr="//sheet//group[@name='pricelist_rule_base']" position="after">
+                <group name="pricelist_rule_base2" invisible="compute_price != 'expression'" colspan="2">
+                    <field name="price_expression"
+                           colspan="2"
+                           modifiers="{'invisible': [('compute_price','!=','expression')]}"/>
+
+                    <group string="Custom Variables" colspan="2">
+                        <field name="expression_model_id" invisible="1"/>
+                        <field name="expression_variable_ids"
+                               colspan="2"
+                               nolabel="1"
+                               context="{'default_model_id': expression_model_id}">
+                            <list editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="model_id"/>
+                                <field name="field_id"/>
+                                <field name="variable_name"/>
+                            </list>
+                        </field>
+                        <div class="text-muted" colspan="2">
+                            Installment models use the first preview installment for the current line
+                            (per-lines scope) or the order/invoice (per-invoice scope).
+                        </div>
+                    </group>
+
+                    <div class="row g-3 mt-1" colspan="2" invisible="compute_price != 'expression'">
+                        <div class="col-lg-4">
+                            <div class="alert alert-info mb-0 h-100" role="alert">
+                                <strong>Available Variables:</strong>
+                                <ul class="mb-0 mt-2" style="list-style-type: disc; padding-left: 20px;">
+                                    <li><code>price</code> - Base price from pricelist</li>
+                                    <li><code>cost</code> - Product standard cost</li>
+                                    <li><code>purchase_price</code> - Purchase price (same as cost)</li>
+                                    <li><code>qty</code> - Quantity ordered</li>
+                                    <li><code>installment_num</code> - Installment count (from order/invoice header <code>installment_count</code>, or line <code>line_installment_count</code> when scope is Per Lines)</li>
+                                    <li><code>first_payment</code> - First payment value (from header <code>first_payment_percentage</code>, or line <code>line_first_payment_percentage</code> when scope is Per Lines)</li>
+                                </ul>
+                                <strong class="d-block mt-3" invisible="not expression_custom_variable_help">Custom Variables:</strong>
+                                <field name="expression_custom_variable_help" nolabel="1" invisible="not expression_custom_variable_help"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="alert alert-info mb-0 h-100" role="alert">
+                                <strong>Functions:</strong>
+                                <ul class="mb-0 mt-2" style="list-style-type: disc; padding-left: 20px;">
+                                    <li><code>round(x, n)</code> - Round number x to n decimal places</li>
+                                    <li><code>ceil(x)</code> - Round up to next integer</li>
+                                    <li><code>if(condition, true_value, false_value)</code> - Conditional expression (automatically converted to iff)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="alert alert-info mb-0 h-100" role="alert">
+                                <strong>Examples:</strong>
+                                <ul class="mb-0 mt-2" style="list-style-type: disc; padding-left: 20px;">
+                                    <li><code>price * 1.1</code> - Add 10% markup</li>
+                                    <li><code>price + (installment_num * 10)</code> - Add $10 per installment</li>
+                                    <li><code>round(price * 0.9, 2)</code> - 10% discount rounded to 2 decimals</li>
+                                    <li><code>cost * 1.2</code> - 20% markup on cost</li>
+                                    <li><code>purchase_price * 1.15</code> - 15% markup on purchase price</li>
+                                    <li><code>if(installment_num &lt; 12, price, cost)</code> - Use price if installments &lt; 12, else use cost</li>
+                                    <li><code>if(qty &gt; 10, price * 0.9, price)</code> - 10% discount for quantity &gt; 10</li>
+                                    <li><code>if(installment_num == 0, price, price * 1.05)</code> - 5% markup for installments</li>
+                                    <li><strong>Note:</strong> <code>if(</code> is automatically converted to <code>iff(</code> internally</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </group>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

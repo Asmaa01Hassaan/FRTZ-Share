@@ -37,6 +37,23 @@ class ResPartner(models.Model):
     max_salary_deduction = fields.Monetary(string='Max Salary Deduction', currency_field='currency_id')
     max_installments_amount = fields.Monetary(string='Max Installments Amount', currency_field='currency_id')
     max_grantees_amount = fields.Monetary(string='Max Grantees Amount', currency_field='currency_id')
+    company_type_locked = fields.Boolean(
+        string="Company Type Locked",
+        default=False,
+        copy=False
+    )
+
+    @api.model
+    def create(self, vals):
+        partner = super().create(vals)
+        partner.company_type_locked = True
+        return partner
+
+    @api.onchange('parent_id')
+    def _onchange_parent_email(self):
+        for partner in self:
+            if partner.parent_id:
+                partner.website = partner.parent_id.website
 
     @api.depends('use_name_parts', 'first_name', 'father_name', 'gfather_name', 'sur_name')
     def _compute_name_from_parts(self):

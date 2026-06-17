@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Add Reschedule button and enhanced columns to Installments tab -->
+    <record id="view_move_form_installments_pro" model="ir.ui.view">
+        <field name="name">account.move.form.installments.pro</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="invoice_installment_management.view_move_form_installments"/>
+        <field name="arch" type="xml">
+
+            <!-- Add Reschedule button next to Pay Installment button -->
+            <xpath expr="//button[@name='action_pay_installments']" position="after">
+                <button name="action_open_reschedule_wizard"
+                        string="Reschedule Installments"
+                        type="object"
+                        class="btn-secondary"
+                        icon="fa-calendar"/>
+            </xpath>
+
+            <!-- Add enhanced columns to installment list -->
+            <xpath expr="//field[@name='installment_ids']//list//field[@name='name']" position="after">
+                <field name="display_reference" optional="show"/>
+                <field name="product_id" optional="hide"/>
+            </xpath>
+
+            <xpath expr="//field[@name='installment_ids']//list//field[@name='amount_residual']" position="after">
+                <field name="days_overdue" optional="hide"/>
+                <field name="is_rescheduled" widget="boolean" optional="hide"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

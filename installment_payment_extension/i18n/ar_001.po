@@ -1,0 +1,605 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-03 03:02+0000\n"
+"PO-Revision-Date: 2026-06-03 03:02+0000\n"
+"Last-Translator: FRTZ\n"
+"Language-Team: Arabic\n"
+"Language: ar_001\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: installment_payment_extension
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+msgid ""
+"<strong>Warning:</strong>\n"
+"                            Total control to pay amount must equal the payment amount.\n"
+"                            Current difference:"
+msgstr ""
+"<strong>تحذير:</strong>\n"
+"                            يجب أن يساوي إجمالي مبلغ التحكم بالدفع مبلغ الدفع.\n"
+"                            الفرق الحالي:"
+
+#. modules: installment_payment_extension, invoice_installment_management
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__amount_to_pay
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_payment_register__payment_amount_mode
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_payment_invoice_wizard_form
+msgid "Amount to Pay"
+msgstr "المبلغ للدفع"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: model:ir.model.fields,help:installment_payment_extension.field_control_payment__to_pay
+#: model:ir.model.fields,help:installment_payment_extension.field_payment_invoice_wizard_line__to_pay
+msgid "Amount to pay for this invoice"
+msgstr "المبلغ للدفع لهذه الفاتورة"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,field_description:installment_payment_extension.field_account_payment__unpaid_product_ids
+msgid "Available Products"
+msgstr "المنتجات المتاحة"
+
+#. module: installment_payment_extension
+#: model:ir.model.fields.selection,name:installment_payment_extension.selection__account_payment__payment_scope__by_all_invoice_lines
+msgid "By Installment"
+msgstr "حسب القسط"
+
+#. module: installment_payment_extension
+#: model:ir.model.fields.selection,name:installment_payment_extension.selection__account_payment__payment_scope__by_invoice
+msgid "By Invoice"
+msgstr "حسب الفاتورة"
+
+#. module: installment_payment_extension
+#: model:ir.model.fields.selection,name:installment_payment_extension.selection__account_payment__payment_scope__by_product_invoice
+msgid "By Invoice Lines"
+msgstr "حسب بنود الفاتورة"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,help:installment_payment_extension.field_account_payment__payment_scope
+msgid ""
+"By Invoice: payment applies to whole invoice. By Invoice Lines: payment "
+"applies to specific products/lines."
+msgstr ""
+"حسب الفاتورة: يُطبَّق الدفع على الفاتورة كاملة. حسب البنود: يُطبَّق على "
+"منتجات/بنود محددة."
+
+#. module: installment_payment_extension
+#: model:ir.model.fields.selection,name:installment_payment_extension.selection__account_payment__payment_scope__by_invoice_lines
+msgid "By Product"
+msgstr "حسب المنتج"
+
+#. module: installment_payment_extension
+#: model:ir.model,name:installment_payment_extension.model_control_payment
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_form
+msgid "Control Payment"
+msgstr "دفع التحكم"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.actions.act_window,name:installment_payment_extension.action_control_payment
+#: model:ir.model.fields,field_description:installment_payment_extension.field_account_payment__control_payment_ids
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_tree
+msgid "Control Payments"
+msgstr "مدفوعات التحكم"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,field_description:installment_payment_extension.field_account_payment__control_payment_remaining_amount
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+msgid "Control Remaining Amount"
+msgstr "مبلغ التحكم المتبقي"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,help:installment_payment_extension.field_account_payment__control_payment_ids
+msgid "Control payment records for invoices"
+msgstr "سجلات دفع التحكم للفواتير"
+
+#. modules: account_invoice_installments, installment_management_pro,
+#. installment_payment_extension, invoice_installment_management,
+#. sales_order_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: code:addons/sales_order_extension/models/sale_order_type.py:0
+#: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order_installment__currency_id
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__currency_id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard__currency_id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__currency_id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__currency_id
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__currency_id
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard__currency_id
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__currency_id
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_installment_payment_log__currency_id
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__currency_id
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: installment_payment_extension
+#: model:ir.model.fields,field_description:installment_payment_extension.field_account_payment__partner_id
+msgid "Customer/Vendor"
+msgstr "العميل/المورد"
+
+#. module: installment_payment_extension
+#: model:ir.model.fields,help:installment_payment_extension.field_payment_invoice_wizard_line__due_date_filter
+msgid "Date filter for calculating due amount"
+msgstr "فلتر التاريخ لحساب المبلغ المستحق"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,help:installment_payment_extension.field_account_payment__payment_due_date_filter
+msgid "Date filter for calculating due amount on all selected invoices"
+msgstr "فلتر التاريخ لحساب المستحق على جميع الفواتير المحددة"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: model:ir.model.fields,help:installment_payment_extension.field_control_payment__due_date
+msgid "Date filter for calculating due amount on invoice"
+msgstr "فلتر التاريخ لحساب المستحق على الفاتورة"
+
+#. modules: installment_payment_extension, invoice_installment_management
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,field_description:installment_payment_extension.field_account_payment__payment_due_date_filter
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__due_date_filter
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_bank_statement_line__due_date_filter
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move__due_date_filter
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_payment_invoice_wizard_form
+msgid "Date for Pay"
+msgstr "تاريخ السداد"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,field_description:installment_payment_extension.field_account_payment__is_dividend_eligible
+msgid "Dividend Eligible"
+msgstr "خاضع للربح"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,help:installment_payment_extension.field_account_payment__is_dividend_eligible
+msgid "Mark this payment as eligible for dividend processing."
+msgstr "تحديد ما إذا كان هذا الدفع خاضعاً للربح."
+
+#. modules: access_roles, account_invoice_installments, contact_extension,
+#. installment_management_pro, installment_payment_extension,
+#. invoice_installment_management, product_extension, sales_order_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: model:ir.model.fields,field_description:access_roles.field_access_role__display_name
+#: model:ir.model.fields,field_description:access_roles.field_button_registry__display_name
+#: model:ir.model.fields,field_description:access_roles.field_domain_model__display_name
+#: model:ir.model.fields,field_description:access_roles.field_field_access__display_name
+#: model:ir.model.fields,field_description:access_roles.field_filter_registry__display_name
+#: model:ir.model.fields,field_description:access_roles.field_filter_registry__string
+#: model:ir.model.fields,field_description:access_roles.field_groupby_registry__display_name
+#: model:ir.model.fields,field_description:access_roles.field_groupby_registry__string
+#: model:ir.model.fields,field_description:access_roles.field_role_management__display_name
+#: model:ir.model.fields,field_description:access_roles.field_tab_registry__display_name
+#: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order_installment__display_name
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__display_name
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__display_name
+#: model:ir.model.fields,field_description:contact_extension.field_contact_channels__display_name
+#: model:ir.model.fields,field_description:contact_extension.field_contact_division__display_name
+#: model:ir.model.fields,field_description:contact_extension.field_customer_guarantees__display_name
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__display_name
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__display_name
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard__display_name
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__display_name
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard__display_name
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__display_name
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__display_name
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard__display_name
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__display_name
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_installment_payment_log__display_name
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__display_name
+#: model:ir.model.fields,field_description:product_extension.field_product_category__display_name
+#: model:ir.model.fields,field_description:product_extension.field_product_product__display_name
+#: model:ir.model.fields,field_description:product_extension.field_product_template__display_name
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. modules: account_invoice_installments, installment_payment_extension,
+#. invoice_installment_management
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order_installment__amount_total
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__due_amount
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__due_amount
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_bank_statement_line__due_amount
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move__due_amount
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__amount_total
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_form
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_tree
+msgid "Due Amount"
+msgstr "المبلغ المستحق"
+
+#. modules: account_invoice_installments, installment_management_pro,
+#. installment_payment_extension, invoice_installment_management
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order_installment__date_due
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__due_date
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__date_due
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_search_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_search
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+#: model_terms:ir.ui.view,arch_db:invoice_installment_management.view_account_move_installment_search
+msgid "Due Date"
+msgstr "تاريخ الاستحقاق"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: model:ir.model.fields,help:installment_payment_extension.field_control_payment__due_amount
+msgid "Due amount (computed from invoice or installment)"
+msgstr "المبلغ المستحق (محسوب من الفاتورة أو القسط)"
+
+#. module: installment_payment_extension
+#: model:ir.model.fields,help:installment_payment_extension.field_payment_invoice_wizard_line__due_amount
+msgid "Due amount based on date filter"
+msgstr "المبلغ المستحق حسب فلتر التاريخ"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/payment_invoice_wizard.py:0
+msgid "Error processing invoice %s: %s"
+msgstr "خطأ في معالجة الفاتورة %s: %s"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+msgid ""
+"Errors while processing payments:\n"
+"%s"
+msgstr ""
+"أخطاء أثناء معالجة المدفوعات:\n"
+"%s"
+
+#. modules: installment_management_pro, installment_payment_extension,
+#. invoice_installment_management
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: code:addons/invoice_installment_management/models/account_installment_payment_log.py:0
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__installment_id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__installment_id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__installment_id
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__installment_id
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_installment_payment_log__installment_id
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_form_pro
+#: model_terms:ir.ui.view,arch_db:invoice_installment_management.view_account_move_installment_form
+msgid "Installment"
+msgstr "قسط"
+
+#. modules: contact_extension, installment_management_pro,
+#. installment_payment_extension, invoice_installment_management
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: code:addons/invoice_installment_management/models/account_installment_payment_log.py:0
+#: model:ir.model.fields,field_description:contact_extension.field_customer_guarantees__account_move_id
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__move_id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard__move_id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__move_id
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__invoice_id
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__invoice_id
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_installment_payment_log__move_id
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__move_id
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_search_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_payment_log_search
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_search
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_search
+#: model_terms:ir.ui.view,arch_db:invoice_installment_management.view_account_move_installment_search
+msgid "Invoice"
+msgstr "الفاتورة"
+
+#. modules: installment_payment_extension, invoice_installment_management
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: code:addons/invoice_installment_management/models/account_move_line.py:0
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__invoice_line_id
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__invoice_line_id
+msgid "Invoice Line"
+msgstr "بند الفاتورة"
+
+#. module: installment_payment_extension
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard__invoice_ids
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_payment_invoice_wizard_form
+msgid "Invoices"
+msgstr "الفواتير"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/payment_invoice_wizard.py:0
+msgid "No invoices to process"
+msgstr "لا توجد فواتير للمعالجة"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/payment_invoice_wizard.py:0
+msgid ""
+"No payments to process. Please set to_pay > 0 for at least one invoice."
+msgstr "لا مدفوعات للمعالجة. عيّن to_pay > 0 لفاتورة واحدة على الأقل."
+
+#. module: installment_payment_extension
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_payment_invoice_wizard_form
+msgid "Pay All Selected Invoices"
+msgstr "سداد جميع الفواتير المحددة"
+
+#. module: installment_payment_extension
+#: model:ir.actions.act_window,name:installment_payment_extension.action_payment_invoice_wizard
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_payment_invoice_wizard_form
+msgid "Pay for Invoices"
+msgstr "الدفع للفواتير"
+
+#. modules: installment_payment_extension, invoice_installment_management
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: code:addons/invoice_installment_management/models/account_installment_payment_log.py:0
+#: code:addons/invoice_installment_management/models/account_move.py:0
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__payment_id
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard__payment_id
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_installment_payment_log__payment_id
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_form
+msgid "Payment"
+msgstr "الدفع"
+
+#. module: installment_payment_extension
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+msgid "Payment Amount"
+msgstr "مبلغ الدفع"
+
+#. module: installment_payment_extension
+#: model:ir.model,name:installment_payment_extension.model_payment_invoice_wizard
+msgid "Payment Invoice Wizard"
+msgstr "معالج دفع الفواتير"
+
+#. module: installment_payment_extension
+#: model:ir.model,name:installment_payment_extension.model_payment_invoice_wizard_line
+msgid "Payment Invoice Wizard Line"
+msgstr "سطر معالج دفع الفاتورة"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,field_description:installment_payment_extension.field_account_payment__payment_scope
+msgid "Payment Matching "
+msgstr "مطابقة الدفع "
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,help:installment_payment_extension.field_account_payment__control_payment_remaining_amount
+msgid "Payment amount minus total control to pay"
+msgstr "مبلغ الدفع ناقص إجمالي التحكم بالدفع"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: code:addons/installment_payment_extension/models/payment_invoice_wizard.py:0
+msgid "Payment processed for %d invoice(s) successfully."
+msgstr "تمت معالجة الدفع لـ %d فاتورة بنجاح."
+
+#. module: installment_payment_extension
+#: model:ir.model.fields,field_description:installment_payment_extension.field_account_payment__person
+msgid "Person"
+msgstr "الشخص"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/payment_invoice_wizard.py:0
+msgid "Please select Date for Pay for invoice %s"
+msgstr "يرجى اختيار تاريخ السداد للفاتورة %s"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+msgid "Please select at least one invoice to pay"
+msgstr "يرجى اختيار فاتورة واحدة على الأقل للدفع"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+msgid "Please set To Pay amount for at least one invoice"
+msgstr "يرجى تعيين مبلغ السداد لفاتورة واحدة على الأقل"
+
+#. module: installment_payment_extension
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+msgid "Process Control Payments"
+msgstr "معالجة مدفوعات التحكم"
+
+#. modules: account_invoice_installments, installment_management_pro,
+#. installment_payment_extension, invoice_installment_management,
+#. product_extension, sales_order_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model,name:sales_order_extension.model_product_template
+#: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order_installment__product_id
+#: model:ir.model.fields,field_description:installment_payment_extension.field_account_payment__selected_product_id
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__product_id
+#: model:ir.ui.menu,name:sales_order_extension.menu_product_parent
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_search_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_search
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_category_form_code
+msgid "Product"
+msgstr "المنتج"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,help:installment_payment_extension.field_account_payment__unpaid_product_ids
+msgid "Products from unpaid customer invoices"
+msgstr "منتجات من فواتير العميل غير المسددة"
+
+#. modules: contact_extension, installment_management_pro,
+#. installment_payment_extension, product_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: model:ir.model.fields,field_description:contact_extension.field_contact_division__reference
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_payment_log__name
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__name
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_move_installment__display_reference
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__display_reference
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__display_reference
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__installment_reference
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_template_form_code
+msgid "Reference"
+msgstr "المرجع"
+
+#. modules: account_invoice_installments, installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order_installment__amount_residual
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__total_remaining_amount
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__total_remaining_amount
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_form
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_tree
+msgid "Remaining Amount"
+msgstr "المبلغ المتبقي"
+
+#. module: installment_payment_extension
+#: model:ir.model.fields,help:installment_payment_extension.field_payment_invoice_wizard_line__amount_to_pay
+msgid "Same as to_pay"
+msgstr "نفس to_pay"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,help:installment_payment_extension.field_account_payment__selected_product_id
+msgid ""
+"Select a product to filter the transaction list to only show invoices "
+"containing this product"
+msgstr "اختر منتجاً لتصفية القائمة وإظهار الفواتير التي تحتويه فقط"
+
+#. module: installment_payment_extension
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+msgid "Select a product..."
+msgstr "اختر منتجاً..."
+
+#. modules: installment_payment_extension, payment_term_installment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: code:addons/installment_payment_extension/models/payment_invoice_wizard.py:0
+#: code:addons/payment_term_installment_extension/models/account_payment_term.py:0
+msgid "Success"
+msgstr "نجح"
+
+#. module: installment_payment_extension
+#: model:ir.model.fields,help:installment_payment_extension.field_payment_invoice_wizard__total_due_amount
+msgid "Sum of all due amounts"
+msgstr "مجموع جميع المبالغ المستحقة"
+
+#. module: installment_payment_extension
+#: model:ir.model.fields,help:installment_payment_extension.field_payment_invoice_wizard__total_to_pay
+msgid "Sum of all to_pay amounts"
+msgstr "مجموع جميع مبالغ السداد"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,help:installment_payment_extension.field_account_payment__total_control_to_pay
+msgid "Sum of all to_pay for control payment records"
+msgstr "مجموع to_pay لسجلات دفع التحكم"
+
+#. module: installment_payment_extension
+#: model:ir.model.fields,help:installment_payment_extension.field_control_payment__currency_id
+#: model:ir.model.fields,help:installment_payment_extension.field_payment_invoice_wizard__currency_id
+msgid "The payment's currency."
+msgstr "عملة الدفع."
+
+#. module: installment_payment_extension
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+msgid "This date will be applied to all invoices as due_date_filter"
+msgstr "سيُطبَّق هذا التاريخ على جميع الفواتير كفلتر تاريخ الاستحقاق"
+
+#. modules: installment_payment_extension, invoice_installment_management
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__to_pay
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__to_pay
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_bank_statement_line__to_pay_amount
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move__to_pay_amount
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_form
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_tree
+msgid "To Pay"
+msgstr "المبلغ للدفع"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__amount_total
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__amount_total
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_form
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_tree
+msgid "Total Amount"
+msgstr "إجمالي المبلغ"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+#: model:ir.model.fields,field_description:installment_payment_extension.field_account_payment__total_control_to_pay
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+msgid "Total Control To Pay"
+msgstr "إجمالي التحكم بالدفع"
+
+#. module: installment_payment_extension
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard__total_due_amount
+msgid "Total Due Amount"
+msgstr "إجمالي المبلغ المستحق"
+
+#. module: installment_payment_extension
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard__total_to_pay
+msgid "Total To Pay"
+msgstr "إجمالي السداد"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/account_payment.py:0
+msgid "Total control to pay amount (%s) must equal the payment amount (%s)."
+msgstr "يجب أن يساوي إجمالي مبلغ التحكم (%s) مبلغ الدفع (%s)."
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__invoice_name
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__invoice_name
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_form
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_tree
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_payment_invoice_wizard_form
+msgid "Transaction"
+msgstr "المعاملة"
+
+#. module: installment_payment_extension
+#. odoo-python
+#: code:addons/installment_payment_extension/models/control_payment.py:0
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__invoice_date
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__invoice_date
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_account_payment_form_installment_payment
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_form
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_control_payment_tree
+#: model_terms:ir.ui.view,arch_db:installment_payment_extension.view_payment_invoice_wizard_form
+msgid "Transaction Date"
+msgstr "تاريخ المعاملة"

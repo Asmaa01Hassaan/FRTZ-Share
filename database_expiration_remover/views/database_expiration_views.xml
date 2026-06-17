@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Database Expiration Remover Form View -->
+        <record id="view_database_expiration_remover_form" model="ir.ui.view">
+            <field name="name">database.expiration.remover.form</field>
+            <field name="model">database.expiration.remover</field>
+            <field name="arch" type="xml">
+                <form string="Database Expiration Remover">
+                    <header>
+                        <button name="action_extend_trial" string="Extend Trial" type="object" class="btn-primary"/>
+                        <button name="action_reset_expiration" string="Reset Expiration" type="object" class="btn-secondary"/>
+                        <field name="is_active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Database Expiration Remover"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="trial_extension_days"/>
+                                <field name="extension_count" readonly="1"/>
+                                <field name="last_extension_date" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="next_extension_date" readonly="1"/>
+                                <field name="database_expiration_date" readonly="1"/>
+                                <field name="is_expired" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Trial Information">
+                                <group>
+                                    <field name="trial_extension_days" string="Extension Days"/>
+                                    <field name="extension_count" string="Total Extensions"/>
+                                    <field name="last_extension_date" string="Last Extension"/>
+                                    <field name="next_extension_date" string="Next Extension"/>
+                                </group>
+                            </page>
+                            <page string="Database Status">
+                                <group>
+                                    <field name="database_expiration_date" string="Current Expiration"/>
+                                    <field name="is_expired" string="Is Expired"/>
+                                    <field name="is_active" string="Auto Extension Active"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Database Expiration Remover List View -->
+        <record id="view_database_expiration_remover_list" model="ir.ui.view">
+            <field name="name">database.expiration.remover.list</field>
+            <field name="model">database.expiration.remover</field>
+            <field name="arch" type="xml">
+                <list string="Database Expiration Remover">
+                    <field name="name"/>
+                    <field name="is_active"/>
+                    <field name="trial_extension_days"/>
+                    <field name="extension_count"/>
+                    <field name="last_extension_date"/>
+                    <field name="next_extension_date"/>
+                    <field name="database_expiration_date"/>
+                    <field name="is_expired"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Database Expiration Remover Search View -->
+        <record id="view_database_expiration_remover_search" model="ir.ui.view">
+            <field name="name">database.expiration.remover.search</field>
+            <field name="model">database.expiration.remover</field>
+            <field name="arch" type="xml">
+                <search string="Database Expiration Remover">
+                    <field name="name"/>
+                    <field name="is_active"/>
+                    <field name="is_expired"/>
+                    <separator/>
+                    <filter string="Active" name="active" domain="[('is_active', '=', True)]"/>
+                    <filter string="Expired" name="expired" domain="[('is_expired', '=', True)]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="status" context="{'group_by': 'is_active'}"/>
+                        <filter string="Extension Count" name="extension_count" context="{'group_by': 'extension_count'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Database Expiration Remover Action -->
+        <record id="action_database_expiration_remover" model="ir.actions.act_window">
+            <field name="name">Database Expiration Remover</field>
+            <field name="res_model">database.expiration.remover</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_database_expiration_remover_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Database Expiration Remover
+                </p>
+                <p>
+                    This tool helps prevent your database from expiring by automatically extending the trial period.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_database_expiration_remover"
+                  name="Database Expiration Remover"
+                  parent="base.menu_administration"
+                  action="action_database_expiration_remover"
+                  sequence="100"/>
+    </data>
+</odoo>

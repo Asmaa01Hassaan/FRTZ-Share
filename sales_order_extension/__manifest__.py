@@ -1,12 +1,13 @@
 {
     "name": "Sale Order Extension",
-    "version": "18.0.1.0.3",
+    "version": "18.0.1.0.5",
+    "post_init_hook": "post_init_hook",
     "summary": "",
     "description": """
       
     """,
     "author": "Your Company",
-    "depends": ['sale_management','product'],
+    "depends": ['sale_management', 'account', 'product', 'payment_term_installment_extension'],
     "data": [
         "security/ir.model.access.csv",
         "views/sales_orders_view.xml",
@@ -15,12 +16,12 @@
         "views/product_attribute_views.xml",
         "views/menu_view.xml",
     ],
-    # "i18n": [
-    #     "i18n/ar.po",
-    #     "i18n/account_invoice_installments.pot",
-    # ],
+    "i18n": [
+        "i18n/ar.po",
+        "i18n/ar_001.po",
+    ],
     "license": "LGPL-3",
-    "application": True,
+    "application": False,
     "installable": True,
     "auto_install": False,
 

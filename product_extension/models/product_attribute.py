@@ -101,26 +101,29 @@ class ProductAttribute(models.Model):
                             'name': ' ',
                         })
     
-    @api.model
-    def create(self, vals):
-        """Set display_type to pills and create_variant to no_variant when free text is enabled"""
-        # Ensure display_type is never 'text'
-        if vals.get('display_type') == 'text':
-            vals['display_type'] = 'pills'
-            vals['allow_free_text'] = True
-        
-        if vals.get('allow_free_text'):
-            vals['display_type'] = 'pills'
-            vals['create_variant'] = 'no_variant'
-        
-        record = super().create(vals)
-        
-        if record.allow_free_text:
-            record._ensure_text_attribute_value()
-            # Enable is_custom on all existing values
-            record.value_ids.write({'is_custom': True})
-        
-        return record
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Set display_type to pills and create_variant to no_variant when free text is enabled (batch)."""
+        for vals in vals_list:
+            # Ensure display_type is never 'text'
+            if vals.get('display_type') == 'text':
+                vals['display_type'] = 'pills'
+                vals['allow_free_text'] = True
+
+            if vals.get('allow_free_text'):
+                vals['display_type'] = 'pills'
+                vals['create_variant'] = 'no_variant'
+
+        records = super().create(vals_list)
+
+        # Post-create: ensure the special free-text value exists
+        for record in records:
+            if record.allow_free_text:
+                record._ensure_text_attribute_value()
+                # Enable is_custom on all existing values
+                record.value_ids.write({'is_custom': True})
+
+        return records
     
     def write(self, vals):
         """Handle free text option changes"""

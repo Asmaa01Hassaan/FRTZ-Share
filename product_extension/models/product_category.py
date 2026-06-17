@@ -102,11 +102,10 @@ class ProductCategory(models.Model):
             vals['code'] = vals['code'].strip()
         return super().write(vals)
     
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         """Override create to strip code"""
-        if isinstance(vals_list, dict):
-            vals_list = [vals_list]
+        # vals_list is always a list when using @api.model_create_multi
         for vals in vals_list:
             if 'code' in vals and vals.get('code'):
                 vals['code'] = vals['code'].strip()

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Schedule Wizard Form -->
+    <record id="view_installment_schedule_wizard_form" model="ir.ui.view">
+        <field name="name">installment.schedule.wizard.form</field>
+        <field name="model">installment.schedule.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Schedule Installments">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <button name="action_load_installments" type="object"
+                                    string="Load Installments" class="btn-primary"
+                                    icon="fa-refresh"
+                                    invisible="not partner_id"/>
+                        </group>
+                    </group>
+                    <field name="line_ids" invisible="not line_ids" nolabel="1">
+                        <list editable="bottom"
+                              decoration-danger="state == 'overdue'"
+                              decoration-warning="state == 'due'"
+                              decoration-muted="state == 'draft'">
+                            <field name="selected" widget="boolean"/>
+                            <field name="installment_id" readonly="1"/>
+                            <field name="display_reference" readonly="1"/>
+                            <field name="move_id" readonly="1"/>
+                            <field name="current_date_due" readonly="1"/>
+                            <field name="new_date_due" readonly="not selected" required="selected"/>
+                            <field name="amount_total" readonly="1" sum="Total"/>
+                            <field name="amount_paid" readonly="1" sum="Paid"/>
+                            <field name="amount_residual" readonly="1" sum="Remaining"/>
+                            <field name="state" widget="badge" readonly="1"
+                                   decoration-info="state == 'draft'"
+                                   decoration-warning="state == 'due'"
+                                   decoration-danger="state == 'overdue'"
+                                   decoration-success="state == 'paid'"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                    <group invisible="not line_ids">
+                        <field name="reason" placeholder="Enter the reason for rescheduling..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_apply_schedule" type="object"
+                            string="Apply Reschedule" class="btn-primary"
+                            invisible="not line_ids"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Schedule Wizard Action -->
+    <record id="action_installment_schedule_wizard" model="ir.actions.act_window">
+        <field name="name">Schedule Installments</field>
+        <field name="res_model">installment.schedule.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

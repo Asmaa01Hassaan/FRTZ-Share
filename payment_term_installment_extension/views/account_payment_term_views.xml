@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Payment Term Form View - Add Installment Fields -->
+    <record id="view_payment_term_form_installment" model="ir.ui.view">
+        <field name="name">account.payment.term.form.installment</field>
+        <field name="model">account.payment.term</field>
+        <field name="inherit_id" ref="account.view_payment_term_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//group[.//field[@name='company_id']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//group[.//field[@name='company_id']]" position="before">
+                <field name="show_installment_scope" invisible="1"/>
+                <field name="readonly_installment_scope" invisible="1"/>
+                <field name="show_installment_baseline_date" invisible="1"/>
+                <field name="readonly_installment_baseline_date" invisible="1"/>
+                <group>
+                    <group>
+                        <field name="scope"
+                               invisible="not show_installment_scope"
+                               readonly="readonly_installment_scope"/>
+                        <field name="baseline_date"
+                               invisible="not show_installment_baseline_date"
+                               readonly="readonly_installment_baseline_date"/>
+                        <field name="is_installment_term"/>
+                        <label for="first_payment_percentage"/>
+
+                        <div>
+
+                            <field name="first_payment_percentage"
+                                   class="text-end  o_input oe_inline"/>
+                            <field name="first_payment_type" class="text-end o_field_highlight o_input oe_inline"/>
+
+                        </div>
+
+                        <field name="pay_type" widget="radio" options="{'horizontal': True}"/>
+                        <div>
+                            <group invisible="pay_type != 'fixed'">
+                                <field name="installment_frequency"/>
+                                <label for="installment_count"/>
+
+                                <div>
+                                    <field name="installment_count" class="oe_inline"/>
+                                    <button name="action_reset_lines" string="Reset" type="object"
+                                            icon="fa-refresh" class="oe_inline"
+                                            title="Reset and regenerate line_ids based on current settings (first_payment_percentage, installment_count, etc.)"/>
+
+                                </div>
+                                <field name="apply_remming_to" readonly="1" invisible="1"/>
+                            </group>
+                            <group invisible="pay_type != 'spot'">
+                                <field name="settlement_trigger"/>
+                            </group>
+
+                        </div>
+
+                    </group>
+                    <group>
+                        <field name="company_id" options="{'no_create': True}" class="w-25"
+                               groups="base.group_multi_company"/>
+                        <label for="early_discount"/>
+                        <div class="o_field_highlight">
+                            <field name="early_discount"/>
+                            <field name="discount_percentage" class="text-end o_field_highlight o_input oe_inline"
+                                   invisible="not early_discount"/>
+                            <span invisible="not early_discount">% if paid within</span>
+                            <field name="discount_days" class="text-end o_field_highlight o_input oe_inline"
+                                   invisible="not early_discount"/>
+                            <span invisible="not early_discount">days</span>
+                            <div invisible="not early_discount">
+                                <span>Reduced tax:
+                                    <field name="early_pay_discount_computation" class="w-auto"/>
+                                </span>
+                            </div>
+                        </div>
+                        <field name="grace_period" placeholder="Days"/>
+                    </group>
+                    <!--                    <group>-->
+                    <!--                        -->
+                    <!--                        <field name="pay_type" widget="radio" options="{'horizontal': True}"/>-->
+                    <!--                        <div>-->
+                    <!--                            <group invisible="pay_type != 'fixed'">-->
+                    <!--                                <field name="installment_frequency"/>-->
+                    <!--                                 <field name="installment_count"/>-->
+                    <!--                                <div class="o_row" invisible="1">-->
+                    <!--                                    <button name="action_update_lines" string="Update" type="object"-->
+                    <!--                                            class="btn-primary" icon="fa-refresh"-->
+                    <!--                                            title="Update and overwrite line_ids to follow rules: first_payment_percentage, installment_count, total = 100%"/>-->
+                    <!--                                    <button name="action_reload_lines" string="Reload" type="object" -->
+                    <!--                                            class="btn-secondary" icon="fa-refresh"-->
+                    <!--                                            title="Reload and validate payment term lines (check total = 100% and no zero values)"/>-->
+                    <!--                                </div>-->
+                    <!--                                <field name="apply_remming_to" readonly="1"/>-->
+                    <!--                            </group>-->
+                    <!--                            <group  invisible="pay_type != 'spot'">-->
+                    <!--                                <field name="settlement_trigger"/>-->
+                    <!--                            </group>-->
+
+                    <!--                        </div>-->
+                    <!--                    </group>-->
+                </group>
+
+
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Payment Term Tree View - Add Installment Columns -->
+    <record id="view_payment_term_tree_installment" model="ir.ui.view">
+        <field name="name">account.payment.term.tree.installment</field>
+        <field name="model">account.payment.term</field>
+        <field name="inherit_id" ref="account.view_payment_term_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="is_installment_term" optional="hide"/>
+                <field name="installment_count" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Payment Term Line List View - Add Method Field and Date Calculation -->
+    <record id="view_payment_term_line_list_installment" model="ir.ui.view">
+        <field name="name">account.payment.term.line.list.installment</field>
+        <field name="model">account.payment.term</field>
+        <field name="inherit_id" ref="account.view_payment_term_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='line_ids']//list//field[@name='value']" position="after">
+                <field name="date_calculation_type" string="Date Type" widget="radio" options="{'horizontal': True}"/>
+                <field name="fixed_due_date" invisible="date_calculation_type == 'days'"/>
+
+            </xpath>
+            <xpath expr="//field[@name='line_ids']//list//field[@name='delay_type']" position="after">
+                <field name="method" string="Pay Method"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']//list//field[@name='nb_days']" position="attributes">
+               <attribute name="optional">hide</attribute>
+
+                <attribute name="invisible">date_calculation_type == 'fixed_date'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']//list//field[@name='delay_type']" position="attributes">
+                <attribute name="optional">hide</attribute>
+
+                <attribute name="invisible">date_calculation_type == 'fixed_date'</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

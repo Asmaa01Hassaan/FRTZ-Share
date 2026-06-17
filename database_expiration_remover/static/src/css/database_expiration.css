@@ -1,0 +1,165 @@
+/* Database Expiration Remover Styles */
+
+.o_database_expiration_remover {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.o_database_expiration_remover .oe_title h1 {
+    color: #dc3545;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.o_database_expiration_remover .btn-primary {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.o_database_expiration_remover .btn-primary:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.o_database_expiration_remover .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.o_database_expiration_remover .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.o_database_expiration_remover .field_boolean_toggle {
+    margin-top: 10px;
+}
+
+.o_database_expiration_remover .field_readonly {
+    background-color: #e9ecef;
+    color: #6c757d;
+}
+
+.o_database_expiration_remover .field_is_expired {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.o_database_expiration_remover .field_is_active {
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Status indicators */
+.o_database_expiration_remover .status_active {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.o_database_expiration_remover .status_expired {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.o_database_expiration_remover .status_warning {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+/* Extension count styling */
+.o_database_expiration_remover .extension_count {
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Trial extension days styling */
+.o_database_expiration_remover .trial_extension_days {
+    font-size: 16px;
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* Date fields styling */
+.o_database_expiration_remover .date_field {
+    font-family: monospace;
+    font-size: 14px;
+    color: #495057;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .o_database_expiration_remover {
+        padding: 15px;
+        margin: 10px 0;
+    }
+    
+    .o_database_expiration_remover .oe_title h1 {
+        font-size: 20px;
+    }
+    
+    .o_database_expiration_remover .btn-primary,
+    .o_database_expiration_remover .btn-secondary {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+/* Animation for status changes */
+.o_database_expiration_remover .status_change {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Success message styling */
+.o_database_expiration_remover .success_message {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+/* Error message styling */
+.o_database_expiration_remover .error_message {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+/* Warning message styling */
+.o_database_expiration_remover .warning_message {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}

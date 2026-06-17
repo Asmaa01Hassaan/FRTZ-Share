@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="seq_installment_payment_log" model="ir.sequence">
+            <field name="name">Installment Payment Log</field>
+            <field name="code">account.installment.payment.log</field>
+            <field name="prefix">PAY-LOG/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_installment_reschedule_log" model="ir.sequence">
+            <field name="name">Installment Reschedule Log</field>
+            <field name="code">account.installment.reschedule.log</field>
+            <field name="prefix">RSC-LOG/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

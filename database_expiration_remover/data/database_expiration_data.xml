@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Create default database expiration remover record -->
+        <record id="default_database_expiration_remover" model="database.expiration.remover">
+            <field name="name">Database Expiration Remover</field>
+            <field name="is_active">True</field>
+            <field name="trial_extension_days">30</field>
+        </record>
+        
+        <!-- Cron jobs and config parameters will be created programmatically -->
+        
+        <!-- Create database maintenance record -->
+        <record id="default_database_maintenance" model="database.maintenance">
+            <field name="name">Database Maintenance</field>
+            <field name="is_active">True</field>
+            <field name="maintenance_type">expiration_prevention</field>
+            <field name="maintenance_interval_days">1</field>
+        </record>
+        
+        
+        <!-- Create database expiration core record -->
+        <record id="default_database_expiration_core" model="database.expiration.core">
+            <field name="name">Database Expiration Core</field>
+            <field name="is_active">True</field>
+            <field name="prevention_method">parameter_override</field>
+            <field name="prevention_interval_hours">1</field>
+            <field name="expiration_date_override">2099-12-31 23:59:59</field>
+            <field name="trial_status_override">permanent</field>
+        </record>
+        
+    </data>
+</odoo>

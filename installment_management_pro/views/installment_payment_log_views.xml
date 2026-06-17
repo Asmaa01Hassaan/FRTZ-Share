@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Payment Log List View -->
+    <record id="view_installment_payment_log_list" model="ir.ui.view">
+        <field name="name">account.installment.payment.log.list.pro</field>
+        <field name="model">account.installment.payment.log</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list string="Payment Logs" create="0" edit="0">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="display_reference" optional="show"/>
+                <field name="partner_id"/>
+                <field name="installment_id" optional="hide"/>
+                <field name="move_id"/>
+                <field name="payment_id"/>
+                <field name="paid_amount" sum="Total Paid"/>
+                <field name="amount_before" optional="hide"/>
+                <field name="amount_after" optional="hide"/>
+                <field name="state_before" widget="badge"
+                       decoration-info="state_before == 'draft'"
+                       decoration-warning="state_before == 'partial'"
+                       decoration-danger="state_before == 'overdue'"
+                       decoration-success="state_before == 'paid'" optional="hide"/>
+                <field name="state_after" widget="badge"
+                       decoration-info="state_after == 'draft'"
+                       decoration-warning="state_after == 'partial'"
+                       decoration-danger="state_after == 'overdue'"
+                       decoration-success="state_after == 'paid'"/>
+                <field name="action_type" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Payment Log Form View -->
+    <record id="view_installment_payment_log_form" model="ir.ui.view">
+        <field name="name">account.installment.payment.log.form.pro</field>
+        <field name="model">account.installment.payment.log</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <form string="Payment Log" create="0" edit="0">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="display_reference"/>
+                            <field name="partner_id"/>
+                            <field name="installment_id"/>
+                            <field name="move_id"/>
+                            <field name="payment_id"/>
+                        </group>
+                        <group>
+                            <field name="paid_amount"/>
+                            <field name="amount_before"/>
+                            <field name="amount_after"/>
+                            <field name="state_before"/>
+                            <field name="state_after"/>
+                            <field name="action_type"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Payment Log Search View -->
+    <record id="view_installment_payment_log_search" model="ir.ui.view">
+        <field name="name">account.installment.payment.log.search.pro</field>
+        <field name="model">account.installment.payment.log</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <search string="Payment Logs">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="move_id"/>
+                <field name="installment_id"/>
+                <field name="payment_id"/>
+                <field name="display_reference"/>
+                <filter name="today" string="Today"
+                        domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="this_month" string="This Month"
+                        domain="[('date', '&gt;=', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d')),
+                                 ('date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="group_partner" string="Customer" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_invoice" string="Invoice" context="{'group_by': 'move_id'}"/>
+                    <filter name="group_date" string="Date" context="{'group_by': 'date'}"/>
+                    <filter name="group_action" string="Action Type" context="{'group_by': 'action_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Payment Log Action -->
+    <record id="action_installment_payment_log" model="ir.actions.act_window">
+        <field name="name">Payment Logs</field>
+        <field name="res_model">account.installment.payment.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_installment_payment_log_search"/>
+    </record>
+
+</odoo>

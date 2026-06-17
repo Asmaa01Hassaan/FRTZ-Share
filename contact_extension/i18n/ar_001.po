@@ -1,0 +1,644 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-03 03:02+0000\n"
+"PO-Revision-Date: 2026-06-03 03:02+0000\n"
+"Last-Translator: FRTZ\n"
+"Language-Team: Arabic\n"
+"Language: ar_001\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid ""
+"<span class=\"o_form_label o_td_label o_address_type\">\n"
+"                                            <span>Address</span>\n"
+"                                        </span>"
+msgstr ""
+"<span class=\"o_form_label o_td_label o_address_type\">\n"
+"                                            <span>العنوان</span>\n"
+"                                        </span>"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_addresses_form
+msgid ""
+"<span class=\"o_form_label o_td_label o_address_type\">\n"
+"                                <span>Address</span>\n"
+"                            </span>"
+msgstr ""
+"<span class=\"o_form_label o_td_label o_address_type\">\n"
+"                                <span>العنوان</span>\n"
+"                            </span>"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid ""
+"<span class=\"o_form_label\" invisible=\"is_company or not "
+"use_name_parts\">Full Name</span>"
+msgstr "الاسم المفصل"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "<span invisible=\"is_company\">Company Name</span>"
+msgstr "<span invisible=\"is_company\">المنشأة</span>"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "<span>Address</span>"
+msgstr "<span>العنوان</span>"
+
+#. module: contact_extension
+#. odoo-python
+#: code:addons/contact_extension/models/customer_guarantees.py:0
+msgid ""
+"A guarantee must be linked to either a sale order or an invoice, not both or"
+" neither."
+msgstr "يجب ربط الكفالة بأمر بيع أو بفاتورة، وليس بكليهما أو بدون أي منهما."
+
+#. module: contact_extension
+#: model:ir.model.fields,help:contact_extension.field_contact_channels__status
+msgid "Active/Inactive status"
+msgstr "فعال"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_customer_guarantees_form
+msgid "Additional notes..."
+msgstr "ملاحظات إضافية..."
+
+#. module: contact_extension
+#: model:ir.model.fields.selection,name:contact_extension.selection__contact_addresses__type__contact
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Address"
+msgstr "العنوان"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__name
+msgid "Address Name"
+msgstr "اسم العنوان"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__type
+msgid "Address Type"
+msgstr "نوع العنوان"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Addresses"
+msgstr "العناوين"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__attachment_id
+msgid "Attachment"
+msgstr "المرفق"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__name
+msgid "Attachment Name"
+msgstr "اسم المرفق"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__attachment_ids
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__attachment_ids
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_attachment_list
+msgid "Attachments"
+msgstr "المرفقات"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Basic info"
+msgstr "معلومات اساسية"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__birth_date
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__birth_date
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Birth Date"
+msgstr "تاريخ الميلاد"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_channels__channel
+msgid "Channel"
+msgstr "نوع القناة"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__channel_ids
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__channel_ids
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Channels"
+msgstr "قنوات الاتصال"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__city
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_addresses_form
+msgid "City"
+msgstr "المدينة"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__company_type_locked
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__company_type_locked
+msgid "Company Type Locked"
+msgstr "نوع الشركة مقفل"
+
+#. module: contact_extension
+#: model:ir.model,name:contact_extension.model_res_partner
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__partner_id
+#: model:ir.model.fields,field_description:contact_extension.field_contact_division__partner_id
+msgid "Contact"
+msgstr "جهة الاتصال"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_addresses_form
+msgid "Contact Address"
+msgstr "عنوان جهة الاتصال"
+
+#. module: contact_extension
+#: model:ir.actions.act_window,name:contact_extension.action_contact_addresses
+#: model:ir.model,name:contact_extension.model_contact_addresses
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__contact_address_ids
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__contact_address_ids
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_addresses_search
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_addresses_tree
+msgid "Contact Addresses"
+msgstr "عناوين جهات الاتصال"
+
+#. module: contact_extension
+#: model:ir.model,name:contact_extension.model_contact_attachment
+msgid "Contact Attachment"
+msgstr "مرفق جهة الاتصال"
+
+#. module: contact_extension
+#: model:ir.model,name:contact_extension.model_contact_channels
+msgid "Contact Channels"
+msgstr "قنوات جهة الاتصال"
+
+#. module: contact_extension
+#: model:ir.model,name:contact_extension.model_contact_division
+msgid "Contact Division"
+msgstr "قسم جهة الاتصال"
+
+#. module: contact_extension
+#: model:ir.model.fields,help:contact_extension.field_contact_channels__value
+msgid "Contact value for this channel"
+msgstr "قيمة الاتصال لهذه القناة"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Contacts"
+msgstr "جهات الاتصال"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__country_id
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_addresses_form
+msgid "Country"
+msgstr "الدولة"
+
+#. module: contact_extension
+#: model_terms:ir.actions.act_window,help:contact_extension.action_contact_addresses
+msgid "Create a new contact address"
+msgstr "إنشاء عنوان جهة اتصال جديد"
+
+#. module: contact_extension
+#: model_terms:ir.actions.act_window,help:contact_extension.action_customer_guarantees
+msgid "Create a new customer guarantee"
+msgstr "إنشاء كفالة عميل جديدة"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Credit Limits"
+msgstr "سقف الائتمان"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_customer_guarantees_form
+msgid "Customer Guarantee"
+msgstr "كفالة عميل"
+
+#. module: contact_extension
+#: model:ir.actions.act_window,name:contact_extension.action_customer_guarantees
+#: model:ir.model,name:contact_extension.model_customer_guarantees
+#: model:ir.model.fields,field_description:contact_extension.field_account_bank_statement_line__customer_guarantees_ids
+#: model:ir.model.fields,field_description:contact_extension.field_account_move__customer_guarantees_ids
+#: model:ir.model.fields,field_description:contact_extension.field_sale_order__customer_guarantees_ids
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_customer_guarantees_tree
+msgid "Customer Guarantees"
+msgstr "كفالات العملاء"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_account_bank_statement_line__customer_guarantees_list_ids
+#: model:ir.model.fields,field_description:contact_extension.field_account_move__customer_guarantees_list_ids
+#: model:ir.model.fields,field_description:contact_extension.field_sale_order__customer_guarantees_list_ids
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_move_form_customer_guarantees
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_sale_order_form_customer_guarantees
+msgid "Customer Guarantees List"
+msgstr "قائمة الكفلاء"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_customer_guarantees__customer_id
+msgid "Customer Name"
+msgstr "اسم العميل"
+
+#. modules: contact_extension, installment_management_pro
+#: model:ir.model.fields,field_description:contact_extension.field_customer_guarantees__date
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_payment_log_search
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_form
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_list
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_channels__is_default
+msgid "Default"
+msgstr "افتراضي"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__is_default
+msgid "Default Address"
+msgstr "العنوان الافتراضي"
+
+#. module: contact_extension
+#: model:ir.model.fields.selection,name:contact_extension.selection__contact_addresses__type__delivery
+msgid "Delivery Address"
+msgstr "عنوان التسليم"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_division__department
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__divisions
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__divisions
+msgid "Department"
+msgstr "الدائرة/القسم"
+
+#. module: contact_extension
+#: model:ir.model.fields,help:contact_extension.field_contact_attachment__name
+msgid "Display name for this attachment"
+msgstr "اسم العرض لهذا المرفق"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__division_ids
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__division_ids
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Divisions"
+msgstr "الدوائر والأقسام"
+
+#. module: contact_extension
+#: model:ir.model.fields.selection,name:contact_extension.selection__contact_channels__channel__email
+msgid "Email"
+msgstr "البريد الالكتروني"
+
+#. module: contact_extension
+#: model:ir.model.fields,help:contact_extension.field_res_partner__use_name_parts
+#: model:ir.model.fields,help:contact_extension.field_res_users__use_name_parts
+msgid ""
+"Enable this to compose the name from individual name parts. When enabled, "
+"the name field becomes read-only and is automatically updated from the name "
+"parts."
+msgstr ""
+"فعّل هذا لبناء الاسم من أجزاء الاسم. عند التفعيل يصبح حقل الاسم للقراءة فقط "
+"ويُحدَّث تلقائياً من الأجزاء."
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Enter contact value"
+msgstr "أدخل قيمة الاتصال"
+
+#. module: contact_extension
+#: model:ir.model.fields.selection,name:contact_extension.selection__contact_channels__channel__facebook_messenger
+msgid "Facebook Messenger"
+msgstr "ماسنجر فيسبوك"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__father_name
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__father_name
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Father Name"
+msgstr "اسم الأب"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__file_data
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_attachment_list
+msgid "File"
+msgstr "المرفق"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__datas
+msgid "File Content"
+msgstr "محتوى الملف"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__attachment_name
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__file_display_name
+msgid "File Name"
+msgstr "اسم الملف"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__file_size
+msgid "File Size"
+msgstr "حجم الملف"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__filename
+msgid "Filename"
+msgstr "اسم الملف"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__first_name
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__first_name
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "First Name"
+msgstr "الاسم الأول"
+
+#. module: contact_extension
+#: model:ir.model.fields,help:contact_extension.field_res_partner__divisions
+#: model:ir.model.fields,help:contact_extension.field_res_users__divisions
+msgid ""
+"For individuals, select a department from the related company divisions."
+msgstr "للأفراد، اختر قسماً من أقسام الشركة المرتبطة."
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__gfather_name
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__gfather_name
+msgid "GFather Name"
+msgstr "اسم الجد"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Grandfather Name"
+msgstr "اسم الجد"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_account_bank_statement_line__guarantees_count
+#: model:ir.model.fields,field_description:contact_extension.field_account_move__guarantees_count
+#: model:ir.model.fields,field_description:contact_extension.field_sale_order__guarantees_count
+msgid "Guarantees Count"
+msgstr "عدد الكفالات"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__hiring_date
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__hiring_date
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Hiring Date"
+msgstr "تاريخ التعيين"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Image Document"
+msgstr "مستند صورة"
+
+#. module: contact_extension
+#: model:ir.model.fields.selection,name:contact_extension.selection__contact_addresses__type__invoice
+msgid "Invoice Address"
+msgstr "عنوان الفوترة"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Job Position"
+msgstr "المنصب الوظيفي"
+
+#. module: contact_extension
+#: model:ir.model.fields,help:contact_extension.field_contact_channels__type
+msgid "Label or type for this channel"
+msgstr "تسمية أو نوع لهذه القناة"
+
+#. module: contact_extension
+#: model:ir.model.fields,help:contact_extension.field_contact_channels__is_default
+msgid "Mark as default channel"
+msgstr "تعيين كقناة افتراضية"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__max_grantees_amount
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__max_grantees_amount
+msgid "Max Grantees Amount"
+msgstr "سقف الكفالة"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__max_installments_amount
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__max_installments_amount
+msgid "Max Installments Amount"
+msgstr "سقف القسط الشهري"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__max_salary_deduction
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__max_salary_deduction
+msgid "Max Salary Deduction"
+msgstr "سقف اقتطاع الراتب"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__mimetype
+msgid "Mime Type"
+msgstr "نوع MIME"
+
+#. module: contact_extension
+#: model:ir.model.fields.selection,name:contact_extension.selection__contact_channels__channel__mobile
+msgid "Mobile"
+msgstr "الجوال"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__name_from_parts
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__name_from_parts
+msgid "Name From Parts"
+msgstr "الاسم من الأجزاء"
+
+#. module: contact_extension
+#: model:ir.model.fields,help:contact_extension.field_contact_attachment__filename
+msgid "Name of the uploaded file"
+msgstr "اسم الملف المرفوع"
+
+#. module: contact_extension
+#: model:ir.model.fields,help:contact_extension.field_contact_addresses__name
+msgid "Name or description for this address"
+msgstr "اسم أو وصف لهذا العنوان"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "PDF Document"
+msgstr "مستند PDF"
+
+#. module: contact_extension
+#: model:ir.model.fields.selection,name:contact_extension.selection__contact_channels__channel__phone
+msgid "Phone"
+msgstr "الهاتف"
+
+#. module: contact_extension
+#: model:ir.model.fields,help:contact_extension.field_account_bank_statement_line__customer_guarantees_ids
+#: model:ir.model.fields,help:contact_extension.field_account_move__customer_guarantees_ids
+msgid "Select customers who will act as guarantees for this invoice"
+msgstr "اختر العملاء الذين سيكونون كفلاء لهذه الفاتورة"
+
+#. module: contact_extension
+#: model:ir.model.fields,help:contact_extension.field_sale_order__customer_guarantees_ids
+msgid "Select customers who will act as guarantees for this sale order"
+msgstr "اختر العملاء الذين سيكونون كفلاء لأمر البيع هذا"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_attachment_list
+msgid "Size"
+msgstr "الحجم"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__state_id
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_addresses_form
+msgid "State"
+msgstr "الولاية/المحافظة"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__street
+msgid "Street"
+msgstr "الشارع الأول"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_addresses_form
+msgid "Street 2..."
+msgstr "الشارع 2..."
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_addresses_form
+msgid "Street..."
+msgstr "الشارع..."
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__street2
+msgid "Street2"
+msgstr "الشارع الثاني"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__sur_name
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__sur_name
+msgid "Sur Name"
+msgstr "اسم العائلة"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Surname"
+msgstr "اسم العائلة"
+
+#. module: contact_extension
+#: model:ir.model.fields.selection,name:contact_extension.selection__customer_guarantees__sale_order_customer_guarantees_status__suspended
+#: model:ir.model.fields.selection,name:contact_extension.selection__res_partner__status__suspended
+msgid "Suspended"
+msgstr "موقوف"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Tax ID"
+msgstr "الرقم الضريبي"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_channels__type
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_attachment_list
+msgid "Type"
+msgstr "النوع"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__uid
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__uid
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "UID"
+msgstr "الرقم الوطني"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__file
+msgid "Upload File"
+msgstr "رفع ملف"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Upload a file"
+msgstr "رفع ملف"
+
+#. module: contact_extension
+#: model:ir.model.fields,help:contact_extension.field_contact_attachment__file
+msgid "Upload a file to attach"
+msgstr "رفع ملف للإرفاق"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_attachment_list
+msgid "Upload or download file"
+msgstr "رفع أو تنزيل ملف"
+
+#. module: contact_extension
+#: model:ir.model.fields,help:contact_extension.field_contact_attachment__file_data
+msgid "Upload or download the attachment file"
+msgstr "رفع أو تنزيل ملف المرفق"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_res_partner__use_name_parts
+#: model:ir.model.fields,field_description:contact_extension.field_res_users__use_name_parts
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Use Name Details"
+msgstr "الاسم (مفصل)"
+
+#. modules: contact_extension, product_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_channels__value
+#: model:ir.model.fields,field_description:product_extension.field_product_attribute_value__name
+msgid "Value"
+msgstr "القيمة"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "Website"
+msgstr "الموقع الالكتروني"
+
+#. module: contact_extension
+#: model:ir.model.fields.selection,name:contact_extension.selection__contact_channels__channel__whatsapp
+msgid "WhatsApp"
+msgstr "واتساب"
+
+#. module: contact_extension
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__zip
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_addresses_form
+msgid "ZIP"
+msgstr "الرمز البريدي"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "e.g. \"B2B\", \"VIP\", \"Consulting\", ..."
+msgstr "مثال: \"B2B\"، \"VIP\"، \"استشارات\"، ..."
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "e.g. BE0477472701"
+msgstr "مثال: BE0477472701"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "e.g. Contract Document, ID Copy"
+msgstr "مثال: عقد، صورة الهوية"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_addresses_form
+msgid "e.g. Home Address, Office Address"
+msgstr "مثال: عنوان المنزل، عنوان المكتب"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "e.g. Mister"
+msgstr "السيد"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "e.g. Sales Director"
+msgstr "مثال: مدير المبيعات"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "e.g. Work, Personal, Emergency"
+msgstr "مثال: عمل، شخصي، طوارئ"
+
+#. module: contact_extension
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+msgid "e.g. https://www.odoo.com"
+msgstr "مثال: https://www.odoo.com"

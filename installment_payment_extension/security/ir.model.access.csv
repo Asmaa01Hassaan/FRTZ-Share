@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_control_payment_user,control.payment.user,model_control_payment,account.group_account_user,1,1,1,1
+access_payment_invoice_wizard,payment.invoice.wizard,model_payment_invoice_wizard,account.group_account_user,1,1,1,1
+access_payment_invoice_wizard_line,payment.invoice.wizard.line,model_payment_invoice_wizard_line,account.group_account_user,1,1,1,1

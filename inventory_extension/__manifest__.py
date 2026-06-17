@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Inventory Extension",
+    'sequence': 3,
     "version": "18.0.1.0.0",
     "summary": "Filter Operation Type based on document type",
     "description": """
@@ -10,13 +11,14 @@
         - Deliveries: Only show outgoing operation types
         - Internal Transfers: Only show internal operation types
     """,
-    "author": "Omar Radwan",
+    "author": "Asmaa Hassaan",
     "depends": ["stock"],
     "data": [
         "views/stock_picking_views.xml",
     ],
     "license": "LGPL-3",
-    "application": False,
-    "installable": True,
+    'installable': True,
+    'auto_install': False,
+    'application': True,
 }
 

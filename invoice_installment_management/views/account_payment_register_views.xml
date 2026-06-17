@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_payment_register_form_first_payment" model="ir.ui.view">
+        <field name="name">account.payment.register.form.first.payment</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+        <field name="arch" type="xml">
+            <field name="custom_user_currency_id" position="after">
+                <field name="show_first_payment_per_lines_mode" invisible="1"/>
+                <field name="line_first_payment_amount" invisible="1"/>
+            </field>
+            <label for="amount" position="before">
+                <field name="payment_amount_mode"
+                       widget="radio"
+                       options="{'horizontal': true}"
+                       invisible="not show_first_payment_per_lines_mode"/>
+            </label>
+        </field>
+    </record>
+</odoo>

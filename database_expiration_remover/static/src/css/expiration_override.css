@@ -1,0 +1,94 @@
+/* Hide expiration warnings and panels */
+.o_expiration_panel {
+    display: none !important;
+}
+
+.o_database_expiration_warning {
+    display: none !important;
+}
+
+.o_subscription_warning {
+    display: none !important;
+}
+
+/* Hide enterprise subscription warnings */
+.o_enterprise_subscription_warning {
+    display: none !important;
+}
+
+/* Override any expiration-related styling */
+[class*="expiration"] {
+    display: none !important;
+}
+
+[class*="subscription"] {
+    display: none !important;
+}
+
+/* Hide warning banners */
+.o_warning_banner {
+    display: none !important;
+}
+
+.o_alert_warning {
+    display: none !important;
+}
+
+.o_alert_danger {
+    display: none !important;
+}
+
+/* Ensure our protection message is visible */
+.o_database_protection_active {
+    background: #d4edda !important;
+    border: 1px solid #c3e6cb !important;
+    color: #155724 !important;
+    padding: 10px !important;
+    border-radius: 5px !important;
+    margin: 10px 0 !important;
+    display: block !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+    transition: transform 0.3s ease, opacity 0.3s ease !important;
+}
+
+.o_database_protection_active::before {
+    content: "🛡️ " !important;
+    font-weight: bold !important;
+}
+
+/* Close button styling */
+.o_database_protection_close {
+    background: none !important;
+    border: none !important;
+    color: #155724 !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    margin-left: 10px !important;
+    opacity: 0.7 !important;
+    transition: opacity 0.2s !important;
+    width: 20px !important;
+    height: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+}
+
+.o_database_protection_close:hover {
+    opacity: 1 !important;
+    background: rgba(21, 87, 36, 0.1) !important;
+}
+
+.o_database_protection_close:active {
+    transform: scale(0.9) !important;
+}
+
+/* Message container */
+.o_database_protection_active > div {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+}

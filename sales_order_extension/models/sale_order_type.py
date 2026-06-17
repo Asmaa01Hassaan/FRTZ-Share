@@ -35,6 +35,62 @@ class SaleOrderType(models.Model):
         string=_("Currency"),
         default=lambda self: self.env.company.currency_id,
     )
+    journal_id = fields.Many2one(
+        "account.journal",
+        string=_("Invoicing Journal"),
+        domain="[('type', 'in', ('sale', 'general')), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        check_company=True,
+        help=_("Default journal for invoices created from orders of this type (Sales or Miscellaneous only)."),
+    )
+    journal_incactive_validation = fields.Boolean(
+        string=_("Skip Sale Journal Validation"),
+        default=False,
+        help=_(
+            "When enabled, customer invoices from this order type may use a non-sale "
+            "journal (e.g. Miscellaneous) without raising a validation error."
+        ),
+    )
+    product_category_ids = fields.Many2many(
+        "product.category",
+        "sale_order_type_product_category_rel",
+        "sale_order_type_id",
+        "category_id",
+        string=_("Product Categories"),
+        help=_(
+            "When set, only products in these categories (including subcategories) "
+            "can be added to orders of this type. Leave empty to allow all categories."
+        ),
+    )
+    sale_order_template_id = fields.Many2one(
+        "sale.order.template",
+        string=_("Quotation Template"),
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        check_company=True,
+        help=_("Default quotation template applied to new orders of this type."),
+    )
+
+    sequence_prefix = fields.Char(
+        string=_("Sequence Prefix"),
+        required=True,
+        default="SO/%(year)s/",
+        help=_(
+            "Prefix for order numbers of this type, e.g. SOI/%(year)s/. "
+            "Supports Odoo placeholders: %(year)s, %(month)s, %(day)s, etc."
+        ),
+    )
+    sequence_code = fields.Char(
+        string=_("Sequence Code"),
+        help=_(
+            "Technical code on ir.sequence (e.g. custom.sale.order). "
+            "Leave empty to use an auto code sale.order.type.<id>."
+        ),
+        copy=False,
+    )
+    sequence_padding = fields.Integer(
+        string=_("Sequence Size"),
+        default=5,
+        help=_("Number of digits for the numeric part (e.g. 5 → 00001)."),
+    )
 
     sequence_auto = fields.Boolean(
         string=_("Auto-generated sequence"),
@@ -58,45 +114,104 @@ class SaleOrderType(models.Model):
         ("name_uniq", "unique(name)", "This sale order type name already exists."),
     ]
 
+    def _is_category_allowed(self, category):
+        """Return True if category is empty restriction or product category is within allowed tree."""
+        self.ensure_one()
+        if not self.product_category_ids:
+            return True
+        if not category:
+            return False
+        return bool(
+            category.id in self.env["product.category"]
+            .search([("id", "child_of", self.product_category_ids.ids)])
+            .ids
+        )
+
+    def _product_category_domain(self):
+        self.ensure_one()
+        if not self.product_category_ids:
+            return []
+        allowed = self.env["product.category"].search(
+            [("id", "child_of", self.product_category_ids.ids)]
+        ).ids
+        return [("categ_id", "in", allowed)] if allowed else [("categ_id", "=", False)]
+
     @api.model
-    def _sequence_prefix_from_name(self, name):
-        if not name:
-            return "SO-"
-        slug = re.sub(r"[^A-Za-z0-9]+", "-", name.strip())
-        slug = slug.strip("-").upper()[:12] or "SO"
-        return "%s-" % slug
+    def _suggest_sequence_prefix(self, name):
+        """Default prefix hints aligned with account_invoice_installments sequences."""
+        n = (name or "").lower()
+        if any(k in n for k in ("custom", "warehouse", "مستودع")):
+            return "SOI/%(year)s/"
+        if any(k in n for k in ("wholesale", "external", "خارجي", "بيع خارج")):
+            return "SOG/%(year)s/"
+        if any(k in n for k in ("subscription", "اشتراك", "خدمة")):
+            return "SOS/%(year)s/"
+        if any(k in n for k in ("standard", "قياسي", "عادي")):
+            return "SOS/%(year)s/"
+        slug = re.sub(r"[^A-Za-z0-9]+", "", name.strip()).upper()[:3] or "SO"
+        return "%s/%(year)s/" % slug
+
+    def _sequence_technical_code(self):
+        self.ensure_one()
+        return self.sequence_code or "sale.order.type.%s" % self.id
+
+    def _sequence_values(self):
+        self.ensure_one()
+        return {
+            "name": self.name,
+            "code": self._sequence_technical_code(),
+            "prefix": self.sequence_prefix or "SO/%(year)s/",
+            "padding": self.sequence_padding or 5,
+            "number_next": 1,
+            "implementation": "standard",
+            "company_id": self.company_id.id if self.company_id else False,
+        }
+
+    @api.onchange("name")
+    def _onchange_name_sequence_prefix(self):
+        if self.name and not self.sequence_prefix:
+            self.sequence_prefix = self._suggest_sequence_prefix(self.name)
 
     def _ensure_sequence(self):
         IrSequence = self.env["ir.sequence"].sudo()
         for rec in self:
             if not rec.name:
                 continue
-            code = "sale.order.type.%s" % rec.id
+            vals = rec._sequence_values()
+            code = vals["code"]
             if rec.sequence_id:
                 rec.sequence_id.sudo().write(
                     {
-                        "name": rec.name,
-                        "prefix": self._sequence_prefix_from_name(rec.name),
-                        "company_id": rec.company_id.id if rec.company_id else False,
+                        "name": vals["name"],
+                        "code": code,
+                        "prefix": vals["prefix"],
+                        "padding": vals["padding"],
+                        "company_id": vals["company_id"],
                     }
                 )
                 continue
             existing = IrSequence.search([("code", "=", code)], limit=1)
             if existing:
+                existing.sudo().write(
+                    {
+                        "name": vals["name"],
+                        "prefix": vals["prefix"],
+                        "padding": vals["padding"],
+                        "company_id": vals["company_id"],
+                    }
+                )
                 rec.write({"sequence_id": existing.id, "sequence_auto": True})
                 continue
-            seq = IrSequence.create(
-                {
-                    "name": rec.name,
-                    "code": code,
-                    "prefix": self._sequence_prefix_from_name(rec.name),
-                    "padding": 5,
-                    "number_next": 1,
-                    "implementation": "standard",
-                    "company_id": rec.company_id.id if rec.company_id else False,
-                }
-            )
+            seq = IrSequence.create(vals)
             rec.write({"sequence_id": seq.id, "sequence_auto": True})
+
+    def _get_next_order_name(self, sequence_date=None):
+        """Return the next order number using this type's dedicated sequence."""
+        self.ensure_one()
+        self._ensure_sequence()
+        if not self.sequence_id:
+            return False
+        return self.sequence_id.next_by_id(sequence_date=sequence_date)
 
     def _sync_default_search_filter(self):
         IrFilters = self.env["ir.filters"].sudo()
@@ -146,6 +261,8 @@ class SaleOrderType(models.Model):
                 "search_default_sale_order_type_id": rec.id,
                 "restrict_order_product_type": rec.product_type,
             }
+            if rec.product_category_ids:
+                ctx["restrict_order_product_category_ids"] = rec.product_category_ids.ids
             action_vals = {
                 "name": rec.name,
                 "res_model": "sale.order",
@@ -177,6 +294,9 @@ class SaleOrderType(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get("name") and not vals.get("sequence_prefix"):
+                vals["sequence_prefix"] = self._suggest_sequence_prefix(vals["name"])
         records = super().create(vals_list)
         records._ensure_sequence()
         records._ensure_dynamic_menu_and_action()
@@ -184,7 +304,19 @@ class SaleOrderType(models.Model):
 
     def write(self, vals):
         res = super().write(vals)
-        if any(k in vals for k in ("name", "active", "company_id", "product_type")):
+        if any(
+            k in vals
+            for k in (
+                "name",
+                "active",
+                "company_id",
+                "product_type",
+                "product_category_ids",
+                "sequence_prefix",
+                "sequence_code",
+                "sequence_padding",
+            )
+        ):
             self._ensure_sequence()
             self._ensure_dynamic_menu_and_action()
         return res

@@ -1,0 +1,168 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-03 03:02+0000\n"
+"PO-Revision-Date: 2026-06-03 03:02+0000\n"
+"Last-Translator: FRTZ\n"
+"Language-Team: Arabic\n"
+"Language: ar_001\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: sales_order_extension
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__action_id
+msgid "Action"
+msgstr "إجراء"
+
+#. module: sales_order_extension
+#. odoo-python
+#: code:addons/sales_order_extension/models/sale_order_type.py:0
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__sequence_auto
+msgid "Auto-generated sequence"
+msgstr "تسلسل مُولَّد تلقائياً"
+
+#. modules: product_extension, sales_order_extension
+#. odoo-python
+#: code:addons/sales_order_extension/models/sale_order_type.py:0
+#: model:ir.model.fields.selection,name:sales_order_extension.selection__sale_order_type__product_type__combo
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_category_form_code
+msgid "Combo"
+msgstr "مركب"
+
+#. module: sales_order_extension
+#: model:ir.ui.menu,name:sales_order_extension.menu_companies
+msgid "Companies"
+msgstr "الشركات"
+
+#. modules: account_invoice_installments, invoice_installment_management,
+#. sales_order_extension
+#. odoo-python
+#: code:addons/sales_order_extension/models/sale_order_type.py:0
+#: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order_installment__company_id
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__company_id
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: sales_order_extension
+#: model:ir.ui.menu,name:sales_order_extension.menu_frtz_sales_configuration
+msgid "Configuration"
+msgstr "الإعدادات"
+
+#. module: sales_order_extension
+#: model:ir.ui.menu,name:sales_order_extension.menu_customers
+msgid "Customers"
+msgstr "العملاء"
+
+#. module: sales_order_extension
+#: model:ir.ui.menu,name:sales_order_extension.menu_frtz_root_sales
+#: model:ir.ui.menu,name:sales_order_extension.menu_sales_root
+msgid "FRTZ"
+msgstr "حركات الجمعية"
+
+#. modules: product_extension, sales_order_extension
+#. odoo-python
+#: code:addons/sales_order_extension/models/sale_order_type.py:0
+#: model:ir.model.fields.selection,name:sales_order_extension.selection__sale_order_type__product_type__consu
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_category_form_code
+msgid "Goods"
+msgstr "بضاعة"
+
+#. module: sales_order_extension
+#: model:ir.ui.menu,name:sales_order_extension.menu_partner_parent
+msgid "Partners"
+msgstr "الشركاء"
+
+#. module: sales_order_extension
+#: model:ir.ui.menu,name:sales_order_extension.menu_pricelist
+msgid "Price List"
+msgstr "قائمة الأسعار"
+
+#. module: sales_order_extension
+#. odoo-python
+#: code:addons/sales_order_extension/models/sale_order_line.py:0
+msgid ""
+"Product \"%(prod)s\" must be of the same type as this order (expected: "
+"%(expected)s)."
+msgstr ""
+"يجب أن يكون المنتج \"%(prod)s\" من نفس نوع هذا الطلب (المتوقع: "
+"%(expected)s)."
+
+#. module: sales_order_extension
+#. odoo-python
+#: code:addons/sales_order_extension/models/sale_order_type.py:0
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order__sale_order_type_product_type
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_line__so_order_product_type
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__product_type
+msgid "Product Type"
+msgstr "نوع المنتج"
+
+#. module: sales_order_extension
+#: model:ir.model,name:sales_order_extension.model_product_product
+msgid "Product Variant"
+msgstr "متغير المنتج "
+
+#. module: sales_order_extension
+#: model:ir.ui.menu,name:sales_order_extension.menu_products
+msgid "Products"
+msgstr "المنتجات"
+
+#. module: sales_order_extension
+#: model:ir.model,name:sales_order_extension.model_sale_order_type
+#: model:ir.ui.menu,name:sales_order_extension.menu_sale_order_type
+#: model_terms:ir.ui.view,arch_db:sales_order_extension.view_sale_order_type_form
+#: model_terms:ir.ui.view,arch_db:sales_order_extension.view_sales_order_filter_custom
+msgid "Sale Order Type"
+msgstr "نوع أمر البيع"
+
+#. module: sales_order_extension
+#: model:ir.actions.act_window,name:sales_order_extension.action_sale_order_type
+#: model_terms:ir.ui.view,arch_db:sales_order_extension.view_sale_order_type_tree
+msgid "Sale Order Types"
+msgstr "أنواع أوامر البيع"
+
+#. module: sales_order_extension
+#: model:ir.model,name:sales_order_extension.model_sale_order
+msgid "Sales Order"
+msgstr "أمر البيع"
+
+#. module: sales_order_extension
+#: model:ir.model,name:sales_order_extension.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "بند أمر المبيعات"
+
+#. module: sales_order_extension
+#. odoo-python
+#: code:addons/sales_order_extension/models/sale_order_type.py:0
+#: model:ir.model.fields,help:sales_order_extension.field_sale_order__sale_order_type_product_type
+#: model:ir.model.fields,help:sales_order_extension.field_sale_order_line__so_order_product_type
+#: model:ir.model.fields,help:sales_order_extension.field_sale_order_type__product_type
+msgid "Same categories as on products: goods, service, or combo."
+msgstr "نفس فئات المنتجات: بضاعة، خدمة، أو مركب."
+
+#. modules: account_invoice_installments, invoice_installment_management,
+#. sales_order_extension
+#. odoo-python
+#: code:addons/sales_order_extension/models/sale_order_type.py:0
+#: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order_installment__sequence
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__sequence
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__sequence_id
+msgid "Sequence"
+msgstr "التسلسل"
+
+#. modules: product_extension, sales_order_extension
+#. odoo-python
+#: code:addons/sales_order_extension/models/sale_order_type.py:0
+#: model:ir.model.fields.selection,name:sales_order_extension.selection__sale_order_type__product_type__service
+#: model_terms:ir.ui.view,arch_db:product_extension.view_product_category_form_code
+msgid "Service"
+msgstr "خدمة"
+
+#. module: sales_order_extension
+#: model:ir.model.constraint,message:sales_order_extension.constraint_sale_order_type_name_uniq
+msgid "This sale order type name already exists."
+msgstr "اسم نوع أمر البيع هذا موجود بالفعل."

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_control_payment_tree" model="ir.ui.view">
+        <field name="name">control.payment.tree</field>
+        <field name="model">control.payment</field>
+        <field name="arch" type="xml">
+            <list string="Control Payments" editable="bottom" create="0" delete="0">
+                <field name="invoice_name" string="Transaction" readonly="1"/>
+                <field name="invoice_date" string="Transaction Date" readonly="1"/>
+                <field name="amount_total"
+                       string="Total Amount"
+                       widget="monetary"
+                       options="{'currency_field': 'currency_id'}"
+                       readonly="1"/>
+                <field name="total_remaining_amount"
+                       string="Remaining Amount"
+                       widget="monetary"
+                       options="{'currency_field': 'currency_id'}"
+                       readonly="1"/>
+                <field name="due_amount"
+                       string="Due Amount"
+                       widget="monetary"
+                       options="{'currency_field': 'currency_id'}"
+                       readonly="1"/>
+                <field name="to_pay"
+                       string="To Pay"
+                       widget="monetary"
+                       options="{'currency_field': 'currency_id'}"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_control_payment_form" model="ir.ui.view">
+        <field name="name">control.payment.form</field>
+        <field name="model">control.payment</field>
+        <field name="arch" type="xml">
+            <form string="Control Payment">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="payment_id" string="Payment" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="invoice_name" string="Transaction" readonly="1"/>
+                            <field name="invoice_date" string="Transaction Date" readonly="1"/>
+                            <field name="amount_total"
+                                   string="Total Amount"
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"
+                                   readonly="1"/>
+                            <field name="total_remaining_amount"
+                                   string="Remaining Amount"
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"
+                                   readonly="1"/>
+                            <field name="due_amount"
+                                   string="Due Amount"
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"
+                                   readonly="1"/>
+                            <field name="to_pay"
+                                   string="To Pay"
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_control_payment" model="ir.actions.act_window">
+        <field name="name">Control Payments</field>
+        <field name="res_model">control.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'default_payment_id': active_id}</field>
+    </record>
+</odoo>

@@ -1,0 +1,278 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-03 03:02+0000\n"
+"PO-Revision-Date: 2026-06-03 03:02+0000\n"
+"Last-Translator: FRTZ\n"
+"Language-Team: Arabic\n"
+"Language: ar_001\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "<code>ceil(x)</code> - Round up to next integer"
+msgstr "<code>ceil(x)</code> - التقريب لأعلى لأقرب عدد صحيح"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "<code>cost * 1.2</code> - 20% markup on cost"
+msgstr "<code>cost * 1.2</code> - هامش 20٪ على التكلفة"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "<code>cost</code> - Product standard cost"
+msgstr "<code>cost</code> - التكلفة القياسية للمنتج"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid ""
+"<code>first_payment</code> - First payment value (from header "
+"<code>first_payment_percentage</code>, or line "
+"<code>line_first_payment_percentage</code> when scope is Per Lines)"
+msgstr ""
+"<code>first_payment</code> - قيمة الدفعة الأولى (من الرأس "
+"<code>first_payment_percentage</code> أو من السطر "
+"<code>line_first_payment_percentage</code> عند النطاق «لكل سطر»)"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid ""
+"<code>if(condition, true_value, false_value)</code> - Conditional expression"
+" (automatically converted to iff)"
+msgstr ""
+"<code>if(condition, true_value, false_value)</code> - تعبير شرطي (يُحوَّل "
+"تلقائياً إلى iff)"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid ""
+"<code>if(installment_num &lt; 12, price, cost)</code> - Use price if "
+"installments &lt; 12, else use cost"
+msgstr ""
+"<code>if(installment_num &lt; 12, price, cost)</code> - استخدم السعر إذا "
+"الأقساط &lt; 12 وإلا التكلفة"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid ""
+"<code>if(installment_num == 0, price, price * 1.05)</code> - 5% markup for "
+"installments"
+msgstr ""
+"<code>if(installment_num == 0, price, price * 1.05)</code> - هامش 5٪ عند "
+"وجود أقساط"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid ""
+"<code>if(qty &gt; 10, price * 0.9, price)</code> - 10% discount for quantity"
+" &gt; 10"
+msgstr ""
+"<code>if(qty &gt; 10, price * 0.9, price)</code> - خصم 10٪ للكمية &gt; 10"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid ""
+"<code>installment_num</code> - Installment count (from order/invoice header "
+"<code>installment_count</code>, or line <code>line_installment_count</code> "
+"when scope is Per Lines)"
+msgstr ""
+"<code>installment_num</code> - عدد الأقساط (من رأس المستند "
+"<code>installment_count</code> أو من السطر "
+"<code>line_installment_count</code> عند النطاق «لكل سطر»)"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "<code>price * 1.1</code> - Add 10% markup"
+msgstr "<code>price * 1.1</code> - إضافة هامش 10٪"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "<code>price + (installment_num * 10)</code> - Add $10 per installment"
+msgstr "<code>price + (installment_num * 10)</code> - إضافة 10 لكل قسط"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "<code>price</code> - Base price from pricelist"
+msgstr "<code>price</code> - السعر الأساسي من قائمة الأسعار"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "<code>purchase_price * 1.15</code> - 15% markup on purchase price"
+msgstr "<code>purchase_price * 1.15</code> - هامش 15٪ على سعر الشراء"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "<code>purchase_price</code> - Purchase price (same as cost)"
+msgstr "<code>purchase_price</code> - سعر الشراء (مثل التكلفة)"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "<code>qty</code> - Quantity ordered"
+msgstr "<code>qty</code> - الكمية المطلوبة"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid ""
+"<code>round(price * 0.9, 2)</code> - 10% discount rounded to 2 decimals"
+msgstr "<code>round(price * 0.9, 2)</code> - خصم 10٪ مقرب لمنزلتين"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "<code>round(x, n)</code> - Round number x to n decimal places"
+msgstr "<code>round(x, n)</code> - تقريب الرقم x إلى n منازل عشرية"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "<strong>Available Variables:</strong>"
+msgstr "<strong>المتغيرات المتاحة:</strong>"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "<strong>Functions:</strong>"
+msgstr "<strong>الدوال:</strong>"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "<strong>Examples:</strong>"
+msgstr "<strong>أمثلة:</strong>"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid ""
+"<strong>Note:</strong> <code>if(</code> is automatically converted to "
+"<code>iff(</code> internally"
+msgstr ""
+"<strong>ملاحظة:</strong> <code>if(</code> يُحوَّل تلقائياً إلى "
+"<code>iff(</code> داخلياً"
+
+#. module: pricelist_expression
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.view_product_pricelist_item_form_expression
+msgid "All payment plans"
+msgstr "جميع خطط الدفع"
+
+#. module: pricelist_expression
+#: model:ir.model.fields,field_description:pricelist_expression.field_product_pricelist_item__compute_price
+msgid "Compute Price"
+msgstr "حساب السعر"
+
+#. module: pricelist_expression
+#: model:ir.model,name:pricelist_expression.model_res_config_settings
+msgid "Config Settings"
+msgstr "تهيئة الإعدادات "
+
+#. module: pricelist_expression
+#: model:ir.model.fields,field_description:pricelist_expression.field_product_pricelist_item__price_expression
+#: model:ir.model.fields.selection,name:pricelist_expression.selection__product_pricelist_item__compute_price__expression
+msgid "Expression"
+msgstr "تعبير"
+
+#. module: pricelist_expression
+#. odoo-python
+#: code:addons/pricelist_expression/models/product_pricelist_item.py:0
+#: model:ir.model.fields.selection,name:pricelist_expression.selection__product_pricelist_item__payment_type__immediate
+msgid "Immediate Payment"
+msgstr "دفع فوري"
+
+#. module: pricelist_expression
+#. odoo-python
+#: code:addons/pricelist_expression/models/product_pricelist_item.py:0
+#: model:ir.model.fields.selection,name:pricelist_expression.selection__product_pricelist_item__payment_type__irregular
+msgid "Irregular Installments"
+msgstr "أقساط غير منتظمة"
+
+#. module: pricelist_expression
+#: model:ir.model.fields,field_description:pricelist_expression.field_sale_order__is_immediate_term
+#: model:ir.model.fields,field_description:pricelist_expression.field_sale_order_line__is_immediate_term
+msgid "Is Immediate Term"
+msgstr "شرط فوري"
+
+#. module: pricelist_expression
+#: model:ir.model,name:pricelist_expression.model_account_move
+msgid "Journal Entry"
+msgstr "قيد اليومية"
+
+#. module: pricelist_expression
+#: model:ir.model,name:pricelist_expression.model_account_move_line
+msgid "Journal Item"
+msgstr "عنصر اليومية"
+
+#. module: pricelist_expression
+#. odoo-python
+#: code:addons/pricelist_expression/models/product_pricelist_item.py:0
+#: model:ir.model.fields,help:pricelist_expression.field_product_pricelist_item__payment_type
+msgid "Leave empty to apply this pricelist rule to all payment plans."
+msgstr "اتركه فارغاً لتطبيق قاعدة قائمة الأسعار على جميع خطط الدفع."
+
+#. module: pricelist_expression
+#: model:ir.model,name:pricelist_expression.model_product_pricelist
+#: model:ir.model.fields,field_description:pricelist_expression.field_account_bank_statement_line__invoice_pricelist_id
+#: model:ir.model.fields,field_description:pricelist_expression.field_account_move__invoice_pricelist_id
+msgid "Pricelist"
+msgstr "قائمه الأسعار"
+
+#. module: pricelist_expression
+#: model:ir.model,name:pricelist_expression.model_product_pricelist_item
+msgid "Pricelist Rule"
+msgstr "قاعدة قائمة الأسعار "
+
+#. module: pricelist_expression
+#: model:ir.model.fields,help:pricelist_expression.field_account_bank_statement_line__invoice_pricelist_id
+#: model:ir.model.fields,help:pricelist_expression.field_account_move__invoice_pricelist_id
+msgid "Pricelist used to compute product prices on invoice lines."
+msgstr "قائمة الأسعار المستخدمة لحساب أسعار المنتجات على بنود الفاتورة."
+
+#. module: pricelist_expression
+#: model:ir.model.fields,help:pricelist_expression.field_product_pricelist_item__price_expression
+msgid ""
+"Python expression that returns the final unit price.\n"
+"Available variables:\n"
+"price → base price\n"
+"cost → standard cost\n"
+"purchase_price → purchase price (same as cost)\n"
+"qty → quantity\n"
+"installment_num → installment count (header or line, by scope)\n"
+"first_payment → first payment value (header or line, by scope)\n"
+"ceil(x) → round up to next integer\n"
+"round(x, n) → normal rounding"
+msgstr ""
+"تعبير Python يُرجع السعر النهائي للوحدة. المتغيرات المتاحة: price, cost, "
+"qty, installment_num, first_payment, round()"
+
+#. module: pricelist_expression
+#. odoo-python
+#: code:addons/pricelist_expression/models/product_pricelist_item.py:0
+#: model:ir.model.fields.selection,name:pricelist_expression.selection__product_pricelist_item__payment_type__regular
+msgid "Regular Installments"
+msgstr "أقساط منتظمة"
+
+#. module: pricelist_expression
+#: model:ir.model.fields,field_description:pricelist_expression.field_account_bank_statement_line__show_invoice_pricelist
+#: model:ir.model.fields,field_description:pricelist_expression.field_account_move__show_invoice_pricelist
+msgid "Show Invoice Pricelist"
+msgstr "إظهار قائمة أسعار الفاتورة"
+
+#. module: pricelist_expression
+#: model:ir.model.fields,help:pricelist_expression.field_res_config_settings__show_invoice_pricelist
+msgid ""
+"Show a pricelist field on customer invoices and use it to compute invoice "
+"line prices."
+msgstr ""
+"إظهار حقل قائمة الأسعار على فواتير العملاء واستخدامه لحساب أسعار البنود."
+
+#. module: pricelist_expression
+#: model:ir.model.fields,field_description:pricelist_expression.field_res_config_settings__show_invoice_pricelist
+#: model_terms:ir.ui.view,arch_db:pricelist_expression.res_config_settings_view_form_invoice_pricelist
+msgid "Show in Customer Invoice"
+msgstr "إظهار في فاتورة العميل"
+
+#. module: pricelist_expression
+#: model:ir.model.fields,help:pricelist_expression.field_product_pricelist_item__compute_price
+msgid ""
+"Use the discount rules and activate the discount settings in order to show "
+"discount to customer."
+msgstr "قم باستخدام قواعد الخصم وتفعيل إعدادات الخصم حتى يظهر الخصم للعملاء. "

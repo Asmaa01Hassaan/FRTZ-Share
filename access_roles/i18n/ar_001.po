@@ -1,0 +1,751 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-03 03:02+0000\n"
+"PO-Revision-Date: 2026-06-03 03:02+0000\n"
+"Last-Translator: FRTZ\n"
+"Language-Team: Arabic\n"
+"Language: ar_001\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__accesses_count
+msgid "# Access Rights"
+msgstr "# صلاحيات الوصول"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__groups_count
+msgid "# Groups"
+msgstr "# المجموعات"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__rules_count
+msgid "# Record Rules"
+msgstr "# قواعد السجل"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__access_field_id
+msgid "Access Field"
+msgstr "حقل الصلاحية"
+
+#. module: access_roles
+#: model:ir.model,name:access_roles.model_res_groups
+msgid "Access Groups"
+msgstr "مجموعات الصلاحية"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__access_model_id
+msgid "Access Model"
+msgstr "نموذج الصلاحية"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.access_role_view_form
+msgid "Access Rights"
+msgstr "صلاحيات الوصول"
+
+#. module: access_roles
+#: model:ir.model,name:access_roles.model_access_role
+#: model:ir.model.fields,field_description:access_roles.field_res_users__access_role_id
+#: model:ir.module.category,name:access_roles.module_access_roles_category
+#: model:ir.ui.menu,name:access_roles.access_role_menu_root
+msgid "Access Role"
+msgstr "دور الصلاحية"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_role_management__access_role_menu_ids
+msgid "Access Role Menu"
+msgstr "قائمة دور الصلاحية"
+
+#. module: access_roles
+#: model:res.groups,name:access_roles.access_role_group_user
+msgid "Access Role User"
+msgstr "مستخدم دور الصلاحية"
+
+#. module: access_roles
+#: model:ir.actions.act_window,name:access_roles.action_access_role
+#: model:ir.ui.menu,name:access_roles.access_role_menu_roles
+msgid "Access Roles"
+msgstr "أدوار الصلاحيات"
+
+#. module: access_roles
+#: model:res.groups,comment:access_roles.access_role_group_user
+msgid "Access to access roles"
+msgstr "الوصول إلى أدوار الصلاحيات"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.access_role_view_form_groups
+msgid "Accounting"
+msgstr "المحاسبة"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__message_needaction
+#: model:ir.model.fields,field_description:access_roles.field_role_management__message_needaction
+msgid "Action Needed"
+msgstr "إجراء مطلوب"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_button_registry__action_name
+msgid "Action/Method Name"
+msgstr "اسم الإجراء/الدالة"
+
+#. modules: access_roles, contact_extension, sales_order_extension
+#: model:ir.model.fields,field_description:access_roles.field_filter_registry__active
+#: model:ir.model.fields,field_description:access_roles.field_groupby_registry__active
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__active
+#: model:ir.model.fields.selection,name:contact_extension.selection__customer_guarantees__sale_order_customer_guarantees_status__active
+#: model:ir.model.fields.selection,name:contact_extension.selection__res_partner__status__active
+msgid "Active"
+msgstr "فعال"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.access_role_view_form_groups
+msgid "Administration"
+msgstr "الإدارة"
+
+#. module: access_roles
+#: model:res.groups,name:access_roles.access_role_group_administrator
+msgid "Administrator"
+msgstr "مدير النظام"
+
+#. module: access_roles
+#: model:ir.model,name:access_roles.model_ir_module_category
+msgid "Application"
+msgstr "التطبيق"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__message_attachment_count
+#: model:ir.model.fields,field_description:access_roles.field_role_management__message_attachment_count
+msgid "Attachment Count"
+msgstr "عدد المرفقات"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__button_access_id
+#: model:ir.model.fields,field_description:access_roles.field_role_management__button_access_ids
+msgid "Button Access"
+msgstr "صلاحية الزر"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__button_invisible
+msgid "Button Invisible"
+msgstr "إخفاء الزر"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_button_registry__name
+msgid "Button Name"
+msgstr "اسم الزر"
+
+#. module: access_roles
+#: model:ir.model,name:access_roles.model_button_registry
+msgid "Button Registry"
+msgstr "سجل الأزرار"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_groupby_registry__context
+msgid "Context"
+msgstr "السياق"
+
+#. modules: access_roles, account_invoice_installments, contact_extension,
+#. installment_management_pro, installment_payment_extension,
+#. invoice_installment_management, sales_order_extension
+#: model:ir.model.fields,field_description:access_roles.field_access_role__create_uid
+#: model:ir.model.fields,field_description:access_roles.field_button_registry__create_uid
+#: model:ir.model.fields,field_description:access_roles.field_domain_model__create_uid
+#: model:ir.model.fields,field_description:access_roles.field_field_access__create_uid
+#: model:ir.model.fields,field_description:access_roles.field_filter_registry__create_uid
+#: model:ir.model.fields,field_description:access_roles.field_groupby_registry__create_uid
+#: model:ir.model.fields,field_description:access_roles.field_role_management__create_uid
+#: model:ir.model.fields,field_description:access_roles.field_tab_registry__create_uid
+#: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order_installment__create_uid
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__create_uid
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__create_uid
+#: model:ir.model.fields,field_description:contact_extension.field_contact_channels__create_uid
+#: model:ir.model.fields,field_description:contact_extension.field_contact_division__create_uid
+#: model:ir.model.fields,field_description:contact_extension.field_customer_guarantees__create_uid
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__create_uid
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard__create_uid
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__create_uid
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard__create_uid
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__create_uid
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__create_uid
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard__create_uid
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__create_uid
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_installment_payment_log__create_uid
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__create_uid
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__create_uid
+msgid "Created by"
+msgstr "أنشئ بواسطة"
+
+#. modules: access_roles, account_invoice_installments, contact_extension,
+#. installment_management_pro, installment_payment_extension,
+#. invoice_installment_management, sales_order_extension
+#: model:ir.model.fields,field_description:access_roles.field_access_role__create_date
+#: model:ir.model.fields,field_description:access_roles.field_button_registry__create_date
+#: model:ir.model.fields,field_description:access_roles.field_domain_model__create_date
+#: model:ir.model.fields,field_description:access_roles.field_field_access__create_date
+#: model:ir.model.fields,field_description:access_roles.field_filter_registry__create_date
+#: model:ir.model.fields,field_description:access_roles.field_groupby_registry__create_date
+#: model:ir.model.fields,field_description:access_roles.field_role_management__create_date
+#: model:ir.model.fields,field_description:access_roles.field_tab_registry__create_date
+#: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order_installment__create_date
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__create_date
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__create_date
+#: model:ir.model.fields,field_description:contact_extension.field_contact_channels__create_date
+#: model:ir.model.fields,field_description:contact_extension.field_contact_division__create_date
+#: model:ir.model.fields,field_description:contact_extension.field_customer_guarantees__create_date
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__create_date
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard__create_date
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__create_date
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard__create_date
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__create_date
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__create_date
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard__create_date
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__create_date
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_installment_payment_log__create_date
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__create_date
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__create_date
+msgid "Created on"
+msgstr "تاريخ الإنشاء"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_role_management__is_debug
+msgid "Disable Debug Mode"
+msgstr "تعطيل وضع التصحيح"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_role_management__is_chatter
+msgid "Disable chatter"
+msgstr "تعطيل المحادثة"
+
+#. module: access_roles
+#: model:ir.model.fields,help:access_roles.field_role_management__is_chatter
+msgid "Disable chatter for the role"
+msgstr "تعطيل المحادثة لهذا الدور"
+
+#. module: access_roles
+#: model:ir.model.fields,help:access_roles.field_role_management__is_debug
+msgid "Disable the option to enable debug mode for the user"
+msgstr "تعطيل خيار تفعيل وضع التصحيح للمستخدم"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_domain_model__name
+#: model:ir.model.fields,field_description:access_roles.field_field_access__domain_id
+#: model:ir.model.fields,field_description:access_roles.field_filter_registry__domain
+#: model:ir.model.fields,field_description:access_roles.field_role_management__domain_ids
+msgid "Domain"
+msgstr "النطاق"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__domain_access_id
+#: model:ir.model.fields,field_description:access_roles.field_role_management__domain_access_ids
+msgid "Domain Access"
+msgstr "صلاحية النطاق"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.domain_model_view_list
+msgid "Domains"
+msgstr "النطاقات"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.role_management_view_form
+msgid "Edit Domain Access"
+msgstr "تعديل صلاحية النطاق"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.role_management_view_form
+msgid "Edit Fields Access"
+msgstr "تعديل صلاحية الحقول"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.role_management_view_form
+msgid "Edit Model Access"
+msgstr "تعديل صلاحية النموذج"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.access_role_view_form_groups
+msgid "Extra Rights"
+msgstr "صلاحيات إضافية"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_role_management__field_access_ids
+msgid "Field Access"
+msgstr "صلاحية الحقل"
+
+#. module: access_roles
+#: model:ir.model.fields,help:access_roles.field_field_access__button_invisible
+msgid "Field for setting button visibility"
+msgstr "حقل لتحديد ظهور الزر"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__fields_ids
+#: model_terms:ir.ui.view,arch_db:access_roles.role_management_view_form
+msgid "Fields"
+msgstr "الحقول"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__filter_access_id
+#: model:ir.model.fields,field_description:access_roles.field_role_management__filter_access_ids
+msgid "Filter Access"
+msgstr "صلاحية التصفية"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_filter_registry__name
+msgid "Filter Name"
+msgstr "اسم التصفية"
+
+#. module: access_roles
+#: model:ir.model,name:access_roles.model_filter_registry
+msgid "Filter Registry"
+msgstr "سجل التصفية"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__filter_ids
+msgid "Filters"
+msgstr "التصفيات"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__message_follower_ids
+#: model:ir.model.fields,field_description:access_roles.field_role_management__message_follower_ids
+msgid "Followers"
+msgstr "المتابعون"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__message_partner_ids
+#: model:ir.model.fields,field_description:access_roles.field_role_management__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "المتابعون (شركاء)"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__group_ids
+msgid "GroupBy"
+msgstr "تجميع"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_groupby_registry__name
+msgid "GroupBy Name"
+msgstr "اسم التجميع"
+
+#. module: access_roles
+#: model:ir.model,name:access_roles.model_groupby_registry
+msgid "GroupBy Registry"
+msgstr "سجل التجميع"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__groups_ids
+#: model_terms:ir.ui.view,arch_db:access_roles.access_role_view_form
+msgid "Groups"
+msgstr "المجموعات"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__has_message
+#: model:ir.model.fields,field_description:access_roles.field_role_management__has_message
+msgid "Has Message"
+msgstr "يحتوي رسالة"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__hide_actions_ids
+msgid "Hide Actions"
+msgstr "إخفاء الإجراءات"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.role_management_view_form
+msgid "Hide Any Button or Tab"
+msgstr "إخفاء أي زر أو تبويب"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.role_management_view_form
+msgid "Hide Any Filter or GroupBy"
+msgstr "إخفاء أي تصفية أو تجميع"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__is_hide_archive
+msgid "Hide Archive/UnArchive"
+msgstr "إخفاء الأرشفة/إلغاء الأرشفة"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__is_hide_create
+msgid "Hide Create"
+msgstr "إخفاء الإنشاء"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__is_hide_delete
+msgid "Hide Delete"
+msgstr "إخفاء الحذف"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__is_hide_duplicate
+msgid "Hide Duplicate"
+msgstr "إخفاء التكرار"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__is_hide_export
+msgid "Hide Export"
+msgstr "إخفاء التصدير"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.role_management_view_form
+msgid "Hide Menu"
+msgstr "إخفاء القائمة"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__hide_report_ids
+msgid "Hide Report"
+msgstr "إخفاء التقرير"
+
+#. modules: access_roles, account_invoice_installments, contact_extension,
+#. installment_management_pro, installment_payment_extension,
+#. invoice_installment_management, sales_order_extension
+#: model:ir.model.fields,field_description:access_roles.field_access_role__id
+#: model:ir.model.fields,field_description:access_roles.field_button_registry__id
+#: model:ir.model.fields,field_description:access_roles.field_domain_model__id
+#: model:ir.model.fields,field_description:access_roles.field_field_access__id
+#: model:ir.model.fields,field_description:access_roles.field_filter_registry__id
+#: model:ir.model.fields,field_description:access_roles.field_groupby_registry__id
+#: model:ir.model.fields,field_description:access_roles.field_role_management__id
+#: model:ir.model.fields,field_description:access_roles.field_tab_registry__id
+#: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order_installment__id
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__id
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__id
+#: model:ir.model.fields,field_description:contact_extension.field_contact_channels__id
+#: model:ir.model.fields,field_description:contact_extension.field_contact_division__id
+#: model:ir.model.fields,field_description:contact_extension.field_customer_guarantees__id
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard__id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard__id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__id
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__id
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard__id
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__id
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_installment_payment_log__id
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__id
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__id
+msgid "ID"
+msgstr "المعرف"
+
+#. module: access_roles
+#: model:ir.model.fields,help:access_roles.field_access_role__message_needaction
+#: model:ir.model.fields,help:access_roles.field_role_management__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "عند التفعيل، تتطلب الرسائل الجديدة انتباهك."
+
+#. module: access_roles
+#: model:ir.model.fields,help:access_roles.field_access_role__message_has_error
+#: model:ir.model.fields,help:access_roles.field_access_role__message_has_sms_error
+#: model:ir.model.fields,help:access_roles.field_role_management__message_has_error
+#: model:ir.model.fields,help:access_roles.field_role_management__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "عند التفعيل، بعض الرسائل بها خطأ تسليم."
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.access_role_view_form_groups
+msgid "Inventory"
+msgstr "المخزون"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__is_field_invisible
+msgid "Invisible"
+msgstr "مخفي"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__message_is_follower
+#: model:ir.model.fields,field_description:access_roles.field_role_management__message_is_follower
+msgid "Is Follower"
+msgstr "متابع"
+
+#. modules: access_roles, account_invoice_installments, contact_extension,
+#. installment_management_pro, installment_payment_extension,
+#. invoice_installment_management, sales_order_extension
+#: model:ir.model.fields,field_description:access_roles.field_access_role__write_uid
+#: model:ir.model.fields,field_description:access_roles.field_button_registry__write_uid
+#: model:ir.model.fields,field_description:access_roles.field_domain_model__write_uid
+#: model:ir.model.fields,field_description:access_roles.field_field_access__write_uid
+#: model:ir.model.fields,field_description:access_roles.field_filter_registry__write_uid
+#: model:ir.model.fields,field_description:access_roles.field_groupby_registry__write_uid
+#: model:ir.model.fields,field_description:access_roles.field_role_management__write_uid
+#: model:ir.model.fields,field_description:access_roles.field_tab_registry__write_uid
+#: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order_installment__write_uid
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__write_uid
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__write_uid
+#: model:ir.model.fields,field_description:contact_extension.field_contact_channels__write_uid
+#: model:ir.model.fields,field_description:contact_extension.field_contact_division__write_uid
+#: model:ir.model.fields,field_description:contact_extension.field_customer_guarantees__write_uid
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__write_uid
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard__write_uid
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__write_uid
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard__write_uid
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__write_uid
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__write_uid
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard__write_uid
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__write_uid
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_installment_payment_log__write_uid
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__write_uid
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. modules: access_roles, account_invoice_installments, contact_extension,
+#. installment_management_pro, installment_payment_extension,
+#. invoice_installment_management, sales_order_extension
+#: model:ir.model.fields,field_description:access_roles.field_access_role__write_date
+#: model:ir.model.fields,field_description:access_roles.field_button_registry__write_date
+#: model:ir.model.fields,field_description:access_roles.field_domain_model__write_date
+#: model:ir.model.fields,field_description:access_roles.field_field_access__write_date
+#: model:ir.model.fields,field_description:access_roles.field_filter_registry__write_date
+#: model:ir.model.fields,field_description:access_roles.field_groupby_registry__write_date
+#: model:ir.model.fields,field_description:access_roles.field_role_management__write_date
+#: model:ir.model.fields,field_description:access_roles.field_tab_registry__write_date
+#: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order_installment__write_date
+#: model:ir.model.fields,field_description:contact_extension.field_contact_addresses__write_date
+#: model:ir.model.fields,field_description:contact_extension.field_contact_attachment__write_date
+#: model:ir.model.fields,field_description:contact_extension.field_contact_channels__write_date
+#: model:ir.model.fields,field_description:contact_extension.field_contact_division__write_date
+#: model:ir.model.fields,field_description:contact_extension.field_customer_guarantees__write_date
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__write_date
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard__write_date
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__write_date
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard__write_date
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__write_date
+#: model:ir.model.fields,field_description:installment_payment_extension.field_control_payment__write_date
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard__write_date
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__write_date
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_installment_payment_log__write_date
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move_installment__write_date
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__write_date
+msgid "Last Updated on"
+msgstr "تاريخ آخر تحديث"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_role_management__is_readonly
+msgid "Make System ReadOnly"
+msgstr "جعل النظام للقراءة فقط"
+
+#. module: access_roles
+#: model:ir.model.fields,help:access_roles.field_role_management__is_readonly
+msgid "Make system readonly"
+msgstr "جعل النظام للقراءة فقط"
+
+#. modules: access_roles, sales_order_extension
+#: model:ir.model,name:access_roles.model_ir_ui_menu
+#: model:ir.model.fields,field_description:access_roles.field_role_management__menu_ids
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__menu_id
+msgid "Menu"
+msgstr "القائمة"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__message_has_error
+#: model:ir.model.fields,field_description:access_roles.field_role_management__message_has_error
+msgid "Message Delivery error"
+msgstr "خطأ تسليم الرسالة"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__message_ids
+#: model:ir.model.fields,field_description:access_roles.field_role_management__message_ids
+msgid "Messages"
+msgstr "الرسائل"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_button_registry__model_id
+#: model:ir.model.fields,field_description:access_roles.field_domain_model__domain_model_id
+#: model:ir.model.fields,field_description:access_roles.field_domain_model__domain_model_name
+#: model:ir.model.fields,field_description:access_roles.field_field_access__model_id
+#: model:ir.model.fields,field_description:access_roles.field_filter_registry__model_id
+#: model:ir.model.fields,field_description:access_roles.field_groupby_registry__model_id
+#: model:ir.model.fields,field_description:access_roles.field_tab_registry__model_id
+msgid "Model"
+msgstr "النموذج"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_role_management__model_access_ids
+msgid "Model Access"
+msgstr "صلاحية النموذج"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__button_ids
+msgid "Model Button"
+msgstr "زر النموذج"
+
+#. module: access_roles
+#: model:ir.model,name:access_roles.model_domain_model
+msgid "Model Domain"
+msgstr "نطاق النموذج"
+
+#. modules: access_roles, contact_extension, sales_order_extension
+#: model:ir.model.fields,field_description:access_roles.field_access_role__name
+#: model:ir.model.fields,field_description:access_roles.field_role_management__name
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order__sale_order_type_name
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__name
+#: model_terms:ir.ui.view,arch_db:contact_extension.contact_base_info
+#: model_terms:ir.ui.view,arch_db:contact_extension.view_contact_attachment_list
+msgid "Name"
+msgstr "الاسم"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__message_needaction_counter
+#: model:ir.model.fields,field_description:access_roles.field_role_management__message_needaction_counter
+msgid "Number of Actions"
+msgstr "عدد الإجراءات"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__message_has_error_counter
+#: model:ir.model.fields,field_description:access_roles.field_role_management__message_has_error_counter
+msgid "Number of errors"
+msgstr "عدد الأخطاء"
+
+#. module: access_roles
+#: model:ir.model.fields,help:access_roles.field_access_role__message_needaction_counter
+#: model:ir.model.fields,help:access_roles.field_role_management__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "عدد الرسائل التي تتطلب إجراءاً"
+
+#. module: access_roles
+#: model:ir.model.fields,help:access_roles.field_access_role__message_has_error_counter
+#: model:ir.model.fields,help:access_roles.field_role_management__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "عدد الرسائل بخطأ تسليم"
+
+#. module: access_roles
+#. odoo-python
+#: code:addons/access_roles/models/res_users.py:0
+msgid "Please save the user before assigning an Access Role."
+msgstr "يرجى حفظ المستخدم قبل تعيين دور الصلاحية."
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.access_role_view_form_groups
+msgid "Productivity"
+msgstr "الإنتاجية"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__is_field_readonly
+#: model:ir.model.fields,field_description:access_roles.field_field_access__is_model_readonly
+msgid "Readonly"
+msgstr "للقراءة فقط"
+
+#. module: access_roles
+#: model:ir.model,name:access_roles.model_ir_rule
+msgid "Record Rule"
+msgstr "قاعدة"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.access_role_view_form
+msgid "Record Rules"
+msgstr "قواعد السجل"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__is_remove_link
+msgid "Remove External link"
+msgstr "إزالة الرابط الخارجي"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__is_field_required
+msgid "Required"
+msgstr "مطلوب"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.access_role_view_form
+msgid "Role"
+msgstr "الدور"
+
+#. module: access_roles
+#: model:ir.actions.act_window,name:access_roles.action_role_management
+#: model:ir.model,name:access_roles.model_role_management
+#: model:ir.model.fields,field_description:access_roles.field_access_role__role_management_id
+#: model:ir.ui.menu,name:access_roles.access_role_menu
+#: model:ir.ui.menu,name:access_roles.access_role_menu_management
+msgid "Role Management"
+msgstr "إدارة الأدوار"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_role_management__role_ids
+#: model_terms:ir.ui.view,arch_db:access_roles.access_role_view_list
+msgid "Roles"
+msgstr "الأدوار"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__message_has_sms_error
+#: model:ir.model.fields,field_description:access_roles.field_role_management__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "خطأ تسليم SMS"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.access_role_view_form_groups
+msgid "Sales"
+msgstr "المبيعات"
+
+#. module: access_roles
+#: model:ir.model.fields,help:access_roles.field_res_users__access_role_id
+msgid "Select the role of the user"
+msgstr "اختر دور المستخدم"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_role_management__selected_role_ids
+msgid "Selected Role"
+msgstr "الدور المحدد"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_field_access__tab_ids
+msgid "Tab"
+msgstr "تبويب"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_tab_registry__name
+msgid "Tab Name"
+msgstr "اسم التبويب"
+
+#. module: access_roles
+#: model:ir.model,name:access_roles.model_tab_registry
+msgid "Tab Registry"
+msgstr "سجل التبويبات"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.access_role_view_form_groups
+msgid "Technical"
+msgstr "تقني"
+
+#. modules: access_roles, installment_management_pro
+#: model:ir.model,name:access_roles.model_res_users
+#: model:ir.model.fields,field_description:access_roles.field_access_role__user_ids
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_search
+msgid "User"
+msgstr "المستخدم"
+
+#. module: access_roles
+#: model:ir.model,name:access_roles.model_ir_ui_view
+#: model:ir.model.fields,field_description:access_roles.field_button_registry__view_ids
+#: model:ir.model.fields,field_description:access_roles.field_filter_registry__view_ids
+#: model:ir.model.fields,field_description:access_roles.field_groupby_registry__view_ids
+#: model:ir.model.fields,field_description:access_roles.field_tab_registry__view_ids
+msgid "View"
+msgstr "أداة العرض"
+
+#. module: access_roles
+#. odoo-python
+#: code:addons/access_roles/models/res_users.py:0
+msgid "Warning"
+msgstr "تحذير"
+
+#. module: access_roles
+#: model:ir.model.fields,field_description:access_roles.field_access_role__website_message_ids
+#: model:ir.model.fields,field_description:access_roles.field_role_management__website_message_ids
+msgid "Website Messages"
+msgstr "رسائل الموقع"
+
+#. module: access_roles
+#: model:ir.model.fields,help:access_roles.field_access_role__website_message_ids
+#: model:ir.model.fields,help:access_roles.field_role_management__website_message_ids
+msgid "Website communication history"
+msgstr "سجل تواصل الموقع"
+
+#. module: access_roles
+#: model_terms:ir.ui.view,arch_db:access_roles.access_role_view_form
+msgid "e.g. Staff"
+msgstr "مثال: موظف"
+
+#. module: access_roles
+#: model:ir.model,name:access_roles.model_field_access
+msgid "field.access"
+msgstr "صلاحية الحقل"

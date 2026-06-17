@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_operational_expense_user,access_operational_expense_user,model_operational_expense,base.group_user,1,1,1,1
-access_operational_expense_category_user,access_operational_expense_category_user,model_operational_expense_category,base.group_user,1,1,1,1
-access_laft_document_line_user,access.laft.document.line.user,model_laft_document_line,base.group_user,1,1,1,1

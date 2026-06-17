@@ -1,0 +1,619 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-03 03:02+0000\n"
+"PO-Revision-Date: 2026-06-03 03:02+0000\n"
+"Last-Translator: FRTZ\n"
+"Language-Team: Arabic\n"
+"Language: ar_001\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/wizard/installment_schedule_wizard.py:0
+msgid "%d installment(s) rescheduled successfully."
+msgstr "تمت إعادة جدولة %d قسط/أقساط بنجاح."
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_form_pro
+msgid "<span class=\"o_stat_text\">Payment Logs</span>"
+msgstr "<span class=\"o_stat_text\">سجلات الدفع</span>"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_form_pro
+msgid "<span class=\"o_stat_text\">Reschedules</span>"
+msgstr "<span class=\"o_stat_text\">إعادة الجدولة</span>"
+
+#. module: installment_management_pro
+#: model:ir.actions.act_window,name:installment_management_pro.action_all_installments
+#: model:ir.ui.menu,name:installment_management_pro.menu_all_installments
+msgid "All Installments"
+msgstr "جميع الأقساط"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__amount_total
+msgid "Amount"
+msgstr "المبلغ"
+
+#. module: installment_management_pro
+#: model:ir.model.fields.selection,name:installment_management_pro.selection__account_installment_reschedule_log__change_type__amount_change
+msgid "Amount Change"
+msgstr "تغيير المبلغ"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_search
+msgid "Amount Changes"
+msgstr "تغييرات المبلغ"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,help:installment_management_pro.field_account_move_installment__original_amount
+msgid "Amount when installment was first created"
+msgstr "المبلغ عند إنشاء القسط"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_form_pro
+msgid "Amounts"
+msgstr "المبالغ"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_wizard_form
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_schedule_wizard_form
+msgid "Apply Reschedule"
+msgstr "تطبيق إعادة الجدولة"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_wizard_form
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: installment_management_pro
+#: model:ir.model.fields.selection,name:installment_management_pro.selection__account_installment_reschedule_log__change_type__cancel
+msgid "Cancellation"
+msgstr "إلغاء"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__change_type
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_search
+msgid "Change Type"
+msgstr "نوع التغيير"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_form
+msgid "Changes"
+msgstr "التغييرات"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_schedule_wizard_form
+msgid "Close"
+msgstr "إغلاق"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,help:installment_management_pro.field_account_installment_payment_log__amount_after
+msgid "Cumulative paid amount after this payment"
+msgstr "المبلغ المسدد التراكمي بعد هذا الدفع"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,help:installment_management_pro.field_account_installment_payment_log__amount_before
+msgid "Cumulative paid amount before this payment"
+msgstr "المبلغ المسدد التراكمي قبل هذا الدفع"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__current_amount
+msgid "Current Amount"
+msgstr "المبلغ الحالي"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__current_date_due
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__current_date_due
+msgid "Current Due Date"
+msgstr "تاريخ الاستحقاق الحالي"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_wizard_form
+msgid "Current Total"
+msgstr "الإجمالي الحالي"
+
+#. modules: installment_management_pro, installment_payment_extension
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_payment_log__partner_id
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__partner_id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard__partner_id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard__partner_id
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard__partner_id
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_search_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_payment_log_search
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_search
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_search
+msgid "Customer"
+msgstr "العميل"
+
+#. module: installment_management_pro
+#: model:ir.model.fields.selection,name:installment_management_pro.selection__account_installment_reschedule_log__change_type__date_change
+msgid "Date Change"
+msgstr "تغيير التاريخ"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_search
+msgid "Date Changes"
+msgstr "تغييرات التاريخ"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_form_pro
+msgid "Dates"
+msgstr "التواريخ"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_move_installment__days_overdue
+msgid "Days Overdue"
+msgstr "أيام التأخير"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,help:installment_management_pro.field_account_move_installment__original_date_due
+msgid "Due date when installment was first created"
+msgstr "تاريخ الاستحقاق عند إنشاء القسط"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_wizard_form
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_schedule_wizard_form
+msgid "Enter the reason for rescheduling..."
+msgstr "أدخل سبب إعادة الجدولة..."
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_form_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_form
+msgid "General"
+msgstr "عام"
+
+#. module: installment_management_pro
+#: model:ir.ui.menu,name:installment_management_pro.menu_installment_history
+msgid "History"
+msgstr "السجل"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_payment_log__display_reference
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__display_reference
+msgid "Installment Ref."
+msgstr "مرجع القسط"
+
+#. module: installment_management_pro
+#: model:ir.model,name:installment_management_pro.model_account_installment_reschedule_log
+msgid "Installment Reschedule Log"
+msgstr "سجل إعادة جدولة القسط"
+
+#. modules: account_invoice_installments, installment_management_pro,
+#. invoice_installment_management
+#: model:ir.actions.act_window,name:invoice_installment_management.action_account_move_installment
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard__line_ids
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard__line_ids
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_bank_statement_line__installment_ids
+#: model:ir.model.fields,field_description:invoice_installment_management.field_account_move__installment_ids
+#: model:ir.ui.menu,name:invoice_installment_management.menu_account_move_installment
+#: model_terms:ir.ui.view,arch_db:account_invoice_installments.sale_order_form_installments
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_list_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_search_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_wizard_form
+#: model_terms:ir.ui.view,arch_db:invoice_installment_management.view_account_move_installment_search
+#: model_terms:ir.ui.view,arch_db:invoice_installment_management.view_account_move_installment_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_management.view_invoice_tree_installments
+#: model_terms:ir.ui.view,arch_db:invoice_installment_management.view_move_form_installments
+msgid "Installments"
+msgstr "الأقساط"
+
+#. module: installment_management_pro
+#: model:ir.ui.menu,name:installment_management_pro.menu_installment_management_pro_root
+msgid "Installments Pro"
+msgstr "إدارة الأقساط المتقدمة"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,help:installment_management_pro.field_account_installment_payment_log__display_reference
+#: model:ir.model.fields,help:installment_management_pro.field_account_installment_reschedule_log__display_reference
+#: model:ir.model.fields,help:installment_management_pro.field_account_move_installment__display_reference
+#: model:ir.model.fields,help:installment_management_pro.field_installment_reschedule_wizard_line__display_reference
+#: model:ir.model.fields,help:installment_management_pro.field_installment_schedule_wizard_line__display_reference
+msgid "Invoice number - Product name"
+msgstr "رقم الفاتورة - اسم المنتج"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_move_installment__is_overdue
+msgid "Is Overdue"
+msgstr "متأخر"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_schedule_wizard_form
+msgid "Load Installments"
+msgstr "تحميل الأقساط"
+
+#. module: installment_management_pro
+#: model:ir.model.fields.selection,name:installment_management_pro.selection__account_installment_reschedule_log__change_type__merge
+msgid "Merge"
+msgstr "دمج"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__new_amount
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__new_amount
+msgid "New Amount"
+msgstr "المبلغ الجديد"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__new_date_due
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__new_date_due
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__new_date_due
+msgid "New Due Date"
+msgstr "تاريخ الاستحقاق الجديد"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_list
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_wizard_form
+msgid "New Total"
+msgstr "الإجمالي الجديد"
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/wizard/installment_reschedule_wizard.py:0
+msgid ""
+"New amount (%(new)s) cannot be less than already paid amount (%(paid)s)."
+msgstr ""
+"لا يمكن أن يكون المبلغ الجديد (%(new)s) أقل من المبلغ المسدد (%(paid)s)."
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/wizard/installment_reschedule_wizard.py:0
+msgid "No changes detected. Please modify at least one date or amount."
+msgstr "لم يُكتشف أي تغيير. يرجى تعديل تاريخ أو مبلغ واحد على الأقل."
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/wizard/installment_schedule_wizard.py:0
+msgid "No date changes detected on selected installments."
+msgstr "لم يُكتشف تغيير في التواريخ للأقساط المحددة."
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/wizard/installment_reschedule_wizard.py:0
+msgid "No installments to reschedule."
+msgstr "لا توجد أقساط لإعادة جدولتها."
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/wizard/installment_schedule_wizard.py:0
+msgid "No unpaid installments found for this customer."
+msgstr "لا توجد أقساط غير مسددة لهذا العميل."
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_search
+msgid "Not Rescheduled"
+msgstr "لم يُعاد جدولته"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__old_amount
+msgid "Old Amount"
+msgstr "المبلغ القديم"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__old_date_due
+msgid "Old Due Date"
+msgstr "تاريخ الاستحقاق القديم"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_list
+msgid "Old Total"
+msgstr "الإجمالي القديم"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_move_installment__original_amount
+msgid "Original Amount"
+msgstr "المبلغ الأصلي"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_move_installment__original_date_due
+msgid "Original Due Date"
+msgstr "تاريخ الاستحقاق الأصلي"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_search
+msgid "Overdue > 30 Days"
+msgstr "متأخر أكثر من 30 يوماً"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_search
+msgid "Overdue > 7 Days"
+msgstr "متأخر أكثر من 7 أيام"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_search
+msgid "Overdue > 90 Days"
+msgstr "متأخر أكثر من 90 يوماً"
+
+#. modules: account_invoice_installments, installment_management_pro,
+#. invoice_installment_management
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__amount_paid
+#: model:ir.model.fields.selection,name:account_invoice_installments.selection__sale_order_installment__state__paid
+#: model:ir.model.fields.selection,name:installment_management_pro.selection__account_installment_payment_log__state_after__paid
+#: model:ir.model.fields.selection,name:installment_management_pro.selection__account_installment_payment_log__state_before__paid
+#: model:ir.model.fields.selection,name:invoice_installment_management.selection__account_move_installment__state__paid
+#: model_terms:ir.ui.view,arch_db:account_invoice_installments.sale_order_form_installments
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_list_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_search_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_wizard_form
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_schedule_wizard_form
+#: model_terms:ir.ui.view,arch_db:invoice_installment_management.view_account_move_installment_search
+#: model_terms:ir.ui.view,arch_db:invoice_installment_management.view_account_move_installment_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_management.view_move_form_installments
+msgid "Paid"
+msgstr "مسدد"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_payment_log__amount_after
+msgid "Paid After"
+msgstr "مسدد بعد"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_payment_log__amount_before
+msgid "Paid Before"
+msgstr "مسدد قبل"
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/models/account_move_installment.py:0
+msgid ""
+"Paid amount (%(paid)s) cannot exceed installment amount (%(total)s) on "
+"installment %(name)s."
+msgstr ""
+"لا يمكن أن يتجاوز المبلغ المسدد (%(paid)s) مبلغ القسط (%(total)s) على القسط "
+"%(name)s."
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_payment_log__date
+msgid "Payment Date"
+msgstr "تاريخ الدفع"
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/models/account_move_installment.py:0
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_move_installment__payment_log_ids
+msgid "Payment History"
+msgstr "سجل المدفوعات"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_form_pro
+msgid "Payment Info"
+msgstr "معلومات الدفع"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_payment_log_form
+msgid "Payment Log"
+msgstr "سجل دفع"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_move_installment__payment_log_count
+msgid "Payment Log Count"
+msgstr "عدد سجلات الدفع"
+
+#. module: installment_management_pro
+#: model:ir.actions.act_window,name:installment_management_pro.action_installment_payment_log
+#: model:ir.ui.menu,name:installment_management_pro.menu_payment_logs
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_payment_log_list
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_payment_log_search
+msgid "Payment Logs"
+msgstr "سجلات الدفع"
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/wizard/installment_schedule_wizard.py:0
+msgid "Please enter a reason for rescheduling."
+msgstr "يرجى إدخال سبب إعادة الجدولة."
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/wizard/installment_schedule_wizard.py:0
+msgid "Please load installments first."
+msgstr "يرجى تحميل الأقساط أولاً."
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/wizard/installment_schedule_wizard.py:0
+msgid "Please select a customer first."
+msgstr "يرجى اختيار عميل أولاً."
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/wizard/installment_schedule_wizard.py:0
+msgid "Please select at least one installment to reschedule."
+msgstr "يرجى اختيار قسط واحد على الأقل لإعادة الجدولة."
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/wizard/installment_schedule_wizard.py:0
+msgid "Please set a New Due Date for all selected installments."
+msgstr "يرجى تعيين تاريخ استحقاق جديد لجميع الأقساط المحددة."
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__reason
+msgid "Reason"
+msgstr "السبب"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard__reason
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard__reason
+msgid "Reason for Rescheduling"
+msgstr "سبب إعادة الجدولة"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__amount_residual
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__amount_residual
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_list_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_wizard_form
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_schedule_wizard_form
+msgid "Remaining"
+msgstr "المتبقي"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_move_installment__reschedule_count
+msgid "Reschedule Count"
+msgstr "عدد إعادة الجدولة"
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/models/account_move_installment.py:0
+#: model:ir.actions.act_window,name:installment_management_pro.action_installment_reschedule_log
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_move_installment__reschedule_log_ids
+#: model:ir.ui.menu,name:installment_management_pro.menu_reschedule_logs
+msgid "Reschedule History"
+msgstr "سجل إعادة الجدولة"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_form_pro
+msgid "Reschedule Info"
+msgstr "معلومات إعادة الجدولة"
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/models/account_move.py:0
+#: model:ir.actions.act_window,name:installment_management_pro.action_installment_reschedule_wizard
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_wizard_form
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_move_form_installments_pro
+msgid "Reschedule Installments"
+msgstr "إعادة جدولة الأقساط"
+
+#. module: installment_management_pro
+#: model:ir.model,name:installment_management_pro.model_installment_reschedule_wizard
+msgid "Reschedule Installments Wizard"
+msgstr "معالج إعادة جدولة الأقساط"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_form
+msgid "Reschedule Log"
+msgstr "سجل إعادة الجدولة"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_move_installment__reschedule_log_count
+msgid "Reschedule Log Count"
+msgstr "عدد سجلات إعادة الجدولة"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_list
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_search
+msgid "Reschedule Logs"
+msgstr "سجلات إعادة الجدولة"
+
+#. module: installment_management_pro
+#: model:ir.model,name:installment_management_pro.model_installment_reschedule_wizard_line
+msgid "Reschedule Wizard Line"
+msgstr "سطر معالج إعادة الجدولة"
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/wizard/installment_schedule_wizard.py:0
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_move_installment__is_rescheduled
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_search_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_search
+msgid "Rescheduled"
+msgstr "مُعاد جدولته"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_reschedule_log__user_id
+msgid "Rescheduled By"
+msgstr "أُعيد جدولته بواسطة"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_account_move_installment_list_pro
+msgid "Reschedules"
+msgstr "إعادة الجدولة"
+
+#. module: installment_management_pro
+#: model:ir.model,name:installment_management_pro.model_installment_schedule_wizard
+msgid "Schedule / Reschedule Installments by Customer"
+msgstr "جدولة/إعادة جدولة الأقساط حسب العميل"
+
+#. module: installment_management_pro
+#: model:ir.actions.act_window,name:installment_management_pro.action_installment_schedule_wizard
+#: model:ir.ui.menu,name:installment_management_pro.menu_schedule_installments
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_schedule_wizard_form
+msgid "Schedule Installments"
+msgstr "جدولة الأقساط"
+
+#. module: installment_management_pro
+#: model:ir.model,name:installment_management_pro.model_installment_schedule_wizard_line
+msgid "Schedule Wizard Line"
+msgstr "سطر معالج الجدولة"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__selected
+msgid "Select"
+msgstr "اختيار"
+
+#. module: installment_management_pro
+#: model:ir.model.fields.selection,name:installment_management_pro.selection__account_installment_reschedule_log__change_type__split
+msgid "Split"
+msgstr "تقسيم"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_reschedule_log_search
+msgid "Splits"
+msgstr "تقسيمات"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_payment_log__state_after
+msgid "Status After"
+msgstr "الحالة بعد"
+
+#. module: installment_management_pro
+#: model:ir.model.fields,field_description:installment_management_pro.field_account_installment_payment_log__state_before
+msgid "Status Before"
+msgstr "الحالة قبل"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_payment_log_search
+msgid "This Month"
+msgstr "هذا الشهر"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_payment_log_search
+msgid "Today"
+msgstr "اليوم"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_list
+msgid "Total Due"
+msgstr "إجمالي المستحق"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_installment_payment_log_list
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_list
+msgid "Total Paid"
+msgstr "إجمالي المسدد"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_list
+msgid "Total Remaining"
+msgstr "إجمالي المتبقي"
+
+#. module: installment_management_pro
+#. odoo-python
+#: code:addons/installment_management_pro/wizard/installment_reschedule_wizard.py:0
+msgid ""
+"Total amounts don't match. Original total: %(orig)s, New total: %(new)s. "
+"Difference: %(diff)s"
+msgstr ""
+"المجاميع غير متطابقة. الأصلي: %(orig)s، الجديد: %(new)s. الفرق: %(diff)s"
+
+#. module: installment_management_pro
+#: model_terms:ir.ui.view,arch_db:installment_management_pro.view_overdue_installments_search
+msgid "Unpaid"
+msgstr "غير مسدد"
+
+#. module: installment_management_pro
+#: model:ir.actions.server,name:installment_management_pro.cron_update_overdue_installments_ir_actions_server
+msgid "Update Overdue Installments"
+msgstr "تحديث الأقساط المتأخرة"
+
+#. modules: installment_management_pro, installment_payment_extension
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_reschedule_wizard_line__wizard_id
+#: model:ir.model.fields,field_description:installment_management_pro.field_installment_schedule_wizard_line__wizard_id
+#: model:ir.model.fields,field_description:installment_payment_extension.field_payment_invoice_wizard_line__wizard_id
+msgid "Wizard"
+msgstr "معالج"

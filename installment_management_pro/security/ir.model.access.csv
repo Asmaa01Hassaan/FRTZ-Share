@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_reschedule_log_user,account.installment.reschedule.log.user,model_account_installment_reschedule_log,account.group_account_user,1,1,1,0
+access_reschedule_log_manager,account.installment.reschedule.log.manager,model_account_installment_reschedule_log,account.group_account_manager,1,1,1,1
+access_reschedule_wizard_user,installment.reschedule.wizard.user,model_installment_reschedule_wizard,account.group_account_user,1,1,1,1
+access_reschedule_wizard_line_user,installment.reschedule.wizard.line.user,model_installment_reschedule_wizard_line,account.group_account_user,1,1,1,1
+access_schedule_wizard_user,installment.schedule.wizard.user,model_installment_schedule_wizard,account.group_account_user,1,1,1,1
+access_schedule_wizard_line_user,installment.schedule.wizard.line.user,model_installment_schedule_wizard_line,account.group_account_user,1,1,1,1
