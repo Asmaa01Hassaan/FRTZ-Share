@@ -14,10 +14,10 @@
                 <attribute name="invisible" add="is_subscription" separator="or"/>
             </xpath>
 
-            <!-- Hide the standard Quotation/Sales-Order status bar once a
-                 subscription is confirmed (the subscription status bar takes over) -->
+            <!-- Hide the standard Quotation/Sales-Order status bar for subscriptions
+                 (the subscription status bar takes over entirely) -->
             <xpath expr="//field[@name='state'][@widget='statusbar']" position="attributes">
-                <attribute name="invisible">is_subscription and state == 'sale'</attribute>
+                <attribute name="invisible">is_subscription</attribute>
             </xpath>
 
             <!-- Header: lifecycle buttons + subscription status bar -->
