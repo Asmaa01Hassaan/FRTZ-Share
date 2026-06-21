@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="subscription_invoice_wizard_form" model="ir.ui.view">
+        <field name="name">subscription.invoice.wizard.form</field>
+        <field name="model">subscription.invoice.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Subscription Invoice">
+                <group>
+                    <field name="order_id"/>
+                    <field name="invoice_date"/>
+                    <field name="payment_term_id" options="{'no_create': True}"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="action_generate" type="object"
+                            string="Generate Invoice" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_template_form_subscription" model="ir.ui.view">
+        <field name="name">product.template.form.subscription</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Dedicated page for the subscription settings; shown when the
+                 product_extension "Subscription" (subscription_ok) box is ticked -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Subscription" name="subscription"
+                      invisible="not subscription_ok">
+                    <separator string="Recurring Prices per Billing Period"/>
+                    <p class="text-muted">
+                        Set the recurring price of this product for each billing
+                        period (e.g. Monthly, Yearly). Subscription order lines use
+                        the price that matches the order's billing period.
+                    </p>
+                    <field name="subscription_price_ids">
+                        <list editable="bottom">
+                            <field name="period_id"/>
+                            <field name="price"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                    <separator string="Suspension"/>
+                    <group>
+                        <field name="suspension_fee"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

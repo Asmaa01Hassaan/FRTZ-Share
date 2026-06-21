@@ -17,9 +17,9 @@ class AccountPayment(models.Model):
     )
     person = fields.Boolean(default=True, string="Person")
     is_dividend_eligible = fields.Boolean(
-        string=_('Dividend Eligible'),
+        string='Dividend Eligible',
         default=False,
-        help=_('Mark this payment as eligible for dividend processing.'),
+        help='Mark this payment as eligible for dividend processing.',
     )
 
     def action_post(self):
@@ -39,29 +39,29 @@ class AccountPayment(models.Model):
         return super().action_post()
 
     payment_due_date_filter = fields.Date(
-        string=_('Date for Pay'),
-        help=_('Date filter for calculating due amount on all selected invoices'),
+        string='Date for Pay',
+        help='Date filter for calculating due amount on all selected invoices',
     )
 
     control_payment_ids = fields.One2many(
         'control.payment',
         'payment_id',
-        string=_('Control Payments'),
-        help=_('Control payment records for invoices'),
+        string='Control Payments',
+        help='Control payment records for invoices',
     )
 
     total_control_to_pay = fields.Monetary(
-        string=_('Total Control To Pay'),
+        string='Total Control To Pay',
         currency_field='currency_id',
         compute='_compute_total_control_to_pay',
-        help=_('Sum of all to_pay for control payment records'),
+        help='Sum of all to_pay for control payment records',
     )
 
     control_payment_remaining_amount = fields.Monetary(
-        string=_('Control Remaining Amount'),
+        string='Control Remaining Amount',
         currency_field='currency_id',
         compute='_compute_total_control_to_pay',
-        help=_('Payment amount minus total control to pay'),
+        help='Payment amount minus total control to pay',
     )
 
     payment_scope = fields.Selection([
@@ -69,24 +69,24 @@ class AccountPayment(models.Model):
         ('by_invoice_lines', 'By Product'),
         ('by_all_invoice_lines', 'By Installment'),
         ('by_product_invoice', 'By Invoice Lines'),
-    ], string=_('Payment Matching '), default='by_invoice',
-        help=_('By Invoice: payment applies to whole invoice. By Invoice Lines: payment applies to specific products/lines.'))
+    ], string='Payment Matching ', default='by_invoice',
+        help='By Invoice: payment applies to whole invoice. By Invoice Lines: payment applies to specific products/lines.')
 
     unpaid_product_ids = fields.Many2many(
         'product.product',
         'payment_unpaid_product_rel',
         'payment_id',
         'product_id',
-        string=_('Available Products'),
+        string='Available Products',
         compute='_compute_unpaid_product_ids',
-        help=_('Products from unpaid customer invoices'),
+        help='Products from unpaid customer invoices',
     )
 
     selected_product_id = fields.Many2one(
         'product.product',
-        string=_('Product'),
+        string='Product',
         domain="[('id', 'in', unpaid_product_ids)]",
-        help=_('Select a product to filter the transaction list to only show invoices containing this product'),
+        help='Select a product to filter the transaction list to only show invoices containing this product',
     )
 
     @api.depends('partner_id', 'partner_type', 'company_id')

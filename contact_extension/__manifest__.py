@@ -1,7 +1,7 @@
 {
     "name": "Contact Extension",
     'sequence': 2,
-    "version": "18.0.1.0.2",
+    "version": "18.0.1.0.9",
     "summary": "",
     "license": "LGPL-3",
     "author": "Asmaa Hassaan",

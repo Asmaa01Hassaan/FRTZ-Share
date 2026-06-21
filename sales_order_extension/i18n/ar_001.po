@@ -166,3 +166,23 @@ msgstr "خدمة"
 #: model:ir.model.constraint,message:sales_order_extension.constraint_sale_order_type_name_uniq
 msgid "This sale order type name already exists."
 msgstr "اسم نوع أمر البيع هذا موجود بالفعل."
+
+#. module: sales_order_extension
+#: model:ir.model.fields,field_description:sales_order_extension.field_sale_order_type__order_classification
+msgid "Order Classification"
+msgstr "نوع أمر البيع"
+
+#. module: sales_order_extension
+#: model:ir.model.fields,help:sales_order_extension.field_sale_order_type__order_classification
+msgid "Subscription features apply only when this type is Subscription."
+msgstr "ميزات الاشتراك تعمل فقط عندما يكون النوع اشتراك."
+
+#. module: sales_order_extension
+#: model:ir.model.fields.selection,name:sales_order_extension.selection__sale_order_type__order_classification__sale
+msgid "Sale Order"
+msgstr "أمر بيع"
+
+#. module: sales_order_extension
+#: model:ir.model.fields.selection,name:sales_order_extension.selection__sale_order_type__order_classification__subscription
+msgid "Subscription"
+msgstr "اشتراك"

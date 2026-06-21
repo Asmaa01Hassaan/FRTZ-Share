@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- Dependency Registry Form View -->
+    <record id="installment_dependency_registry_view_form" model="ir.ui.view">
+      <field name="name">Installment Dependency Registry</field>
+      <field name="model">installment.dependency.registry</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <h1>Installment Dependency Registry</h1>
+
+            <group>
+              <field name="id" readonly="1"/>
+            </group>
+
+            <h2>Capabilities Status</h2>
+            <div class="alert alert-info" role="alert">
+              This registry tracks which installment modules are installed and what capabilities they provide.
+              No manual editing needed - automatically populated on module installation.
+            </div>
+
+            <button name="action_refresh_registry" type="object" string="Refresh Registry" class="btn-primary"/>
+            <button name="action_view_status" type="object" string="View Complete Status"/>
+
+            <separator string="System Information"/>
+            <p>
+              <strong>Module:</strong> installment_dependency_manager v18.0.1.0.0<br/>
+              <strong>Purpose:</strong> Track installment module capabilities and dependencies<br/>
+              <strong>Status:</strong> Active and monitoring
+            </p>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem
+      id="menu_installment_dependency_registry"
+      name="Installment Dependencies"
+      parent="account.menu_finance"
+      action="action_installment_dependency_registry"
+      sequence="1"/>
+
+    <!-- Action -->
+    <record id="action_installment_dependency_registry" model="ir.actions.act_window">
+      <field name="name">Installment Dependency Registry</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">installment.dependency.registry</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="installment_dependency_registry_view_form"/>
+      <field name="target">current</field>
+    </record>
+
+  </data>
+</odoo>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Subscriptions list view (shows the subscription status) -->
+    <record id="view_subscription_order_list" model="ir.ui.view">
+        <field name="name">subscription.order.list</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <list string="Subscriptions"
+                  decoration-info="subscription_state == 'pending'"
+                  decoration-success="subscription_state == 'active'"
+                  decoration-warning="subscription_state == 'suspended'"
+                  decoration-muted="subscription_state in ('cancelled','closed')"
+                  decoration-danger="subscription_is_overdue">
+                <field name="name" string="Number"/>
+                <field name="date_order" string="Order Date"/>
+                <field name="partner_id"/>
+                <field name="sale_order_type_id" string="Order Type" optional="show"/>
+                <field name="subscription_state" widget="badge"
+                       decoration-info="subscription_state == 'pending'"
+                       decoration-success="subscription_state == 'active'"
+                       decoration-warning="subscription_state == 'suspended'"
+                       decoration-danger="subscription_state in ('cancelled','closed')"/>
+                <field name="subscription_period_id" optional="show"/>
+                <field name="subscription_next_invoice_date" optional="show"/>
+                <field name="subscription_is_overdue" optional="hide"/>
+                <field name="user_id" widget="many2one_avatar_user" optional="show"/>
+                <field name="activity_ids" widget="list_activity" optional="show"/>
+                <field name="amount_total" string="Total" sum="Total"/>
+                <field name="invoice_status" widget="badge" optional="show"
+                       decoration-info="invoice_status == 'to invoice'"
+                       decoration-success="invoice_status == 'invoiced'"
+                       decoration-warning="invoice_status == 'upselling'"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Subscriptions kanban view (grouped by subscription status) -->
+    <record id="view_subscription_order_kanban" model="ir.ui.view">
+        <field name="name">subscription.order.kanban</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="subscription_state"
+                    class="o_kanban_small_column" sample="1">
+                <field name="subscription_state"/>
+                <field name="partner_id"/>
+                <field name="amount_total"/>
+                <field name="currency_id"/>
+                <field name="subscription_period_id"/>
+                <field name="subscription_next_invoice_date"/>
+                <field name="subscription_is_overdue"/>
+                <field name="user_id"/>
+                <field name="activity_ids"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click
+                             #{record.subscription_is_overdue.raw_value ? 'oe_kanban_color_1' : ''}">
+                            <div class="o_kanban_record_top mb8">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </strong>
+                                    <div class="text-muted">
+                                        <field name="partner_id"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div t-if="record.subscription_period_id.value">
+                                    <i class="fa fa-refresh me-1" title="Billing period"/>
+                                    <field name="subscription_period_id"/>
+                                </div>
+                                <div t-if="record.subscription_next_invoice_date.value">
+                                    <i class="fa fa-calendar me-1" title="Next invoice"/>
+                                    <field name="subscription_next_invoice_date"/>
+                                    <span t-if="record.subscription_is_overdue.raw_value"
+                                          class="badge text-bg-danger ms-1">Overdue</span>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                    <strong>
+                                        <field name="amount_total" widget="monetary"/>
+                                    </strong>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="activity_ids" widget="kanban_activity"/>
+                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Subscriptions list (subscription sale orders only) -->
+    <record id="action_subscription_orders" model="ir.actions.act_window">
+        <field name="name">Subscriptions</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('is_subscription', '=', True)]</field>
+    </record>
+    <record id="action_subscription_orders_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="view_subscription_order_kanban"/>
+        <field name="act_window_id" ref="action_subscription_orders"/>
+    </record>
+    <record id="action_subscription_orders_view_list" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_subscription_order_list"/>
+        <field name="act_window_id" ref="action_subscription_orders"/>
+    </record>
+
+    <!-- New top-level "Subscriptions" menu in the Sales app, right after Orders -->
+    <menuitem id="menu_subscription_top"
+              name="Subscriptions"
+              parent="sale.sale_menu_root"
+              sequence="15"/>
+
+    <menuitem id="menu_subscription_orders"
+              name="Subscriptions"
+              parent="menu_subscription_top"
+              action="action_subscription_orders"
+              sequence="10"/>
+
+    <menuitem id="menu_subscription_orders_customer"
+              name="Customer Subscriptions"
+              parent="menu_subscription_top"
+              action="action_subscription_orders_customer"
+              sequence="20"/>
+
+    <!-- Sales > Configuration > Subscription Billing Periods -->
+    <menuitem id="menu_subscription_period"
+              name="Subscription Billing Periods"
+              parent="sale.menu_sale_config"
+              action="action_sale_subscription_period"
+              sequence="80"/>
+
+    <menuitem id="menu_subscription_reason"
+              name="Subscription Suspension Reasons"
+              parent="sale.menu_sale_config"
+              action="action_subscription_reason"
+              sequence="81"/>
+
+    <!-- Subscription products (filtered list) under Sales > Products -->
+    <record id="action_subscription_products" model="ir.actions.act_window">
+        <field name="name">Subscription Products</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,list,form</field>
+        <!-- Products flagged as Subscription (the subscription_ok checkbox). -->
+        <field name="domain">[('subscription_ok', '=', True)]</field>
+        <field name="context">{'default_subscription_ok': True}</field>
+    </record>
+
+    <menuitem id="menu_subscription_products"
+              name="Subscription Products"
+              parent="sale.product_menu_catalog"
+              action="action_subscription_products"
+              sequence="15"/>
+</odoo>

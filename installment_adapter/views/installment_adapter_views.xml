@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- Adapter Service Form View -->
+    <record id="installment_adapter_service_view_form" model="ir.ui.view">
+      <field name="name">Installment Adapter Service</field>
+      <field name="model">installment.adapter.service</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <h1>Installment Adapter Service</h1>
+
+            <div class="alert alert-info" role="alert">
+              This service provides a clean, unified interface to installment operations.
+              Use it in your code instead of directly manipulating installment models.
+            </div>
+
+            <button name="action_validate_dependencies" type="object" string="Validate Dependencies" class="btn-primary"/>
+            <button name="action_show_module_status" type="object" string="Show Module Status"/>
+
+            <separator string="How to Use"/>
+            <p>
+              <strong>In your Python code:</strong><br/>
+              <code>adapter = self.env['installment.adapter.service']</code><br/>
+              <code>adapter.create_installments(move, term)</code><br/>
+              <code>adapter.record_payment(installment, amount)</code><br/>
+              <code>adapter.get_overdue_installments()</code><br/>
+            </p>
+
+            <separator string="Module Information"/>
+            <p>
+              <strong>Module:</strong> installment_adapter v18.0.1.0.0<br/>
+              <strong>Purpose:</strong> Facade/Adapter for installment operations<br/>
+              <strong>Status:</strong> Active and ready to use
+            </p>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem
+      id="menu_installment_adapter_service"
+      name="Installment Adapter"
+      parent="account.menu_finance"
+      action="action_installment_adapter_service"
+      sequence="2"/>
+
+    <!-- Action -->
+    <record id="action_installment_adapter_service" model="ir.actions.act_window">
+      <field name="name">Installment Adapter Service</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">installment.adapter.service</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="installment_adapter_service_view_form"/>
+      <field name="target">current</field>
+    </record>
+
+  </data>
+</odoo>

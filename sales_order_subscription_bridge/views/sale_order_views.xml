@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_form_subscription_bridge" model="ir.ui.view">
+        <field name="name">sale.order.form.subscription.bridge</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sttl_sale_subscription.sale_order_view_inh_sttl"/>
+        <field name="arch" type="xml">
+            <field name="recurrance_id" position="before">
+                <field name="is_subscription_order" invisible="1"/>
+            </field>
+            <field name="recurrance_id" position="attributes">
+                <attribute name="invisible">not is_subscription_order</attribute>
+            </field>
+            <field name="recurr_until" position="attributes">
+                <attribute name="invisible">not is_subscription_order or recurrance_id == False or subscription_status == 'c'</attribute>
+            </field>
+            <field name="next_invoice_date" position="attributes">
+                <attribute name="invisible">not is_subscription_order or state != 'sale'</attribute>
+            </field>
+            <field name="subscription_status" position="attributes">
+                <attribute name="invisible">not is_subscription_order</attribute>
+            </field>
+            <button name="action_create_recurring_invoices" position="attributes">
+                <attribute name="invisible">not is_subscription_order or state != 'sale' or recurrance_id == False or subscription_status == 'c'</attribute>
+            </button>
+            <button name="end_subscription" position="attributes">
+                <attribute name="invisible">not is_subscription_order or state != 'sale' or recurrance_id == False or subscription_status == 'c'</attribute>
+            </button>
+            <button name="renew_subscription" position="attributes">
+                <attribute name="invisible">not is_subscription_order or state != 'sale' or recurrance_id == False or subscription_status != 'c'</attribute>
+            </button>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Temporary suspension (order level) -->
+    <record id="reason_non_payment" model="subscription.reason">
+        <field name="name">Non-payment</field>
+        <field name="code">non_payment</field>
+        <field name="reason_type">suspension</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="reason_customer_request_suspend" model="subscription.reason">
+        <field name="name">Customer request</field>
+        <field name="code">customer_request</field>
+        <field name="reason_type">suspension</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Permanent cancellation (order level) -->
+    <record id="reason_cancel_customer_request" model="subscription.reason">
+        <field name="name">Customer request (permanent)</field>
+        <field name="code">cancel_customer_request</field>
+        <field name="reason_type">cancellation</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="reason_cancel_contract_end" model="subscription.reason">
+        <field name="name">Contract ended</field>
+        <field name="code">contract_end</field>
+        <field name="reason_type">cancellation</field>
+        <field name="sequence">40</field>
+    </record>
+
+    <!-- Line pause (item level) -->
+    <record id="reason_line_travel" model="subscription.reason">
+        <field name="name">Travel</field>
+        <field name="code">travel</field>
+        <field name="reason_type">line_pause</field>
+        <field name="sequence">50</field>
+    </record>
+    <record id="reason_line_customer_request" model="subscription.reason">
+        <field name="name">Customer request (line)</field>
+        <field name="code">line_customer_request</field>
+        <field name="reason_type">line_pause</field>
+        <field name="sequence">60</field>
+    </record>
+</odoo>

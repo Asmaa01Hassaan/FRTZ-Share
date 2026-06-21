@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Subscriptions hub under Sales > Orders -->
+    <menuitem id="menu_subscription_root"
+              name="Subscriptions"
+              parent="sale.sale_order_menu"
+              sequence="36"/>
+
+    <menuitem id="menu_subscription_quotations"
+              name="Quotations"
+              parent="menu_subscription_root"
+              action="sttl_sale_subscription.sttl_subscription_quote_action"
+              sequence="10"/>
+
+    <menuitem id="menu_subscription_orders"
+              name="Subscription Orders"
+              parent="menu_subscription_root"
+              action="sttl_sale_subscription.sttl_subscription_action"
+              sequence="20"/>
+
+    <menuitem id="menu_subscription_products"
+              name="Subscription Products"
+              parent="menu_subscription_root"
+              action="sttl_sale_subscription.subscription_product_action"
+              sequence="30"/>
+
+    <menuitem id="menu_subscription_reporting"
+              name="Reporting"
+              parent="menu_subscription_root"
+              action="sttl_sale_subscription.subscription_so_line_pivot_action"
+              sequence="40"/>
+
+    <menuitem id="menu_subscription_configuration"
+              name="Configuration"
+              parent="menu_subscription_root"
+              sequence="50"/>
+
+    <menuitem id="menu_subscription_recurring_plans"
+              name="Recurring Plans"
+              parent="menu_subscription_configuration"
+              action="sttl_sale_subscription.product_subscription_period_action"
+              sequence="10"/>
+
+    <menuitem id="menu_subscription_close_reasons"
+              name="Close Reasons"
+              parent="menu_subscription_configuration"
+              action="sttl_sale_subscription.close_reason_action"
+              sequence="20"/>
+</odoo>

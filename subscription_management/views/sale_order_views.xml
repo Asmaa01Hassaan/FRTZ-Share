@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_subscription" model="ir.ui.view">
+        <field name="name">sale.order.form.subscription</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Hide the standard Confirm buttons for subscriptions (Activate does it) -->
+            <xpath expr="//button[@id='action_confirm']" position="attributes">
+                <attribute name="invisible" add="is_subscription" separator="or"/>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm' and @invisible=&quot;state != 'draft'&quot;]" position="attributes">
+                <attribute name="invisible" add="is_subscription" separator="or"/>
+            </xpath>
+
+            <!-- Hide the standard Quotation/Sales-Order status bar once a
+                 subscription is confirmed (the subscription status bar takes over) -->
+            <xpath expr="//field[@name='state'][@widget='statusbar']" position="attributes">
+                <attribute name="invisible">is_subscription and state == 'sale'</attribute>
+            </xpath>
+
+            <!-- Header: lifecycle buttons + subscription status bar -->
+            <xpath expr="//header" position="inside">
+                <button name="action_activate_subscription" type="object" string="Activate"
+                        class="btn-primary"
+                        invisible="not is_subscription or subscription_state != 'pending'"
+                        groups="sales_team.group_sale_salesman"/>
+                <button name="action_generate_subscription_invoice" type="object"
+                        string="Generate Invoice" class="btn-primary"
+                        invisible="not is_subscription or subscription_state != 'active'"
+                        groups="sales_team.group_sale_salesman"/>
+                <button name="action_open_suspend_wizard" type="object" string="Suspend"
+                        invisible="not is_subscription or subscription_state != 'active'"
+                        groups="sales_team.group_sale_salesman"/>
+                <button name="action_resume_subscription" type="object" string="Resume"
+                        invisible="not is_subscription or subscription_state != 'suspended'"
+                        groups="sales_team.group_sale_salesman"/>
+                <button name="action_open_cancel_wizard" type="object" string="Cancel Subscription"
+                        invisible="not is_subscription or subscription_state in ('cancelled', 'closed')"
+                        groups="sales_team.group_sale_salesman"/>
+                <field name="subscription_state" widget="statusbar"
+                       invisible="not is_subscription"
+                       statusbar_visible="pending,active,suspended,cancelled"/>
+            </xpath>
+
+            <!-- Smart button: subscription invoices -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_subscription_invoices" type="object"
+                        class="oe_stat_button" icon="fa-pencil-square-o"
+                        invisible="not is_subscription">
+                    <field name="subscription_invoice_count" widget="statinfo" string="Invoices"/>
+                </button>
+            </xpath>
+
+            <!-- Subscription flag next to payment terms -->
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="is_subscription"/>
+            </xpath>
+
+            <!-- Subscription tab: schedule + ad-hoc charges -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Subscription" name="subscription" invisible="not is_subscription">
+                    <group>
+                        <group string="Billing Schedule">
+                            <field name="subscription_period_id"/>
+                            <field name="subscription_start_date"/>
+                        </group>
+                        <group string="Dates">
+                            <field name="subscription_next_invoice_date"/>
+                            <field name="subscription_end_date"/>
+                        </group>
+                    </group>
+                    <group string="Suspension / Cancellation"
+                           invisible="subscription_state not in ('suspended','cancelled','closed')">
+                        <group invisible="subscription_state != 'suspended'">
+                            <field name="suspension_reason_id" readonly="1"/>
+                            <field name="suspended_on" readonly="1"/>
+                            <field name="suspended_by_id" readonly="1"/>
+                            <field name="suspension_note" readonly="1"/>
+                        </group>
+                        <group invisible="subscription_state not in ('cancelled','closed')">
+                            <field name="cancellation_reason_id" readonly="1"/>
+                            <field name="cancelled_on" readonly="1"/>
+                            <field name="cancelled_by_id" readonly="1"/>
+                            <field name="cancellation_note" readonly="1"/>
+                        </group>
+                    </group>
+                    <separator string="Ad-hoc Charges (added to the next invoice)"/>
+                    <field name="subscription_charge_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="product_id"/>
+                            <field name="quantity"/>
+                            <field name="price_unit"/>
+                            <field name="tax_ids" widget="many2many_tags" optional="hide"/>
+                            <field name="amount_subtotal"/>
+                            <field name="state" readonly="1"/>
+                            <field name="invoice_id" readonly="1" optional="show"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                    <separator string="State History"/>
+                    <field name="subscription_log_ids" readonly="1">
+                        <list>
+                            <field name="date"/>
+                            <field name="action"/>
+                            <field name="reason_id"/>
+                            <field name="note" optional="show"/>
+                            <field name="order_line_id" optional="show"/>
+                            <field name="user_id"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+
+            <!-- Order lines: billing type, line status, pause/resume -->
+            <xpath expr="//field[@name='order_line']/list//field[@name='product_uom_qty']" position="after">
+                <field name="subscription_line_type"
+                       column_invisible="not parent.is_subscription"/>
+                <field name="subscription_line_state"
+                       column_invisible="not parent.is_subscription" readonly="1"/>
+                <field name="pause_reason_id" column_invisible="not parent.is_subscription"
+                       optional="show" readonly="1"/>
+                <field name="planned_resume_date" column_invisible="not parent.is_subscription"
+                       optional="hide" readonly="1"/>
+                <field name="suspension_fee_amount" column_invisible="not parent.is_subscription"
+                       optional="hide" readonly="1"/>
+                <button name="action_open_pause_wizard" type="object"
+                        icon="fa-pause" title="Pause line"
+                        column_invisible="not parent.is_subscription"
+                        invisible="subscription_line_type != 'recurring' or subscription_line_state == 'paused'"/>
+                <button name="action_resume_subscription_line" type="object"
+                        icon="fa-play" title="Resume line"
+                        column_invisible="not parent.is_subscription"
+                        invisible="subscription_line_type != 'recurring' or subscription_line_state == 'active'"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

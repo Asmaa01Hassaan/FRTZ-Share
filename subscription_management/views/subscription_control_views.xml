@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============ Suspension/Cancellation Reasons (config) ============ -->
+    <record id="view_subscription_reason_list" model="ir.ui.view">
+        <field name="name">subscription.reason.list</field>
+        <field name="model">subscription.reason</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="reason_type"/>
+                <field name="code"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_subscription_reason_form" model="ir.ui.view">
+        <field name="name">subscription.reason.form</field>
+        <field name="model">subscription.reason</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="reason_type"/>
+                        <field name="code"/>
+                        <field name="sequence"/>
+                        <field name="active"/>
+                    </group>
+                    <field name="note" placeholder="Description..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_subscription_reason" model="ir.actions.act_window">
+        <field name="name">Suspension Reasons</field>
+        <field name="res_model">subscription.reason</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- "Link Existing Invoices" as an item in the form's Action (cog) menu -->
+    <record id="action_link_existing_invoices_server" model="ir.actions.server">
+        <field name="name">Link Existing Invoices</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_view_types">form</field>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.action_open_link_existing_invoices()
+        </field>
+    </record>
+
+    <!-- ============ Customer (res.partner) smart button ============ -->
+    <record id="view_partner_form_subscription" model="ir.ui.view">
+        <field name="name">res.partner.form.subscription</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_partner_subscriptions" type="object"
+                        class="oe_stat_button" icon="fa-refresh"
+                        invisible="subscription_count == 0"
+                        groups="sales_team.group_sale_salesman">
+                    <field name="subscription_count" widget="statinfo" string="Subscriptions"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ============ Customer-centric subscription tracking ============ -->
+    <record id="view_subscription_order_customer_list" model="ir.ui.view">
+        <field name="name">subscription.order.customer.list</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <list create="false"
+                  decoration-success="subscription_state == 'active'"
+                  decoration-warning="subscription_state == 'suspended'"
+                  decoration-muted="subscription_state in ('cancelled','closed')"
+                  decoration-danger="subscription_is_overdue">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="subscription_state"/>
+                <field name="subscription_period_id"/>
+                <field name="subscription_start_date" optional="hide"/>
+                <field name="subscription_next_invoice_date"/>
+                <field name="subscription_recurring_amount" sum="Recurring"/>
+                <field name="subscription_mrr" sum="MRR" optional="show"/>
+                <field name="subscription_invoice_count" optional="hide"/>
+                <field name="subscription_is_overdue" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="user_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_subscription_order_customer_search" model="ir.ui.view">
+        <field name="name">subscription.order.customer.search</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="name"/>
+                <field name="subscription_period_id"/>
+                <filter name="flt_pending" string="Pending"
+                        domain="[('subscription_state','=','pending')]"/>
+                <filter name="flt_active" string="Active"
+                        domain="[('subscription_state','=','active')]"/>
+                <filter name="flt_suspended" string="Suspended"
+                        domain="[('subscription_state','=','suspended')]"/>
+                <filter name="flt_cancelled" string="Cancelled/Closed"
+                        domain="[('subscription_state','in',('cancelled','closed'))]"/>
+                <separator/>
+                <filter name="flt_overdue" string="Overdue"
+                        domain="[('subscription_is_overdue','=',True)]"/>
+                <separator/>
+                <filter name="flt_my" string="My Subscriptions"
+                        domain="[('user_id','=',uid)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_partner" string="Customer"
+                            context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_by_state" string="Status"
+                            context="{'group_by': 'subscription_state'}"/>
+                    <filter name="group_by_period" string="Billing Period"
+                            context="{'group_by': 'subscription_period_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_subscription_orders_customer" model="ir.actions.act_window">
+        <field name="name">Customer Subscriptions</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_subscription', '=', True)]</field>
+        <field name="search_view_id" ref="view_subscription_order_customer_search"/>
+        <field name="context">{'search_default_group_by_partner': 1, 'search_default_flt_active': 1}</field>
+    </record>
+    <record id="action_subscription_orders_customer_list" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_subscription_order_customer_list"/>
+        <field name="act_window_id" ref="action_subscription_orders_customer"/>
+    </record>
+</odoo>

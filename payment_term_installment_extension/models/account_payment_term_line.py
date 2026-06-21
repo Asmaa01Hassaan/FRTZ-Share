@@ -8,18 +8,18 @@ class AccountPaymentTermLine(models.Model):
     method = fields.Selection([
         ('sd', 'SD-Salary deduction'),
         ('sdd', 'SDD-Salary Deduction Duble'),
-    ], string=_("Method"), default='sd',
-        help=_("Payment method for this line"))
+    ], string="Method", default='sd',
+        help="Payment method for this line")
     
     date_calculation_type = fields.Selection([
         ('days', 'Number of Days'),
         ('fixed_date', 'Fixed Date'),
-    ], string=_("Date Calculation Type"), default='days',
-        help=_("Choose how to calculate the due date: using number of days or a fixed date"))
+    ], string="Date Calculation Type", default='days',
+        help="Choose how to calculate the due date: using number of days or a fixed date")
     
     fixed_due_date = fields.Date(
-        string=_("Fixed Due Date"),
-        help=_("Specific due date for this payment term line (used when Date Calculation Type is 'Fixed Date')")
+        string="Fixed Due Date",
+        help="Specific due date for this payment term line (used when Date Calculation Type is 'Fixed Date')"
     )
     
     def _get_due_date(self, date_ref):

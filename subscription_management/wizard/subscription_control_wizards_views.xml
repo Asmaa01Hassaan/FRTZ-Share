@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Suspend / Cancel (order-level) with reason -->
+    <record id="subscription_lifecycle_wizard_form" model="ir.ui.view">
+        <field name="name">subscription.lifecycle.wizard.form</field>
+        <field name="model">subscription.lifecycle.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Suspend / Cancel Subscription">
+                <group>
+                    <field name="order_id"/>
+                    <field name="mode" invisible="1"/>
+                    <field name="reason_id" options="{'no_create_edit': True}"/>
+                    <field name="note" placeholder="Details of the suspension / disconnection..."/>
+                </group>
+                <footer>
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Pause line (item-level) with reason + reduced fee -->
+    <record id="subscription_line_pause_wizard_form" model="ir.ui.view">
+        <field name="name">subscription.line.pause.wizard.form</field>
+        <field name="model">subscription.line.pause.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Pause Line">
+                <group>
+                    <field name="line_id" invisible="1"/>
+                    <field name="product_id"/>
+                    <field name="reason_id" options="{'no_create_edit': True}"/>
+                    <field name="note"/>
+                    <field name="planned_resume_date"/>
+                    <field name="charge_suspension_fee"/>
+                    <field name="suspension_fee_amount"
+                           invisible="not charge_suspension_fee"/>
+                    <field name="currency_id" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="action_confirm" type="object" string="Pause Line" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Link existing invoices to the subscription -->
+    <record id="subscription_link_invoice_wizard_form" model="ir.ui.view">
+        <field name="name">subscription.link.invoice.wizard.form</field>
+        <field name="model">subscription.link.invoice.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Link Existing Invoices">
+                <group>
+                    <group>
+                        <field name="order_id"/>
+                        <field name="partner_id"/>
+                    </group>
+                    <group>
+                        <field name="set_invoice_origin"/>
+                        <field name="company_id" invisible="1"/>
+                        <field name="commercial_partner_id" invisible="1"/>
+                    </group>
+                </group>
+                <separator string="Import Historical Invoices from Excel"/>
+                <div class="text-muted">
+                    1. Download the template, 2. fill one invoice per row, 3. upload it.
+                    Header columns: <strong>Reference, Invoice Date, Product, Description,
+                    Quantity, Amount, Period Start, Period End</strong> (only Amount is required;
+                    Reference maps to the invoice Bill Reference, Product is matched by code/name).
+                </div>
+                <div>
+                    <button name="action_download_template" type="object"
+                            string="Download Template" class="btn-link" icon="fa-download"/>
+                </div>
+                <group>
+                    <field name="import_file" filename="import_filename"
+                           string="Excel File"/>
+                    <field name="import_filename" invisible="1"/>
+                    <field name="post_invoices"/>
+                    <button name="action_import_invoices_excel" type="object"
+                            string="Upload &amp; Create Invoices" class="btn-secondary"
+                            invisible="not import_file"/>
+                </group>
+
+                <separator string="Eligible Customer Invoices (not yet linked)"/>
+                <p class="text-muted">
+                    Click "Add a line" and pick the customer's existing invoices to attach
+                    to this subscription (only unlinked customer invoices are offered).
+                </p>
+                <field name="move_ids" nolabel="1"
+                       domain="[('move_type','in',('out_invoice','out_refund')),
+                                ('subscription_order_id','=',False),
+                                ('state','in',('draft','posted')),
+                                ('company_id','=',company_id),
+                                ('commercial_partner_id','=',commercial_partner_id)]">
+                    <list create="false">
+                        <field name="name"/>
+                        <field name="invoice_date"/>
+                        <field name="partner_id" optional="show"/>
+                        <field name="state"/>
+                        <field name="payment_state" optional="show"/>
+                        <field name="amount_total"/>
+                    </list>
+                </field>
+                <footer>
+                    <button name="action_link" type="object" string="Link Selected" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

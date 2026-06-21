@@ -11,26 +11,26 @@ class AccountInstallmentPaymentLog(models.Model):
 
     installment_id = fields.Many2one(
         'account.move.installment',
-        string=_('Installment'),
+        string='Installment',
         required=True,
         ondelete='cascade',
         index=True,
     )
     move_id = fields.Many2one(
         'account.move',
-        string=_('Invoice'),
+        string='Invoice',
         related='installment_id.move_id',
         store=True,
         readonly=True,
     )
     payment_id = fields.Many2one(
         'account.payment',
-        string=_('Payment'),
+        string='Payment',
         ondelete='set null',
         index=True,
     )
     paid_amount = fields.Monetary(
-        string=_('Paid Amount'),
+        string='Paid Amount',
         currency_field='currency_id',
         required=True,
     )
@@ -41,8 +41,8 @@ class AccountInstallmentPaymentLog(models.Model):
         readonly=True,
     )
     action_type = fields.Char(
-        string=_('Action Type'),
-        help=_('e.g. action_pay_installments'),
+        string='Action Type',
+        help='e.g. action_pay_installments',
     )
 
     @api.model

@@ -13,14 +13,11 @@
               action="action_sale_order_type"
               sequence="35"/>
 
-    <!-- Remove legacy top-level FRTZ application menu and duplicate entries -->
-    <delete model="ir.ui.menu" id="sales_order_extension.menu_sales_root"/>
-    <delete model="ir.ui.menu" id="sales_order_extension.menu_frtz_sales_configuration"/>
-    <delete model="ir.ui.menu" id="sales_order_extension.menu_product_parent"/>
-    <delete model="ir.ui.menu" id="sales_order_extension.menu_products"/>
-    <delete model="ir.ui.menu" id="sales_order_extension.menu_product_variants"/>
-    <delete model="ir.ui.menu" id="sales_order_extension.menu_pricelist"/>
-    <delete model="ir.ui.menu" id="sales_order_extension.menu_partner_parent"/>
-    <delete model="ir.ui.menu" id="sales_order_extension.menu_customers"/>
-    <delete model="ir.ui.menu" id="sales_order_extension.menu_companies"/>
+    <!-- NOTE: legacy <delete> records for menu_sales_root, menu_frtz_sales_configuration,
+         menu_product_parent, menu_products, menu_product_variants, menu_pricelist,
+         menu_partner_parent, menu_customers and menu_companies were removed.
+         Those XML IDs are no longer defined by this module, so the <delete> tags only
+         logged "External ID not found" warnings on every upgrade. Odoo's standard
+         orphan-record cleanup already removes such legacy menus when the module is
+         updated, so the explicit deletes were redundant. -->
 </odoo>

@@ -1,0 +1,23 @@
+# Arabic (ar_001) translations for subscription_management.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Language: ar_001\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. module: subscription_management
+#. odoo-python
+#: code:addons/subscription_management/models/sale_order.py:0
+#, python-format
+msgid "Subscription from %(start)s to %(end)s"
+msgstr "اشتراك من %(start)s إلى %(end)s"
+
+#. module: subscription_management
+#. odoo-python
+#: code:addons/subscription_management/models/sale_order.py:0
+#, python-format
+msgid "Generate Subscription Invoice"
+msgstr "إصدار فاتورة الاشتراك"

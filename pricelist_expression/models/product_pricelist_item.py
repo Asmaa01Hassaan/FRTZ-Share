@@ -53,13 +53,13 @@ class ProductPricelistItem(models.Model):
 
     payment_type = fields.Selection(
         [
-            ('immediate', _('Immediate Payment')),
-            ('regular', _('Regular Installments')),
-            ('irregular', _('Irregular Installments')),
+            ('immediate', 'Immediate Payment'),
+            ('regular', 'Regular Installments'),
+            ('irregular', 'Irregular Installments'),
         ],
-        string=_("Payment plan"),
+        string="Payment plan",
         default=False,
-        help=_("Leave empty to apply this pricelist rule to all payment plans.")
+        help="Leave empty to apply this pricelist rule to all payment plans."
     )
 
     @api.depends('expression_variable_ids', 'expression_variable_ids.variable_name', 'expression_variable_ids.field_id')

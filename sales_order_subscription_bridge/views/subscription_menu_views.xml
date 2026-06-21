@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Use dynamic sale order type menus instead of the standalone STTL app menu -->
+    <record id="sttl_sale_subscription.sttl_subscription_menu_act" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+
+    <record id="sttl_sale_subscription.sttl_subscription_action" model="ir.actions.act_window">
+        <field name="domain">[
+            ('recurrance_id', '!=', False),
+            ('sale_order_type_id.order_classification', '=', 'subscription'),
+        ]</field>
+    </record>
+
+    <record id="sttl_sale_subscription.sttl_subscription_quote_action" model="ir.actions.act_window">
+        <field name="domain">[
+            ('state', '=', 'draft'),
+            ('sale_order_type_id.order_classification', '=', 'subscription'),
+        ]</field>
+    </record>
+
+    <record id="sttl_sale_subscription.subscription_so_line_pivot_action" model="ir.actions.act_window">
+        <field name="domain">[
+            ('order_id.recurrance_id', '!=', False),
+            ('order_id.sale_order_type_id.order_classification', '=', 'subscription'),
+        ]</field>
+    </record>
+</odoo>

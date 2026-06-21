@@ -16,8 +16,8 @@ class AccountPaymentRegister(models.TransientModel):
     )
     payment_amount_mode = fields.Selection(
         selection=[
-            ('full', _('Full Amount')),
-            ('first_payment_per_lines', _('First Payment (Per Lines)')),
+            ('full', 'Full Amount'),
+            ('first_payment_per_lines', 'First Payment (Per Lines)'),
         ],
         string='Amount to Pay',
         default='full',

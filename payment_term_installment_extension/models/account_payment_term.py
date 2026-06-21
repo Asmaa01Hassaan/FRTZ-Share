@@ -8,28 +8,28 @@ class AccountPaymentTerm(models.Model):
     _inherit = 'account.payment.term'
     
     is_installment_term = fields.Boolean(
-        string=_("Auto JE"),
+        string="Auto JE",
         default=True,
-        help=_("Indicates if this payment term is for installments")
+        help="Indicates if this payment term is for installments"
     )
     
     installment_count = fields.Integer(
-        string=_("Installments Num."),
+        string="Installments Num.",
         default=0,
-        help=_("Number of installments for this payment term")
+        help="Number of installments for this payment term"
     )
     
     first_payment_type = fields.Selection([
         ('percent', 'Percent'),
         ('fixed', 'Fixed'),
-    ], string=_("First Payment Type"), default='fixed',
-        help=_("Type of first payment: percent or fixed amount"))
+    ], string="First Payment Type", default='fixed',
+        help="Type of first payment: percent or fixed amount")
     
     first_payment_percentage = fields.Float(
-        string=_("First Payment"),
+        string="First Payment",
         default=0.0,
         digits=(16, 2),
-        help=_("first payment")
+        help="first payment"
     )
     
     show_installment_scope = fields.Boolean(compute='_compute_installment_config_visibility')
@@ -40,51 +40,51 @@ class AccountPaymentTerm(models.Model):
     scope = fields.Selection([
         ('per_invoice', 'Per Invoice'),
         ('per_lines', 'Per Lines'),
-    ], string=_("Scope"),
+    ], string="Scope",
         default=lambda self: self.env['installment.config.mixin']._get_installment_default_scope(),
-        help=_("Scope of payment term application"))
+        help="Scope of payment term application")
     
     settlement_trigger = fields.Selection([
         ('cia', 'CIA-Cash in Advance'),
         ('cod', 'Cash on Delivery'),
         ('cbd', 'Cash Before Delivery'),
-    ], string=_("Payment Timing"), default='cia',
-        help=_("Settlement trigger type"))
+    ], string="Payment Timing", default='cia',
+        help="Settlement trigger type")
     
     baseline_date = fields.Selection([
         ('invoice_date', 'Invoice Date'),
         ('posting_date', 'Posting Date'),
         ('receipt_date', 'Receipt Date'),
-    ], string=_("Baseline Date"),
+    ], string="Baseline Date",
         default=lambda self: self.env['installment.config.mixin']._get_installment_default_baseline_date(),
-        help=_("Baseline date for payment term calculation"))
+        help="Baseline date for payment term calculation")
     
     pay_type = fields.Selection([
         ('spot', 'Spot(Full)'),
         ('fixed', 'Fixed(Auto)'),
         ('custom', 'Custom(Manual)'),
-    ], string=_("Payment Plan"), default='spot',
-        help=_("Type of payment plan"))
-    grace_period = fields.Integer(string=_("GracePeriod (days)"))
+    ], string="Payment Plan", default='spot',
+        help="Type of payment plan")
+    grace_period = fields.Integer(string="GracePeriod (days)")
 
     installment_frequency = fields.Selection([
         ('monthly', 'Monthly'),
         ('weekly', 'Weekly'),
         ('daily', 'Daily'),
-    ], string=_("Installment Frequency"), default='monthly',
-        help=_("Frequency of installments"))
+    ], string="Installment Frequency", default='monthly',
+        help="Frequency of installments")
     
     apply_remming_to = fields.Selection([
         ('first_installment', 'First Installment'),
         ('last_installment', 'Last Installment'),
-    ], string=_("Apply Remaining To"), default='last_installment',
-        help=_("Apply remaining amount to which installment"))
+    ], string="Apply Remaining To", default='last_installment',
+        help="Apply remaining amount to which installment")
     
     method = fields.Selection([
         ('sd', 'SD-Saladuction'),
         ('sdd', 'Salary Deduction Duble'),
-    ], string=_("Method"), default='sd',
-        help=_("Payment method"))
+    ], string="Method", default='sd',
+        help="Payment method")
 
     def _compute_installment_config_visibility(self):
         states = self.env['installment.config.mixin']._get_installment_field_ui_states()
@@ -770,27 +770,14 @@ class AccountPaymentTerm(models.Model):
                 if record.pay_type or record.first_payment_percentage or record.baseline_date or record.grace_period:
                     record.name = record._generate_auto_name()
         
-        # Clear caches when installment-related fields are updated
-        # This ensures views and computed fields are refreshed immediately
-        installment_fields = [
-            'is_installment_term',
-            'installment_count',
-            'first_payment_type',
-            'first_payment_percentage',
-            'scope',
-            'settlement_trigger',
-            'baseline_date',
-            'pay_type',
-            'installment_frequency',
-            'apply_remming_to',
-            'method',
-        ]
-        
-        if any(field in vals for field in installment_fields):
-            # Clear cache to refresh views and computed fields
-            # Note: In Odoo 18, use clear_cache() instead of clear_caches()
-            self.env.registry.clear_cache()
-        
+        # NOTE: A global `self.env.registry.clear_cache()` used to run here on
+        # every write that touched installment fields. It was removed for
+        # performance — it wiped the ENTIRE ORM registry cache on each save.
+        # Business logic is unchanged: computed fields declared with @api.depends
+        # invalidate automatically during write(), and the web client re-reads the
+        # record afterwards, so views still refresh correctly. (The heavy global
+        # cache clear was never the right tool for refreshing computed values.)
+
         return result
 
     def _get_term_line_amount(self, term_line, total, currency, company, date_ref):
@@ -1149,13 +1136,11 @@ class AccountPaymentTerm(models.Model):
     @api.model
     def create(self, vals):
         """
-        Override create to auto-generate line_ids for fixed payment type and clear caches.
-        
-        Note: clear_caches() is used here to ensure views are refreshed immediately
-        after creating a payment term with installment fields.
-        
-        ⚠️ WARNING: This may impact performance in production environments.
-        Consider removing or making it conditional based on environment.
+        Override create to auto-generate line_ids for fixed payment type.
+
+        Note: the previous global registry cache clear was removed from this
+        method for performance (see the note near the `return` statement).
+        Computed fields invalidate automatically via @api.depends.
         """
         # Auto-generate line_ids for fixed payment type
         lines = []
@@ -1282,17 +1267,11 @@ class AccountPaymentTerm(models.Model):
                 if record.pay_type or record.first_payment_percentage or record.baseline_date or record.grace_period:
                     record.name = record._generate_auto_name()
         
-        # Clear caches when creating payment term with installment fields
-        installment_fields = [
-            'is_installment_term',
-            'installment_count',
-            'first_payment_percentage',
-        ]
-        
-        if any(field in vals for field in installment_fields):
-            # Clear cache to refresh views and computed fields
-            # Note: In Odoo 18, use clear_cache() instead of clear_caches()
-            self.env.registry.clear_cache()
-        
+        # NOTE: A global `self.env.registry.clear_cache()` used to run here on
+        # create. It was removed for performance — it wiped the ENTIRE ORM
+        # registry cache on each create. Business logic is unchanged: computed
+        # fields with @api.depends invalidate automatically, so views still
+        # refresh correctly.
+
         return result
 

@@ -1,3 +1,4 @@
+from . import ir_ui_view
 from . import contact_addresses
 from . import contact_attachment
 from . import contact_division

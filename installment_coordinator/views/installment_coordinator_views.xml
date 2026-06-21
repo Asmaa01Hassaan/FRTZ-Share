@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- Coordinator Form View -->
+    <record id="installment_coordinator_view_form" model="ir.ui.view">
+      <field name="name">Installment Coordinator</field>
+      <field name="model">installment.coordinator</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <h1>Installment Coordinator</h1>
+
+            <div class="alert alert-success" role="alert">
+              <strong>Installment Coordinator v18.0.1.0.0</strong><br/>
+              Orchestrates installment operations across all modules.
+              No existing code is modified - this coordinator works alongside your existing setup.
+            </div>
+
+            <h2>Configuration</h2>
+            <group>
+              <field name="auto_create_installments"/>
+              <field name="auto_track_payments"/>
+              <field name="auto_flag_overdue"/>
+              <field name="log_operations"/>
+            </group>
+
+            <h2>System Status</h2>
+            <group>
+              <button name="action_validate_dependencies" type="object" string="Check Dependencies" class="btn-primary"/>
+              <button name="action_show_status" type="object" string="Show Status" class="btn-info"/>
+            </group>
+
+            <separator string="How It Works"/>
+            <div class="well">
+              <h4>Automatic Operations</h4>
+              <ul>
+                <li><strong>On Invoice Posted:</strong> If enabled, automatically creates installments based on payment term</li>
+                <li><strong>On Payment Received:</strong> If enabled, automatically tracks payments against installments</li>
+                <li><strong>Overdue Check:</strong> If enabled, automatically flags overdue installments (run via cron)</li>
+              </ul>
+
+              <h4>For Developers</h4>
+              <p>Use the coordinator in your code for clean, decoupled installment operations:</p>
+              <code>
+                coordinator = self.env['installment.coordinator']<br/>
+                coordinator.process_invoice_posted(invoice)<br/>
+                coordinator.validate_dependencies()
+              </code>
+            </div>
+
+            <separator string="Module Information"/>
+            <p>
+              <strong>Module:</strong> installment_coordinator v18.0.1.0.0<br/>
+              <strong>Purpose:</strong> High-level orchestration of installment operations<br/>
+              <strong>Status:</strong> Active and ready to use<br/>
+              <strong>Non-invasive:</strong> Does NOT modify existing module code
+            </p>
+
+            <separator string="Related Modules"/>
+            <p>
+              <strong>installment_dependency_manager:</strong> Tracks module capabilities and dependencies<br/>
+              <strong>installment_adapter:</strong> Clean interface to installment operations<br/>
+              <strong>installment_coordinator:</strong> High-level orchestration (this module)
+            </p>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem
+      id="menu_installment_coordinator"
+      name="Installment Coordinator"
+      parent="account.menu_finance"
+      action="action_installment_coordinator"
+      sequence="3"/>
+
+    <!-- Action -->
+    <record id="action_installment_coordinator" model="ir.actions.act_window">
+      <field name="name">Installment Coordinator</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">installment.coordinator</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="installment_coordinator_view_form"/>
+      <field name="target">current</field>
+    </record>
+
+  </data>
+</odoo>

@@ -10,90 +10,93 @@ class SaleOrderType(models.Model):
 
     name = fields.Char(required=True, translate=True)
 
+    order_classification = fields.Selection(
+        [
+            ("sale", "Sale Order"),
+            ("subscription", "Subscription"),
+        ],
+        string="Order Classification",
+        default="sale",
+        required=True,
+        help="Subscription features apply only when this type is Subscription.",
+    )
+
     product_type = fields.Selection(
         [
-            ("consu", _("Goods")),
-            ("service", _("Service")),
-            ("combo", _("Combo")),
+            ("consu", "Goods"),
+            ("service", "Service"),
+            ("combo", "Combo"),
         ],
-        string=_("Product Type"),
+        string="Product Type",
         default="consu",
         required=True,
-        help=_("Same categories as on products: goods, service, or combo."),
+        help="Same categories as on products: goods, service, or combo.",
     )
 
     active = fields.Boolean(default=True)
 
     company_id = fields.Many2one(
         "res.company",
-        string=_("Company"),
+        string="Company",
         default=lambda self: self.env.company,
         index=True,
     )
     currency_id = fields.Many2one(
         "res.currency",
-        string=_("Currency"),
+        string="Currency",
         default=lambda self: self.env.company.currency_id,
     )
     journal_id = fields.Many2one(
         "account.journal",
-        string=_("Invoicing Journal"),
+        string="Invoicing Journal",
         domain="[('type', 'in', ('sale', 'general')), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         check_company=True,
-        help=_("Default journal for invoices created from orders of this type (Sales or Miscellaneous only)."),
+        help="Default journal for invoices created from orders of this type (Sales or Miscellaneous only).",
     )
     journal_incactive_validation = fields.Boolean(
-        string=_("Skip Sale Journal Validation"),
+        string="Skip Sale Journal Validation",
         default=False,
-        help=_(
-            "When enabled, customer invoices from this order type may use a non-sale "
-            "journal (e.g. Miscellaneous) without raising a validation error."
-        ),
+        help="When enabled, customer invoices from this order type may use a non-sale "
+            "journal (e.g. Miscellaneous) without raising a validation error.",
     )
     product_category_ids = fields.Many2many(
         "product.category",
         "sale_order_type_product_category_rel",
         "sale_order_type_id",
         "category_id",
-        string=_("Product Categories"),
-        help=_(
-            "When set, only products in these categories (including subcategories) "
-            "can be added to orders of this type. Leave empty to allow all categories."
-        ),
+        string="Product Categories",
+        help="When set, only products in these categories (including subcategories) "
+            "can be added to orders of this type. Leave empty to allow all categories.",
     )
     sale_order_template_id = fields.Many2one(
         "sale.order.template",
-        string=_("Quotation Template"),
+        string="Quotation Template",
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         check_company=True,
-        help=_("Default quotation template applied to new orders of this type."),
+        help="Default quotation template applied to new orders of this type.",
     )
 
     sequence_prefix = fields.Char(
-        string=_("Sequence Prefix"),
+        string="Sequence Prefix",
         required=True,
         default="SO/%(year)s/",
-        help=_(
-            "Prefix for order numbers of this type, e.g. SOI/%(year)s/. "
-            "Supports Odoo placeholders: %(year)s, %(month)s, %(day)s, etc."
-        ),
+        help="Prefix for order numbers of this type, e.g. SOI/%(year)s/. "
+            "Supports Odoo placeholders: %(year)s, %(month)s, %(day)s, etc.",
     )
     sequence_code = fields.Char(
-        string=_("Sequence Code"),
-        help=_(
-            "Technical code on ir.sequence (e.g. custom.sale.order). "
-            "Leave empty to use an auto code sale.order.type.<id>."
-        ),
+        string="Sequence Code",
+        help="Technical code on ir.sequence (e.g. custom.sale.order). "
+            "Leave empty to use an auto code sale.order.type.<id>.",
         copy=False,
     )
     sequence_padding = fields.Integer(
-        string=_("Sequence Size"),
+        string="Sequence Size",
         default=5,
-        help=_("Number of digits for the numeric part (e.g. 5 → 00001)."),
+        help="Number of digits for the numeric part (e.g. 5 → 00001).",
     )
 
     sequence_auto = fields.Boolean(
-        string=_("Auto-generated sequence"),
+        string="Auto-generated sequence",
         default=False,
         readonly=True,
         copy=False,
@@ -101,7 +104,7 @@ class SaleOrderType(models.Model):
 
     sequence_id = fields.Many2one(
         "ir.sequence",
-        string=_("Sequence"),
+        string="Sequence",
         readonly=True,
         copy=False,
         ondelete="set null",
@@ -137,8 +140,10 @@ class SaleOrderType(models.Model):
         return [("categ_id", "in", allowed)] if allowed else [("categ_id", "=", False)]
 
     @api.model
-    def _suggest_sequence_prefix(self, name):
+    def _suggest_sequence_prefix(self, name, order_classification=None):
         """Default prefix hints aligned with account_invoice_installments sequences."""
+        if order_classification == "subscription":
+            return "SOS/%(year)s/"
         n = (name or "").lower()
         if any(k in n for k in ("custom", "warehouse", "مستودع")):
             return "SOI/%(year)s/"
@@ -170,7 +175,27 @@ class SaleOrderType(models.Model):
     @api.onchange("name")
     def _onchange_name_sequence_prefix(self):
         if self.name and not self.sequence_prefix:
-            self.sequence_prefix = self._suggest_sequence_prefix(self.name)
+            self.sequence_prefix = self._suggest_sequence_prefix(
+                self.name, self.order_classification
+            )
+
+    @api.onchange("order_classification")
+    def _onchange_order_classification(self):
+        if self.order_classification == "subscription":
+            self.product_type = "service"
+            if not self.sequence_prefix or self.sequence_prefix == "SO/%(year)s/":
+                self.sequence_prefix = "SOS/%(year)s/"
+        elif self.sequence_prefix == "SOS/%(year)s/":
+            self.sequence_prefix = self._suggest_sequence_prefix(self.name, "sale")
+
+    @api.model
+    def _apply_classification_defaults(self, vals):
+        if vals.get("order_classification") == "subscription":
+            vals.setdefault("product_type", "service")
+            if not vals.get("sequence_prefix"):
+                vals["sequence_prefix"] = self._suggest_sequence_prefix(
+                    vals.get("name"), "subscription"
+                )
 
     def _ensure_sequence(self):
         IrSequence = self.env["ir.sequence"].sudo()
@@ -260,6 +285,7 @@ class SaleOrderType(models.Model):
                 "default_sale_order_type_id": rec.id,
                 "search_default_sale_order_type_id": rec.id,
                 "restrict_order_product_type": rec.product_type,
+                "restrict_order_classification": rec.order_classification,
             }
             if rec.product_category_ids:
                 ctx["restrict_order_product_category_ids"] = rec.product_category_ids.ids
@@ -296,7 +322,10 @@ class SaleOrderType(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get("name") and not vals.get("sequence_prefix"):
-                vals["sequence_prefix"] = self._suggest_sequence_prefix(vals["name"])
+                vals["sequence_prefix"] = self._suggest_sequence_prefix(
+                    vals["name"], vals.get("order_classification")
+                )
+            self._apply_classification_defaults(vals)
         records = super().create(vals_list)
         records._ensure_sequence()
         records._ensure_dynamic_menu_and_action()
@@ -315,6 +344,7 @@ class SaleOrderType(models.Model):
                 "sequence_prefix",
                 "sequence_code",
                 "sequence_padding",
+                "order_classification",
             )
         ):
             self._ensure_sequence()

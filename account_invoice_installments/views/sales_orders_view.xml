@@ -93,7 +93,7 @@
             </xpath>
 
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="vendor_name_id"  string="Vendor Name" invisible="order_type != 'wholesale'"/>
+                <field name="vendor_name_id"  string="Vendor Name" invisible="installment_order_type != 'wholesale'"/>
             </xpath>
 
             <xpath expr="//field[@name='order_line']//list//field[@name='product_uom_qty']" position="after">
@@ -188,20 +188,20 @@
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
                 <!-- Default filters for each type -->
-                <filter string="Standard Sale Order" name="standard_orders" domain="[('order_type','=','standard')]"/>
-                <filter string="Warehouse Sale Order" name="custom_orders" domain="[('order_type','=','custom')]"/>
+                <filter string="Standard Sale Order" name="standard_orders" domain="[('installment_order_type','=','standard')]"/>
+                <filter string="Warehouse Sale Order" name="custom_orders" domain="[('installment_order_type','=','custom')]"/>
                 <filter string="External Sales Order" name="wholesale_orders"
-                        domain="[('order_type','=','wholesale')]"/>
+                        domain="[('installment_order_type','=','wholesale')]"/>
                 <filter string="Service Sales Order" name="subscription_orders"
-                        domain="[('order_type','=','subscription')]"/>
+                        domain="[('installment_order_type','=','subscription')]"/>
 
                 <!-- Group by Order Type -->
-                <filter string="Order Type" name="order_type" context="{'group_by': 'order_type'}"/>
+                <filter string="Order Type" name="installment_order_type" context="{'group_by': 'installment_order_type'}"/>
             </xpath>
 
-            <!-- Add order_type field to search view -->
+            <!-- Add installment_order_type field to search view -->
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="order_type" filter_domain="[('order_type','ilike',self)]"/>
+                <field name="installment_order_type" filter_domain="[('installment_order_type','ilike',self)]"/>
             </xpath>
         </field>
     </record>

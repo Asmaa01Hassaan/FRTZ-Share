@@ -18,6 +18,7 @@
                     'sale_order_type_id': parent.sale_order_type_id,
                     'restrict_order_product_type': parent.sale_order_type_product_type,
                     'restrict_order_product_category_ids': parent.sale_order_type_product_category_ids,
+                    'restrict_order_classification': parent.sale_order_type_classification,
                     'default_type': parent.sale_order_type_product_type,
                 }</attribute>
             </xpath>
@@ -35,6 +36,7 @@
                     'sale_order_type_id': parent.sale_order_type_id,
                     'restrict_order_product_type': parent.sale_order_type_product_type,
                     'restrict_order_product_category_ids': parent.sale_order_type_product_category_ids,
+                    'restrict_order_classification': parent.sale_order_type_classification,
                     'default_type': parent.sale_order_type_product_type,
                 }</attribute>
             </xpath>
@@ -51,6 +53,7 @@
                     'sale_order_type_id': parent.sale_order_type_id,
                     'restrict_order_product_type': parent.sale_order_type_product_type,
                     'restrict_order_product_category_ids': parent.sale_order_type_product_category_ids,
+                    'restrict_order_classification': parent.sale_order_type_classification,
                     'default_type': parent.sale_order_type_product_type,
                 }</attribute>
             </xpath>

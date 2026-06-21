@@ -6,13 +6,13 @@ class SaleOrder(models.Model):
 
     sale_order_type_id = fields.Many2one(
         "sale.order.type",
-        string=_("Order Type"),
+        string="Order Type",
         tracking=True,
         domain="['&', ('active', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
     )
 
     order_type = fields.Char(
-        string=_('Order Type'),
+        string='Order Type',
         compute='_compute_order_type',
         store=True,
         readonly=True,
@@ -31,6 +31,10 @@ class SaleOrder(models.Model):
     )
     sale_order_type_product_category_ids = fields.Many2many(
         related="sale_order_type_id.product_category_ids",
+        readonly=True,
+    )
+    sale_order_type_classification = fields.Selection(
+        related="sale_order_type_id.order_classification",
         readonly=True,
     )
 
@@ -225,7 +229,7 @@ class SaleOrder(models.Model):
     @api.model
     def _assign_order_name_from_type(self, vals):
         """Assign SO name from the sale order type's own ir.sequence."""
-        if vals.get("name", _("New")) != _("New"):
+        if vals.get("name", "New") != _("New"):
             return True
         sot_id = self._resolve_sale_order_type_id(vals)
         if not sot_id:
@@ -253,7 +257,7 @@ class SaleOrder(models.Model):
                 sot = self.env["sale.order.type"].browse(sot_id)
                 if sot.exists() and sot.company_id:
                     vals["company_id"] = sot.company_id.id
-            if not self._assign_order_name_from_type(vals) and vals.get("name", _("New")) == _("New"):
+            if not self._assign_order_name_from_type(vals) and vals.get("name", "New") == _("New"):
                 try:
                     seq_date = fields.Datetime.context_timestamp(
                         self, fields.Datetime.to_datetime(vals.get("date_order"))

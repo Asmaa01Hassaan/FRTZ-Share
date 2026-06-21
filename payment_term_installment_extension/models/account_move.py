@@ -28,41 +28,41 @@ class AccountMove(models.Model):
 
     payment_type = fields.Selection(
         [
-            ('immediate', _('Spot(Full)')),
-            ('regular', _('Fixed(Auto)')),
-            ('irregular', _('Custom(Manual)')),
+            ('immediate', 'Spot(Full)'),
+            ('regular', 'Fixed(Auto)'),
+            ('irregular', 'Custom(Manual)'),
         ],
-        string=_("Payment plan"),
+        string="Payment plan",
         default="regular",
         tracking=True,
         copy=False,
-        help=_("Select the payment plan for this order")
+        help="Select the payment plan for this order"
     )
 
     installment_count = fields.Integer(
-        string=_("Installments Num."),
+        string="Installments Num.",
         default=0,
         copy=False,
-        help=_("Number of installments for this payment term")
+        help="Number of installments for this payment term"
     )
 
     first_payment_type = fields.Selection(
         [
-            ('percent', _('Percent')),
-            ('fixed', _('Fixed')),
+            ('percent', 'Percent'),
+            ('fixed', 'Fixed'),
         ],
-        string=_("First Payment Type"),
+        string="First Payment Type",
         default='fixed',
         copy=False,
-        help=_("Type of first payment: percent or fixed amount"),
+        help="Type of first payment: percent or fixed amount",
     )
 
     first_payment_percentage = fields.Float(
-        string=_("First Payment"),
+        string="First Payment",
         default=0.0,
         digits=(16, 2),
         copy=False,
-        help=_("first payment"),
+        help="first payment",
     )
     show_installment_scope = fields.Boolean(compute='_compute_installment_config_visibility')
     readonly_installment_scope = fields.Boolean(compute='_compute_installment_config_visibility')
@@ -72,54 +72,54 @@ class AccountMove(models.Model):
     scope = fields.Selection([
         ('per_invoice', 'Per Invoice'),
         ('per_lines', 'Per Lines'),
-    ], string=_("Scope"),
+    ], string="Scope",
         default=lambda self: self.env['installment.config.mixin']._get_installment_default_scope(),
-        help=_("Scope of payment term application"))
+        help="Scope of payment term application")
 
     baseline_date = fields.Selection(
         [
-            ('invoice_date', _('Invoice Date')),
-            ('posting_date', _('Posting Date')),
-            ('receipt_date', _('Receipt Date')),
+            ('invoice_date', 'Invoice Date'),
+            ('posting_date', 'Posting Date'),
+            ('receipt_date', 'Receipt Date'),
         ],
-        string=_("Baseline Date"),
+        string="Baseline Date",
         default=lambda self: self.env['installment.config.mixin']._get_installment_default_baseline_date(),
         copy=False,
-        help=_("Baseline date for payment term calculation"),
+        help="Baseline date for payment term calculation",
     )
 
     pay_type = fields.Selection(
         [
-            ('spot', _('Spot(Full)')),
-            ('fixed', _('Fixed(Auto)')),
-            ('custom', _('Custom(Manual)')),
+            ('spot', 'Spot(Full)'),
+            ('fixed', 'Fixed(Auto)'),
+            ('custom', 'Custom(Manual)'),
         ],
-        string=_("Payment Plan"),
+        string="Payment Plan",
         default='fixed',
         copy=False,
-        help=_("Type of payment plan"),
+        help="Type of payment plan",
     )
     settlement_trigger = fields.Selection(
         [
-            ('cia', _('CIA-Cash in Advance')),
-            ('cod', _('Cash on Delivery')),
-            ('cbd', _('Cash Before Delivery')),
+            ('cia', 'CIA-Cash in Advance'),
+            ('cod', 'Cash on Delivery'),
+            ('cbd', 'Cash Before Delivery'),
         ],
-        string=_("Payment Timing"),
+        string="Payment Timing",
         default='cia',
         copy=False,
-        help=_("Settlement trigger type for spot payment plans"),
+        help="Settlement trigger type for spot payment plans",
     )
     installment_frequency = fields.Selection(
         [
-            ('monthly', _('Monthly')),
-            ('weekly', _('Weekly')),
-            ('daily', _('Daily')),
+            ('monthly', 'Monthly'),
+            ('weekly', 'Weekly'),
+            ('daily', 'Daily'),
         ],
-        string=_("Installment Frequency"),
+        string="Installment Frequency",
         default='monthly',
         copy=False,
-        help=_("Frequency of installments for fixed payment plans"),
+        help="Frequency of installments for fixed payment plans",
     )
 
     def _compute_installment_config_visibility(self):

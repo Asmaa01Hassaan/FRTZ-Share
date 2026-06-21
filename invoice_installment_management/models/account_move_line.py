@@ -226,83 +226,10 @@ class AccountMoveLine(models.Model):
         }
 
     def _build_line_payment_term_commands(self, term_values):
+        # Shared with sale.order.line via installment.config.mixin so both build
+        # the EXACT same per-line installment schedule. Logic unchanged.
         self.ensure_one()
-        pay_type = term_values['pay_type']
-        installment_count = int(term_values['installment_count'] or 0)
-        first_payment_type = term_values['first_payment_type']
-        first_payment = term_values['first_payment_percentage'] or 0.0
-        line_amount = term_values.get('line_amount') or 0.0
-
-        if first_payment_type == 'percent' and not (0 <= first_payment <= 100):
-            raise ValidationError(_("First Payment (%) must be between 0 and 100."))
-
-        if pay_type == 'spot':
-            return [(0, 0, {
-                'value': 'percent',
-                'value_amount': 100.0,
-                'nb_days': 0,
-                'delay_type': 'days_after',
-            })]
-
-        if pay_type != 'fixed' or installment_count < 1:
-            return [(0, 0, {
-                'value': 'percent',
-                'value_amount': 100.0,
-                'nb_days': 0,
-                'delay_type': 'days_after',
-            })]
-
-        lines = []
-        percent_so_far = 0.0
-        if first_payment > 0:
-            if first_payment_type == 'fixed':
-                first_pct = (
-                    round((min(first_payment, line_amount) / line_amount) * 100.0, 6)
-                    if line_amount
-                    else 0.0
-                )
-            else:
-                first_pct = first_payment
-            if first_pct > 0:
-                lines.append((0, 0, {
-                    'value': 'percent',
-                    'value_amount': first_pct,
-                    'nb_days': 0,
-                    'delay_type': 'days_after',
-                }))
-                percent_so_far = first_pct
-
-        if installment_count < 1:
-            return lines or [(0, 0, {
-                'value': 'percent',
-                'value_amount': 100.0,
-                'nb_days': 0,
-                'delay_type': 'days_after',
-            })]
-
-        frequency = term_values['installment_frequency']
-        days_map = {
-            'monthly': 30,
-            'weekly': 7,
-            'daily': 1,
-        }
-        days_interval = days_map.get(frequency, 30)
-        remaining_pct = max(100.0 - percent_so_far, 0.0)
-        base_pct = round(remaining_pct / installment_count, 6) if installment_count else 0.0
-
-        for index in range(installment_count):
-            if index == installment_count - 1:
-                value_amount = round(100.0 - percent_so_far, 6)
-            else:
-                value_amount = base_pct
-                percent_so_far = round(percent_so_far + value_amount, 6)
-            lines.append((0, 0, {
-                'value': 'percent',
-                'value_amount': value_amount,
-                'nb_days': (index + 1) * days_interval,
-                'delay_type': 'days_after',
-            }))
-        return lines
+        return self.env['installment.config.mixin']._build_installment_line_commands(term_values)
 
     def _payment_term_matches_line_values(self):
         self.ensure_one()

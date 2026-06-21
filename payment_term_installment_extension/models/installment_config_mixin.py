@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import api, models
+from odoo import api, models, _
+from odoo.exceptions import ValidationError
 from odoo.tools.misc import str2bool
 
 INSTALLMENT_SCOPE_VALUES = {'per_invoice', 'per_lines'}
@@ -83,3 +84,93 @@ class InstallmentConfigMixin(models.AbstractModel):
             'show_installment_baseline_date': baseline_mode != 'invisible',
             'readonly_installment_baseline_date': baseline_mode == 'readonly',
         }
+
+    @api.model
+    def _build_installment_line_commands(self, term_values):
+        """Build account.payment.term.line commands for a per-line installment term.
+
+        This is a pure function of ``term_values`` (it reads no record state), so
+        account.move.line and sale.order.line both delegate here to guarantee the
+        EXACT same per-line installment schedule. The logic is unchanged from the
+        two previously-duplicated ``_build_line_payment_term_commands`` methods —
+        same checks, same ``round(..., 6)`` precision, same day intervals.
+
+        Expected keys in ``term_values``: pay_type, installment_count,
+        first_payment_type, first_payment_percentage, installment_frequency, and
+        optionally line_amount.
+        """
+        pay_type = term_values['pay_type']
+        installment_count = int(term_values['installment_count'] or 0)
+        first_payment_type = term_values['first_payment_type']
+        first_payment = term_values['first_payment_percentage'] or 0.0
+        line_amount = term_values.get('line_amount') or 0.0
+
+        if first_payment_type == 'percent' and not (0 <= first_payment <= 100):
+            raise ValidationError(_("First Payment (%) must be between 0 and 100."))
+
+        if pay_type == 'spot':
+            return [(0, 0, {
+                'value': 'percent',
+                'value_amount': 100.0,
+                'nb_days': 0,
+                'delay_type': 'days_after',
+            })]
+
+        if pay_type != 'fixed' or installment_count < 1:
+            return [(0, 0, {
+                'value': 'percent',
+                'value_amount': 100.0,
+                'nb_days': 0,
+                'delay_type': 'days_after',
+            })]
+
+        lines = []
+        percent_so_far = 0.0
+        if first_payment > 0:
+            if first_payment_type == 'fixed':
+                first_pct = (
+                    round((min(first_payment, line_amount) / line_amount) * 100.0, 6)
+                    if line_amount
+                    else 0.0
+                )
+            else:
+                first_pct = first_payment
+            if first_pct > 0:
+                lines.append((0, 0, {
+                    'value': 'percent',
+                    'value_amount': first_pct,
+                    'nb_days': 0,
+                    'delay_type': 'days_after',
+                }))
+                percent_so_far = first_pct
+
+        if installment_count < 1:
+            return lines or [(0, 0, {
+                'value': 'percent',
+                'value_amount': 100.0,
+                'nb_days': 0,
+                'delay_type': 'days_after',
+            })]
+
+        days_map = {
+            'monthly': 30,
+            'weekly': 7,
+            'daily': 1,
+        }
+        days_interval = days_map.get(term_values['installment_frequency'], 30)
+        remaining_pct = max(100.0 - percent_so_far, 0.0)
+        base_pct = round(remaining_pct / installment_count, 6) if installment_count else 0.0
+
+        for index in range(installment_count):
+            if index == installment_count - 1:
+                value_amount = round(100.0 - percent_so_far, 6)
+            else:
+                value_amount = base_pct
+                percent_so_far = round(percent_so_far + value_amount, 6)
+            lines.append((0, 0, {
+                'value': 'percent',
+                'value_amount': value_amount,
+                'nb_days': (index + 1) * days_interval,
+                'delay_type': 'days_after',
+            }))
+        return lines

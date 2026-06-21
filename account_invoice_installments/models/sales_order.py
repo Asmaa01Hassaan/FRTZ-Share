@@ -14,52 +14,52 @@ class SaleOrder(models.Model):
         'irregular': 'custom',
     }
 
-    vendor_name_id = fields.Many2one('res.partner', string=_('Vendor Name'))
+    vendor_name_id = fields.Many2one('res.partner', string='Vendor Name')
     payment_type = fields.Selection(
         [
-            ('immediate', _('Spot(Full)')),
-            ('regular', _('Fixed(Auto)')),
-            ('irregular', _('Custom(Manual)')),
+            ('immediate', 'Spot(Full)'),
+            ('regular', 'Fixed(Auto)'),
+            ('irregular', 'Custom(Manual)'),
         ],
-        string=_("Payment plan"),
+        string="Payment plan",
         default="regular",
         tracking=True,
         copy=False,
-        help=_("Select the payment plan for this order")
+        help="Select the payment plan for this order"
     )
     pay_type = fields.Selection(
         [
-            ('spot', _('Spot(Full)')),
-            ('fixed', _('Fixed(Auto)')),
-            ('custom', _('Custom(Manual)')),
+            ('spot', 'Spot(Full)'),
+            ('fixed', 'Fixed(Auto)'),
+            ('custom', 'Custom(Manual)'),
         ],
-        string=_("Payment Plan"),
+        string="Payment Plan",
         default='fixed',
         copy=False,
-        help=_("Type of payment plan"),
+        help="Type of payment plan",
     )
     installment_count = fields.Integer(
-        string=_("Installments Num."),
+        string="Installments Num.",
         default=0,
         copy=False,
-        help=_("Number of installments for this payment term"),
+        help="Number of installments for this payment term",
     )
     first_payment_type = fields.Selection(
         [
-            ('percent', _('Percent')),
-            ('fixed', _('Fixed')),
+            ('percent', 'Percent'),
+            ('fixed', 'Fixed'),
         ],
-        string=_("First Payment Type"),
+        string="First Payment Type",
         default='fixed',
         copy=False,
-        help=_("Type of first payment: percent or fixed amount"),
+        help="Type of first payment: percent or fixed amount",
     )
     first_payment_percentage = fields.Float(
-        string=_("First Payment"),
+        string="First Payment",
         default=0.0,
         digits=(16, 2),
         copy=False,
-        help=_("First payment value"),
+        help="First payment value",
     )
     show_installment_scope = fields.Boolean(compute='_compute_installment_config_visibility')
     readonly_installment_scope = fields.Boolean(compute='_compute_installment_config_visibility')
@@ -69,9 +69,9 @@ class SaleOrder(models.Model):
     scope = fields.Selection([
         ('per_invoice', 'Per Invoice'),
         ('per_lines', 'Per Lines'),
-    ], string=_("Scope"),
+    ], string="Scope",
         default=lambda self: self.env['installment.config.mixin']._get_installment_default_scope(),
-        help=_("Scope of payment term application"))
+        help="Scope of payment term application")
     apply_payment_term_per_line = fields.Boolean(
         string='Apply Payment Term Per Line',
         compute='_compute_apply_payment_term_per_line',
@@ -79,36 +79,36 @@ class SaleOrder(models.Model):
     )
     baseline_date = fields.Selection(
         [
-            ('invoice_date', _('Invoice Date')),
-            ('posting_date', _('Posting Date')),
-            ('receipt_date', _('Receipt Date')),
+            ('invoice_date', 'Invoice Date'),
+            ('posting_date', 'Posting Date'),
+            ('receipt_date', 'Receipt Date'),
         ],
-        string=_("Baseline Date"),
+        string="Baseline Date",
         default=lambda self: self.env['installment.config.mixin']._get_installment_default_baseline_date(),
         copy=False,
-        help=_("Baseline date for payment term calculation"),
+        help="Baseline date for payment term calculation",
     )
     settlement_trigger = fields.Selection(
         [
-            ('cia', _('CIA-Cash in Advance')),
-            ('cod', _('Cash on Delivery')),
-            ('cbd', _('Cash Before Delivery')),
+            ('cia', 'CIA-Cash in Advance'),
+            ('cod', 'Cash on Delivery'),
+            ('cbd', 'Cash Before Delivery'),
         ],
-        string=_("Payment Timing"),
+        string="Payment Timing",
         default='cia',
         copy=False,
-        help=_("Settlement trigger type for spot payment plans"),
+        help="Settlement trigger type for spot payment plans",
     )
     installment_frequency = fields.Selection(
         [
-            ('monthly', _('Monthly')),
-            ('weekly', _('Weekly')),
-            ('daily', _('Daily')),
+            ('monthly', 'Monthly'),
+            ('weekly', 'Weekly'),
+            ('daily', 'Daily'),
         ],
-        string=_("Installment Frequency"),
+        string="Installment Frequency",
         default='monthly',
         copy=False,
-        help=_("Frequency of installments for fixed payment plans"),
+        help="Frequency of installments for fixed payment plans",
     )
     installment_preview_ids = fields.One2many(
         'sale.order.installment',
@@ -144,14 +144,17 @@ class SaleOrder(models.Model):
     )
     name = fields.Char('Plan Name', required=True, translate=True)
 
-    # Order Type Classification
-    order_type = fields.Selection([
-        ('standard', _('Standard Sale Order')),
-        ('custom', _('Warehouse Sale Order')),
-        ('wholesale', _('External Sales Order')),
-        ('subscription', _('Service Sales Order')),
-    ], string=_('Order Type'), default='standard', required=True, tracking=True,
-       help=_("Select the type of sale order"))
+    # Order Type Classification (legacy installment order typing).
+    # Renamed from `order_type` to `installment_order_type` to avoid a hard field
+    # collision with sales_order_extension's `order_type` Char (which mirrors
+    # sale.order.type). Behaviour is unchanged: same values, same sequence map.
+    installment_order_type = fields.Selection([
+        ('standard', 'Standard Sale Order'),
+        ('custom', 'Warehouse Sale Order'),
+        ('wholesale', 'External Sales Order'),
+        ('subscription', 'Service Sales Order'),
+    ], string='Order Type', default='standard', required=True, tracking=True,
+       help="Select the type of sale order")
 
     def _compute_installment_config_visibility(self):
         states = self.env['installment.config.mixin']._get_installment_field_ui_states()
@@ -234,19 +237,19 @@ class SaleOrder(models.Model):
         """Override create to generate sequence based on order type"""
         vals_list = [self._sync_payment_plan_values(vals, use_defaults=True) for vals in vals_list]
         for vals in vals_list:
-            if vals.get('name', _('New')) != _('New'):
+            if vals.get('name', 'New') != _('New'):
                 continue
             if self._uses_sale_order_type_sequence(vals):
                 continue
-            # Legacy order_type sequences (when sale.order.type is not used).
-            order_type = vals.get('order_type', 'standard')
+            # Legacy installment_order_type sequences (when sale.order.type is not used).
+            installment_order_type = vals.get('installment_order_type', 'standard')
             sequence_map = {
                 'standard': 'sale.order',
                 'custom': 'custom.sale.order',
                 'wholesale': 'wholesale.sale.order',
                 'subscription': 'subscription.sale.order',
             }
-            seq_code = sequence_map.get(order_type, 'sale.order')
+            seq_code = sequence_map.get(installment_order_type, 'sale.order')
 
             try:
                 seq_date = fields.Datetime.context_timestamp(
@@ -998,82 +1001,10 @@ class SaleOrderLine(models.Model):
         }
 
     def _build_line_payment_term_commands(self, term_values):
+        # Shared with account.move.line via installment.config.mixin so both build
+        # the EXACT same per-line installment schedule. Logic unchanged.
         self.ensure_one()
-        pay_type = term_values['pay_type']
-        installment_count = int(term_values['installment_count'] or 0)
-        first_payment_type = term_values['first_payment_type']
-        first_payment = term_values['first_payment_percentage'] or 0.0
-        line_amount = term_values.get('line_amount') or 0.0
-
-        if first_payment_type == 'percent' and not (0 <= first_payment <= 100):
-            raise ValidationError(_("First Payment (%) must be between 0 and 100."))
-
-        if pay_type == 'spot':
-            return [(0, 0, {
-                'value': 'percent',
-                'value_amount': 100.0,
-                'nb_days': 0,
-                'delay_type': 'days_after',
-            })]
-
-        if pay_type != 'fixed' or installment_count < 1:
-            return [(0, 0, {
-                'value': 'percent',
-                'value_amount': 100.0,
-                'nb_days': 0,
-                'delay_type': 'days_after',
-            })]
-
-        lines = []
-        percent_so_far = 0.0
-        if first_payment > 0:
-            if first_payment_type == 'fixed':
-                first_pct = (
-                    round((min(first_payment, line_amount) / line_amount) * 100.0, 6)
-                    if line_amount
-                    else 0.0
-                )
-            else:
-                first_pct = first_payment
-            if first_pct > 0:
-                lines.append((0, 0, {
-                    'value': 'percent',
-                    'value_amount': first_pct,
-                    'nb_days': 0,
-                    'delay_type': 'days_after',
-                }))
-                percent_so_far = first_pct
-
-        if installment_count < 1:
-            return lines or [(0, 0, {
-                'value': 'percent',
-                'value_amount': 100.0,
-                'nb_days': 0,
-                'delay_type': 'days_after',
-            })]
-
-        days_map = {
-            'monthly': 30,
-            'weekly': 7,
-            'daily': 1,
-        }
-        days_interval = days_map.get(term_values['installment_frequency'], 30)
-        remaining_pct = max(100.0 - percent_so_far, 0.0)
-        base_pct = round(remaining_pct / installment_count, 6) if installment_count else 0.0
-
-        for index in range(installment_count):
-            if index == installment_count - 1:
-                value_amount = round(100.0 - percent_so_far, 6)
-            else:
-                value_amount = base_pct
-                percent_so_far = round(percent_so_far + value_amount, 6)
-            lines.append((0, 0, {
-                'value': 'percent',
-                'value_amount': value_amount,
-                'nb_days': (index + 1) * days_interval,
-                'delay_type': 'days_after',
-            }))
-        return lines
+        return self.env['installment.config.mixin']._build_installment_line_commands(term_values)
 
     def _payment_term_matches_line_values(self):
         self.ensure_one()
