@@ -49,6 +49,13 @@
                             <field name="sequence_padding"/>
                             <field name="sequence_id"/>
                         </group>
+                        <group string="Menu Placement">
+                            <field name="sales_menu_root_id" invisible="1"/>
+                            <field name="menu_parent_id"
+                                   domain="[('id', 'child_of', sales_menu_root_id)]"
+                                   placeholder="Empty = under 'Sales Order Types'"/>
+                            <field name="menu_sequence"/>
+                        </group>
                     </group>
                     <div class="text-muted" role="alert">
                         Use placeholders in the prefix: %%(year)s, %%(month)s, %%(day)s.

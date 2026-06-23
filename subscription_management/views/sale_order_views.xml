@@ -20,6 +20,21 @@
                 <attribute name="invisible">is_subscription</attribute>
             </xpath>
 
+            <!-- Hide the standard "Cancel" button for subscriptions: termination
+                 goes through "Cancel Subscription" (which calls action_cancel itself).
+                 Also hide "Set to Quotation" so a terminated subscription stays frozen. -->
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="invisible" add="is_subscription" separator="or"/>
+            </xpath>
+            <xpath expr="//button[@name='action_draft']" position="attributes">
+                <attribute name="invisible" add="is_subscription" separator="or"/>
+            </xpath>
+
+            <!-- A terminated subscription is fully read-only: every field inside the
+                 sheet gets a readonly modifier injected server-side in get_view()
+                 (see sale_order.py). Parent-node readonly does NOT cascade in the
+                 Odoo 18 web client, so the freeze is applied per field instead. -->
+
             <!-- Header: lifecycle buttons + subscription status bar -->
             <xpath expr="//header" position="inside">
                 <button name="action_activate_subscription" type="object" string="Activate"
@@ -126,16 +141,47 @@
                        optional="hide" readonly="1"/>
                 <field name="suspension_fee_amount" column_invisible="not parent.is_subscription"
                        optional="hide" readonly="1"/>
+                <field name="show_line_actions" widget="boolean_toggle"
+                       optional="hide"
+                       column_invisible="not parent.is_subscription"
+                       readonly="subscription_line_type != 'recurring' or parent.subscription_state != 'active'"/>
                 <button name="action_open_pause_wizard" type="object"
                         icon="fa-pause" title="Pause line"
                         column_invisible="not parent.is_subscription"
-                        invisible="subscription_line_type != 'recurring' or subscription_line_state == 'paused'"/>
+                        invisible="not show_line_actions or subscription_line_type != 'recurring' or subscription_line_state == 'paused' or parent.subscription_state != 'active'"/>
                 <button name="action_resume_subscription_line" type="object"
                         icon="fa-play" title="Resume line"
                         column_invisible="not parent.is_subscription"
-                        invisible="subscription_line_type != 'recurring' or subscription_line_state == 'active'"/>
+                        invisible="not show_line_actions or subscription_line_type != 'recurring' or subscription_line_state == 'active' or parent.subscription_state != 'active'"/>
             </xpath>
 
+        </field>
+    </record>
+
+    <!-- Subscription list view: per-row Suspend / Terminate buttons.
+         They show only for subscription orders in the right state, so they stay
+         hidden on non-subscription rows of any sale.order list. -->
+    <record id="view_order_tree_subscription_buttons" model="ir.ui.view">
+        <field name="name">sale.order.list.subscription.buttons</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="is_subscription" column_invisible="1"/>
+                <field name="subscription_state" column_invisible="1"/>
+                <button name="action_open_suspend_wizard" type="object"
+                        string="Suspend" icon="fa-pause"
+                        invisible="not is_subscription or subscription_state != 'active'"
+                        groups="sales_team.group_sale_salesman"/>
+                <button name="action_resume_subscription" type="object"
+                        string="Resume" icon="fa-play"
+                        invisible="not is_subscription or subscription_state != 'suspended'"
+                        groups="sales_team.group_sale_salesman"/>
+                <button name="action_open_cancel_wizard" type="object"
+                        string="Terminate" icon="fa-times-circle"
+                        invisible="not is_subscription or subscription_state in ('cancelled','closed')"
+                        groups="sales_team.group_sale_salesman"/>
+            </xpath>
         </field>
     </record>
 </odoo>

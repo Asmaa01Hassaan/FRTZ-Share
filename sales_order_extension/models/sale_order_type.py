@@ -113,6 +113,33 @@ class SaleOrderType(models.Model):
     action_id = fields.Many2one("ir.actions.act_window", readonly=True, copy=False, ondelete="set null")
     menu_id = fields.Many2one("ir.ui.menu", readonly=True, copy=False, ondelete="set null")
 
+    menu_parent_id = fields.Many2one(
+        "ir.ui.menu",
+        string="Parent Menu",
+        ondelete="set null",
+        help="Where this type's menu appears. Leave empty to group it under "
+            "'Sales Order Types' (inside Sales > Orders). Pick 'Sales' to make "
+            "it a top-level menu next to Orders.",
+    )
+    menu_sequence = fields.Integer(
+        string="Menu Sequence",
+        help="Position of the menu among its siblings (smaller = higher). "
+            "Leave 0 for an automatic value. For reference: Orders is 10, "
+            "Subscriptions is 15 - use e.g. 11 to sit right after Orders.",
+    )
+    sales_menu_root_id = fields.Integer(
+        string="Sales App Menu Root",
+        compute="_compute_sales_menu_root_id",
+        help="Technical: id of the Sales app root menu, used to limit the "
+            "Parent Menu choices to menus inside the Sales app only.",
+    )
+
+    def _compute_sales_menu_root_id(self):
+        root = self.env.ref("sale.sale_menu_root", raise_if_not_found=False)
+        root_id = root.id if root else False
+        for rec in self:
+            rec.sales_menu_root_id = root_id
+
     _sql_constraints = [
         ("name_uniq", "unique(name)", "This sale order type name already exists."),
     ]
@@ -154,7 +181,9 @@ class SaleOrderType(models.Model):
         if any(k in n for k in ("standard", "قياسي", "عادي")):
             return "SOS/%(year)s/"
         slug = re.sub(r"[^A-Za-z0-9]+", "", name.strip()).upper()[:3] or "SO"
-        return "%s/%(year)s/" % slug
+        # %% keeps a literal %(year)s placeholder for ir.sequence to interpolate
+        # later; a bare %(year)s here would make % treat slug as a mapping.
+        return "%s/%%(year)s/" % slug
 
     def _sequence_technical_code(self):
         self.ensure_one()
@@ -239,36 +268,22 @@ class SaleOrderType(models.Model):
         return self.sequence_id.next_by_id(sequence_date=sequence_date)
 
     def _sync_default_search_filter(self):
-        IrFilters = self.env["ir.filters"].sudo()
-        for rec in self:
-            if not rec.action_id:
-                continue
-            if not rec.active:
-                filt = IrFilters.search([("action_id", "=", rec.action_id.id)], limit=1)
-                if filt:
-                    filt.write({"active": False})
-                continue
+        """Do NOT keep a saved default search filter on the type's screen.
 
-            domain_str = str([("sale_order_type_id", "=", rec.id)])
-            vals = {
-                "name": rec.name,
-                "model_id": "sale.order",
-                "domain": domain_str,
-                "context": "{}",
-                "sort": "[]",
-                "action_id": rec.action_id.id,
-                "is_default": True,
-                "user_id": False,
-                "active": True,
-            }
-            filt = IrFilters.search([("action_id", "=", rec.action_id.id)], limit=1)
-            if filt:
-                filt.write(vals)
-            else:
-                IrFilters.create(vals)
+        The action's own domain already restricts records to this type, so a
+        default ir.filters would only show a redundant (starred) facet in the
+        search bar. Remove any leftover filter previously created for the action.
+        """
+        IrFilters = self.env["ir.filters"].sudo()
+        actions = self.mapped("action_id")
+        if not actions:
+            return
+        leftovers = IrFilters.search([("action_id", "in", actions.ids)])
+        if leftovers:
+            leftovers.unlink()
 
     def _ensure_dynamic_menu_and_action(self):
-        parent = self.env.ref("sales_order_extension.menu_frtz_root_sales")
+        default_parent = self.env.ref("sales_order_extension.menu_frtz_root_sales")
         search_view = self.env.ref(
             "sales_order_extension.view_sales_order_filter_custom",
             raise_if_not_found=False,
@@ -281,9 +296,10 @@ class SaleOrderType(models.Model):
                 rec._sync_default_search_filter()
                 continue
 
+            # NB: no "search_default_sale_order_type_id" - the action domain below
+            # already restricts records to this type without showing a search facet.
             ctx = {
                 "default_sale_order_type_id": rec.id,
-                "search_default_sale_order_type_id": rec.id,
                 "restrict_order_product_type": rec.product_type,
                 "restrict_order_classification": rec.order_classification,
             }
@@ -304,10 +320,11 @@ class SaleOrderType(models.Model):
             else:
                 rec.action_id = self.env["ir.actions.act_window"].sudo().create(action_vals).id
 
+            parent = rec.menu_parent_id or default_parent
             menu_vals = {
                 "name": rec.name,
                 "parent_id": parent.id,
-                "sequence": min(rec.id * 10, 2**15 - 1),
+                "sequence": rec.menu_sequence or min(rec.id * 10, 2**15 - 1),
                 "action": "ir.actions.act_window,%s" % rec.action_id.id,
                 "active": True,
             }
@@ -345,6 +362,8 @@ class SaleOrderType(models.Model):
                 "sequence_code",
                 "sequence_padding",
                 "order_classification",
+                "menu_parent_id",
+                "menu_sequence",
             )
         ):
             self._ensure_sequence()

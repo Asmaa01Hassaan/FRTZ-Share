@@ -1,6 +1,6 @@
 {
     "name": "Sale Order Extension",
-    "version": "18.0.1.0.7",
+    "version": "18.0.1.0.8",
     "post_init_hook": "post_init_hook",
     "summary": "",
     "description": """

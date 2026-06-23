@@ -24,6 +24,12 @@ class SaleOrderLine(models.Model):
     subscription_invoiced = fields.Boolean(
         string='One-time Invoiced', default=False, copy=False)
 
+    # UI toggle: the Pause/Resume buttons are hidden by default; the user enables
+    # the optional "Manage" column and flips this per line to reveal them.
+    show_line_actions = fields.Boolean(
+        string='Manage', default=False, copy=False,
+        help="Tick to reveal the Pause / Resume buttons for this line.")
+
     # --- Item-level pause details (current/last pause) ---
     pause_reason_id = fields.Many2one(
         'subscription.reason', string='Pause Reason', copy=False,
@@ -113,6 +119,8 @@ class SaleOrderLine(models.Model):
         self.ensure_one()
         if self.subscription_line_type != 'recurring':
             raise UserError(_("Only recurring lines can be paused."))
+        if self.order_id.subscription_state != 'active':
+            raise UserError(_("Lines can only be paused while the subscription is active."))
         return {
             'type': 'ir.actions.act_window',
             'name': _('Pause Line'),
@@ -131,6 +139,8 @@ class SaleOrderLine(models.Model):
         for line in self:
             if line.subscription_line_type != 'recurring':
                 raise UserError(_("Only recurring lines can be paused."))
+            if line.order_id.subscription_state != 'active':
+                raise UserError(_("Lines can only be paused while the subscription is active."))
             if line.subscription_line_state == 'paused':
                 continue
             line.write({
@@ -150,6 +160,10 @@ class SaleOrderLine(models.Model):
     def action_resume_subscription_line(self):
         for line in self:
             if line.subscription_line_state != 'paused':
+                continue
+            # Never auto/manual-resume a line of a non-active subscription
+            # (e.g. terminated): leave it as-is.
+            if line.order_id.subscription_state != 'active':
                 continue
             line.write({
                 'subscription_line_state': 'active',

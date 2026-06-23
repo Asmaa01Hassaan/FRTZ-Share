@@ -15,6 +15,53 @@ CATCH_UP_LIMIT = 36
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    # ------------------------------------------------------------------
+    # Freeze the whole form when a subscription is terminated
+    # ------------------------------------------------------------------
+    # Expression injected as a readonly modifier on every sheet field so a
+    # cancelled/closed subscription is fully read-only in the UI. Parent-node
+    # readonly does NOT cascade to children in the Odoo 18 web client, so we set
+    # it per field (server-side) instead of once on the <sheet>.
+    _SUBSCRIPTION_FREEZE_EXPR = (
+        "is_subscription and subscription_state in ('cancelled', 'closed')")
+
+    @api.model
+    def get_view(self, view_id=None, view_type='form', **options):
+        res = super().get_view(view_id=view_id, view_type=view_type, **options)
+        if view_type == 'form':
+            res['arch'] = self._subscription_freeze_form_arch(res['arch'])
+        return res
+
+    @api.model
+    def _subscription_freeze_form_arch(self, arch):
+        """Add the freeze readonly modifier to every editable field of the main
+        sale order form (so a terminated subscription cannot be edited). Only
+        forms that expose both subscription driver fields are touched, and fields
+        inside embedded o2m/m2m sub-views are left alone (their context has no
+        subscription_state)."""
+        from lxml import etree
+        try:
+            doc = etree.fromstring(arch)
+        except Exception:  # noqa: BLE001 - never break view loading on parse issues
+            return arch
+        names = {f.get('name') for f in doc.xpath('//field')}
+        if not {'is_subscription', 'subscription_state'} <= names:
+            return arch  # not the subscription-aware form; leave untouched
+        freeze = self._SUBSCRIPTION_FREEZE_EXPR
+        for sheet in doc.xpath('//sheet'):
+            for field in sheet.xpath('.//field'):
+                # Skip columns of embedded list/kanban sub-views (o2m/m2m).
+                if field.xpath('ancestor::list or ancestor::tree or ancestor::kanban'):
+                    continue
+                existing = (field.get('readonly') or '').strip()
+                if existing in ('1', 'True', 'true'):
+                    continue  # already always read-only
+                if existing:
+                    field.set('readonly', '(%s) or (%s)' % (existing, freeze))
+                else:
+                    field.set('readonly', freeze)
+        return etree.tostring(doc, encoding='unicode')
+
     is_subscription = fields.Boolean(
         string='Is a Subscription',
         compute='_compute_is_subscription', store=True, readonly=True,
@@ -197,6 +244,36 @@ class SaleOrder(models.Model):
             order._post_provisioning_signal('activate')
         return True
 
+    # Technical (chatter / activity) fields that may still change once a
+    # subscription is terminated; every other field is frozen. See write().
+    _SUBSCRIPTION_TERMINATED_ALLOWED_FIELDS = frozenset({
+        'message_follower_ids', 'message_partner_ids', 'message_ids',
+        'message_main_attachment_id', 'message_attachment_count',
+        'message_has_error', 'message_has_error_counter', 'message_has_sms_error',
+        'message_needaction', 'message_needaction_counter',
+        'message_unread', 'message_unread_counter', 'website_message_ids',
+        'activity_ids', 'activity_state', 'activity_user_id', 'activity_type_id',
+        'activity_type_icon', 'activity_date_deadline', 'my_activity_date_deadline',
+        'activity_summary', 'activity_exception_decoration',
+        'activity_exception_icon', 'activity_calendar_event_id',
+    })
+
+    def write(self, vals):
+        """Freeze terminated subscriptions: once a subscription order is
+        cancelled/closed it can no longer be edited (only chatter/activity
+        technical fields may change). The termination flow itself bypasses this
+        via the 'subscription_lifecycle_write' context."""
+        if not self.env.context.get('subscription_lifecycle_write'):
+            frozen = self.filtered(
+                lambda o: o.is_subscription
+                and o.subscription_state in ('cancelled', 'closed'))
+            if frozen and not set(vals).issubset(
+                    self._SUBSCRIPTION_TERMINATED_ALLOWED_FIELDS):
+                raise UserError(_(
+                    "This subscription is terminated and can no longer be "
+                    "modified."))
+        return super().write(vals)
+
     def action_suspend_subscription(self, reason_id=False, note=False):
         """Temporary full suspension. reason_id/note are required by the UI wizard;
         kept optional here so automation can call it too."""
@@ -232,11 +309,22 @@ class SaleOrder(models.Model):
         return True
 
     def action_cancel_subscription(self, reason_id=False, note=False):
-        """Permanent cancellation. reason_id/note required by the UI wizard."""
+        """Permanent termination. reason_id/note required by the UI wizard.
+
+        Besides flipping the subscription to 'cancelled', this also triggers the
+        standard sale "Cancel" button (action_cancel) so the underlying order is
+        cancelled too, and from then on the order is frozen against further edits
+        (see write())."""
         self._check_is_subscription()
         for order in self:
             if order.subscription_state in ('cancelled', 'closed'):
                 continue
+            # Run the whole termination under a flag that lets write() through
+            # while we set the final state (after this, edits are blocked).
+            order = order.with_context(subscription_lifecycle_write=True)
+            # Call the standard "Cancel" button; skip its confirmation pop-up so
+            # the termination completes in a single step.
+            order.with_context(disable_cancel_warning=True).action_cancel()
             order.write({
                 'subscription_state': 'cancelled',
                 'cancellation_reason_id': reason_id or False,
