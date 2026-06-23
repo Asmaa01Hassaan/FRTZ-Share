@@ -68,9 +68,10 @@
                 </button>
             </xpath>
 
-            <!-- Subscription flag next to payment terms -->
+            <!-- Subscription flag: kept in the view (many modifiers depend on it)
+                 but hidden - it is a read-only flag driven by the order type. -->
             <xpath expr="//field[@name='payment_term_id']" position="after">
-                <field name="is_subscription"/>
+                <field name="is_subscription" invisible="1"/>
             </xpath>
 
             <!-- Subscription tab: schedule + ad-hoc charges -->

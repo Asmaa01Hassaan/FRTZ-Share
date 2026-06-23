@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- One-click "Upgrade the whole FRTZ suite" for an Odoo admin who has NO
+         server/shell access. It runs the SAME engine as the Apps > Upgrade
+         button (button_immediate_upgrade), but for all 13 modules at once and in
+         the correct dependency order. button_immediate_upgrade also refuses
+         (friendly error) if a scheduled action is mid-run, protecting the DB. -->
+    <record id="action_upgrade_frtz_suite" model="ir.actions.server">
+        <field name="name">Upgrade FRTZ Suite (all modules)</field>
+        <field name="model_id" ref="base.model_ir_module_module"/>
+        <field name="state">code</field>
+        <field name="code">
+modules = env['ir.module.module'].search([
+    ('name', 'in', [
+        'contact_extension', 'access_roles', 'account_invoice_installments',
+        'installment_management_pro', 'installment_payment_extension',
+        'inventory_extension', 'invoice_installment_management',
+        'payment_term_installment_extension', 'pricelist_expression',
+        'product_extension', 'sales_order_extension', 'frtz_l10n',
+        'subscription_management',
+    ]),
+    ('state', 'in', ('installed', 'to upgrade')),
+])
+if not modules:
+    raise UserError(_("None of the FRTZ suite modules are installed."))
+action = modules.button_immediate_upgrade()
+        </field>
+    </record>
+
+    <!-- Settings > Upgrade FRTZ Suite (admins only) -->
+    <menuitem id="menu_upgrade_frtz_suite"
+              name="Upgrade FRTZ Suite"
+              parent="base.menu_administration"
+              action="action_upgrade_frtz_suite"
+              groups="base.group_system"
+              sequence="200"/>
+</odoo>

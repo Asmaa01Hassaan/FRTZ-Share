@@ -50,8 +50,12 @@ class SaleOrder(models.Model):
         freeze = self._SUBSCRIPTION_FREEZE_EXPR
         for sheet in doc.xpath('//sheet'):
             for field in sheet.xpath('.//field'):
-                # Skip columns of embedded list/kanban sub-views (o2m/m2m).
-                if field.xpath('ancestor::list or ancestor::tree or ancestor::kanban'):
+                # Only freeze top-level order fields. Skip any field nested inside
+                # another field, i.e. a column/field of an embedded o2m/m2m
+                # sub-view (list, kanban OR form). Those records have no
+                # is_subscription/subscription_state in their own context, so the
+                # injected modifier would crash with "is_subscription is not defined".
+                if field.xpath('ancestor::field'):
                     continue
                 existing = (field.get('readonly') or '').strip()
                 if existing in ('1', 'True', 'true'):
